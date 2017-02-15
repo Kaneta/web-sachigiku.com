@@ -1,0 +1,137 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>mtinstall - Movable Typeのアップグレード</title>
+<link rel="stylesheet" href="doc-styles.css" type="text/css"/>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+
+<body>
+<h3>Movable Typeのアップグレード手順</h3> <a name="__index__"></a> <ul>
+
+	<li><a href="#name">名称</a></li>
+	<li><a href="#synopsis">要約</a></li>
+	<li><a href="#upgrading">アップグレード</a></li>
+	<ul>
+
+		<li><a href="#precautions">注意事項</a></li>
+		<li><a href="#downloading">ダウンロード</a></li>
+		<li><a href="#uploading files">ファイルのアップロード</a></li>
+		<li><a href="#running upgrade scripts">アップグレード・スクリプトの実行</a></li>
+		<li><a href="#deleting upgrade scripts">アップグレード・スクリプトの削除</a></li>
+		<li><a href="#setting up new features">新機能の設定</a></li>
+		<li><a href="#you&#39;re done!">これで終了です！</a></li>
+	</ul>
+
+	<li><a href="#notes">捕足情報</a></li>
+	<ul>
+
+		<li><a href="#if you are upgrading from a version older than 1.3">1.3より前のバージョンからアップグレードする場合</a></li>
+		<li><a href="#if you are upgrading from a version older than 1.4">1.4より前のバージョンからアップグレードする場合</a></li>
+		<li><a href="#converting your berkeley db database to a sql database">Berkeley DBデータベースをSQLデータベースに変換する手順</a></li>
+	</ul>
+
+</ul>
+<hr size="1" color="#CCCCCC">
+<p>
+<h1><a name="name"></a>名称</h1>
+<p>mtinstall - Movable Typeのアップグレード</p>
+<p>
+<hr size="1" color="#CCCCCC">
+<h1><a name="synopsis"></a>要約</h1>
+<p>このドキュメントは最新のMovable Typeへアップグレードする手順を説明しています。</p>
+<p>
+<hr size="1" color="#CCCCCC">
+<h1><a name="upgrading"></a>アップグレード</h1>
+<p>Movable Typeの以前のバージョン(1.0～3.01D)を既にインストールしている場合は、フルインストールを行う必要はありません。 Movable Typeをインストールしていない場合は、「<a href="./mtinstall.html">インストール手順</a>」を参照してください。</p>
+<p>
+<h2><a name="precautions"></a>注意事項</h2>
+<p>アップグレードを行う前には、どんなアップグレードでも、各ウェブログからエントリーとコメントを書き出して（エキスポートして）おくことをおすすめします。 書き出しておくと、アップグレードの最中に何か問題があった場合、エントリーとコメントが読み込み可能な形で手元に残っているので安心です。</p>
+<p>
+<h2><a name="downloading"></a>ダウンロード</h2>
+<p>フルインストール用ではなくアップグレード用の配布ファイルをダウンロードします。 ダウンロードした<i>.tar.gz</i>アーカイブまたはzipアーカイブを展開します。</p>
+<p>
+<h2><a name="uploading files"></a>ファイルのアップロード</h2>
+<ol>
+<li><strong><a name="item_Connect_to_your_webserver"></a>ウェブサーバーに接続する</strong><br> FTPプログラムを起動しウェブサーバーに接続した後、Movable Typeをインストールしたディレクトリに移動します。 <p></p></li>
+<li><strong><a name="item_Upload_the_application"></a>アプリケーションをアップロードする</strong><br> アーカイブにあるすべてのファイルとディレクトリをウェブサーバーにアップロードし、古いファイルのコピーを置き換えます。 <p>画像はバイナリ・モードでアップロードしますが、それ以外のファイルはすべてアスキー（ASCII）モードでアップロードしてください。</p>
+<p><i>extlib</i>ディレクトリ内のファイルをアップロードするときは、以前Movable Typeをインストールしたときにインストールしたライブラリをどれも上書きしないよう注意してください。</p>
+<p><strong>注：</strong><i>search_templates</i>ディレクトリにある検索テンプレートを変更した場合は、アップグレード用配布ファイルからの<i>search_templates</i>ディレクトリを<strong>アップロードしないでください</strong>。検索テンプレートが上書きされます。</p>
+<p><strong>注：</strong>修正を加えていた古いファイルを新しいファイルで置き換える場合は、修正箇所を新しいファイルにそっくり移す必要があります。 ただし、修正が新しいMovable Typeのリリースに反映されていない場合に限ってのことです。 Movable Typeのファイルに加えた修正を、再び反映させる必要があるかどうか分からない場合は、サポート・フォーラム(<i><a href="http://www.movabletype.org/support/">http://www.movabletype.org/support/</a></i>)で尋ねてください。</p>
+<p><strong>注：</strong>Movable Typeのアプリケーションが<i>cgi-bin</i>にインストールされており、画像やドキュメンテーションおよびスタイルシートが<i>cgi-bin</i>以外の場所にある場合は、<i>images</i>、 <i>docs</i>、<i>styles.css</i>および<i>mt.js</i>を該当する場所にアップロードします。</p>
+<p><strong>注：</strong>Movable Type 3.0 以降には、ユーザー・インタフェースの改良をサポートする新しいファイルが二つ含まれています。 <a href="./mtinstall.html#item_configure_path_to_static_files">「スタティック・ファイルの設置場所の設定」</a>に説明された「スタティック・ファイル」ディレクトリをお使いの場合は、<i>mt.js</i> および <i>styles.css</i> をそのディレクトリに移動する必要があります。</p>
+<p></p></li>
+<li><strong><a name="item_Check_permissions"></a>パーミッションをチェックする</strong><br> CGIスクリプト(<i>.cgi</i>で終わる名前のファイル)のパーミッションがすべて<code>755</code>に設定されていることを確認します。 <p>この値に設定すると、所有者は読み取り、書き込み、プログラム実行の権限を持ち、グループとそのほかのユーザーは、書き込みはできませんが、読み取りとプログラム実行の権限を持つようになります。</p>
+<p></p></li></ol>
+<p>
+<h2><a name="running upgrade scripts"></a>アップグレード・スクリプトの実行</h2>
+<ul>
+<li><strong><a name="item_If_you_are_upgrading_from_version_3%2E0D_or_3%2E01"></a>バージョン 3.0D, 3.01D からアップグレードする場合</strong><br><i>mt-upgrade31.cgi</i>を実行します。 <p></p></li><li><strong><a name="item_If_you_are_upgrading_from_version_2%2E6%2C_2%2E61%"></a>バージョン2.6、2.61、2.62、2.63、2.64、2.65、2.66、または2.661からアップグレードする場合</strong><br><i>mt-upgrade30.cgi</i>を実行したあと、<i>mt-upgrade31.cgi</i>を実行します。 <p></p></li>
+<li><strong><a name="item_If_you_are_upgrading_from_version_2%2E5_or_2%2E51%"></a>バージョン2.5または2.51からアップグレードする場合</strong><br><i>mt-upgrade26.cgi</i>を実行したあと、<i>mt-upgrade30.cgi</i>、<i>mt-upgrade31.cgi</i>を順に実行します。 <p></p></li>
+<li><strong><a name="item_If_you_are_upgrading_from_version_2%2E1_or_2%2E11_or_2%2E2_or_2%2E21%"></a>バージョン2.1、2.12、2.2または2.21からアップグレードする場合</strong><br><i>mt-upgrade25.cgi</i>を実行したあと、<i>mt-upgrade26.cgi</i><i>mt-upgrade30.cgi</i>、<i>mt-upgrade31.cgi</i>を順に実行します。 <p></p></li>
+<li><strong><a name="item_If_you_are_upgrading_from_version_2%2E0"></a>バージョン2.0からアップグレードする場合</strong><br><i>mt-upgrade21.cgi</i>を実行したあと、<i>mt-upgrade25.cgi</i>、<i>mt-upgrade26.cgi</i>、<i>mt-upgrade30.cgi</i>、<i>mt-upgrade31.cgi</i>を順に実行します。<p></p></li>
+<li><strong><a name="item_If_you_are_upgrading_from_any_of_versions_1%2E0%2D"></a>バージョン1.0～1.4からアップグレードする場合</strong><br><i>mt-upgrade20.cgi</i>を実行したあと、<i>mt-upgrade21.cgi</i>、<i>mt-upgrade25.cgi</i>、<i>mt-upgrade26.cgi</i>、<i>mt-upgrade30.cgi</i>、<i>mt-upgrade31.cgi</i>を順に実行します。 <p></p></li></ul>
+<p>
+<h2><a name="deleting upgrade scripts"></a>アップグレード・スクリプトの削除</h2>
+<p>セキュリティ上の理由から、アップグレードが完了したら、以下のファイルをFTPサーバーから削除してください。</p>
+<ul>
+<li><strong><a name="item_mt%2Dupgrade20%2Ecgi"></a>mt-upgrade20.cgi</strong><br></li> <li><strong><a name="item_mt%2Dupgrade21%2Ecgi"></a>mt-upgrade21.cgi</strong><br></li> <li><strong><a name="item_mt%2Dupgrade25%2Ecgi"></a>mt-upgrade25.cgi</strong><br></li> <li><strong><a name="item_mt%2Dupgrade26%2Ecgi"></a>mt-upgrade26.cgi</strong><br></li> <li><strong><a name="item_mt%2Dupgrade30%2Ecgi"></a>mt-upgrade30.cgi</strong><br></li> <li><strong><a name="item_mt%2Dupgrade31%2Ecgi"></a>mt-upgrade31.cgi</strong><br></li> </ul>
+<p>
+<h2><a name="setting up new features"></a>新機能の設定</h2>
+<p>Movable Type 3.1 には、設定を行わないと利用できない新しい機能が追加されました。ダイナミック・パブリッシング機能や、指定日投稿の機能を利用したいときには、これらの機能を利用するための設定が必要です。Movable Type 3.1 の新機能ガイドを参考にしてください。</p>
+<p>
+<h2><a name="you&#39;re done!"></a>これで終了です！</h2>
+<p>Movable Typeはこれでアップグレードされました。新しいバージョンを今すぐ利用できます。</p>
+<p>新しい機能の内容と使い方の詳細については、「<a href="./mt31.html">Movable Type 3.1 の新機能ガイド</a>」を参照してください。</p>
+<p>
+<hr size="1" color="#CCCCCC">
+<h1><a name="notes"></a>補足情報</h1>
+<p>
+<h2><a name="if you are upgrading from a version older than 1.3"></a>1.3より前のバージョンからアップグレードする場合</h2>
+<p>バージョン1.3から、自動的な改行と段落分けがコメントとエントリーで別々に設定できるようになりました。つまり、「<code>自動的な改行と段落分け</code>」をコメントに設定して、エントリーには設定しない、ということも可能です。 バージョン1.3では、自動的な改行と段落分けをコメントに対して行うには、各ウェブログの設定を変更し、「<code>コメントでの改行と段落分けの実施</code>」ボックスをチェックすることが<strong>重要</strong>です。</p>
+<p>
+<h2><a name="if you are upgrading from a version older than 1.4"></a>1.4より前のバージョンからアップグレードする場合</h2>
+<p>バージョン1.4から、Movable Typeは<i>File::Spec</i>のPerlモジュールのバージョン<code>0.8</code>以降を必要とするようになりました。 バージョン<code>0.8</code>以降がない場合は、以下のエラーがアップグレード後に表示されます。</p>
+<pre>Can't locate object method "splitpath" via package "File::Spec"
+at lib/MT.pm line 209.
+</pre><p>お使いのサーバーに<i>File::Spec</i>の新しいバージョンが存在するかどうかわからない場合は、<i>mt-check.cgi</i>を再び実行する必要があります(下記の「<a href="#checking for required and optional modules">必須およびオプションのPerlモジュールのチェック</a>」を参照)。サーバーに<i>File::Spec</i>の新しいバージョンが必要な場合は、<a href="#if you need to install file::spec">ここ</a>に記載の手順に従ってください。</p>
+<p>
+<h2><a name="converting your berkeley db database to a sql database"></a>Berkeley DBデータベースをSQLデータベースに変換する手順</h2>
+<p>バージョン2.2から、Movable TypeはSQLデータベース(MySQL)をサポートするようになりました。 バージョン2.6では、PostgreSQLとSQLiteに対するサポートが加わりました。 これは<strong>オプション</strong>機能で、Berkeley DBもサポートされています。 SQLデータベースを使用しない場合やサーバーでSQLデータベースが使用できない場合は、このセクションを飛ばしてください。</p>
+<p>お使いのMovable Typeのバージョンを、SQLデータベースを使うように変更した場合は、このステップを飛ばしてください。</p>
+<p>SQLデータベースとその接続に必要なPerlライブラリを、サーバーで利用できるかを調べるには、<i>mt-check.cgi</i>を実行し、<i>DBD::mysql</i>、<i>DBD::Pg</i>、および<i>DBD::SQLite</i>のモジュールのステータスを確認します。 これらのモジュールのいずれかがインストールされている場合は、Movable TypeのそれぞれのSQLデータベースのバージョンを、そのサーバーで利用できます。 いずれもインストールされていない場合は、ホスティング業者にSQLデータベースを使いたい旨を連絡する必要があります。</p><p>データを変換する場合は、アップグレード用配布ファイルに含まれている変換スクリプト(<i>mt-db2sql.cgi</i>)を使って、Berkeley DBファイルからのデータをSQLデータベースにコピーします。 現在インストールしているMovable Typeを、SQLデータベースが使えるよう変換するには、以下のステップに従います。</p>
+<ol>
+<li><strong><a name="item_Edit_your_mt%2Ecfg_file%2E"></a><i>mt.cfg</i>ファイルを編集する</strong><br></li>
+
+<i>mt.cfg</i>をテキスト・エディタで開き、以下の行を加えます。
+<pre>ObjectDriver driver_name
+Database database_name
+DBUser database_user
+</pre><p>上記の<i>driver_name</i>は<i>DBI::mysql</i>、<i>DBI::postgres</i>、<i>DBI::sqlite</i>のいずれかで、<i>database_name</i>はデータを保管するためのSQLデータベースの名称です。また、<i>database_user</i>はデータベースに接続するユーザー名です。ただし、SQLiteを使う場合はユーザー名もパスワードも必要ありません。</p>
+<p>SQLデータベースが別のホスト上で動作している場合は、<i>DBHost</i>を使ってホスト名を指定します。</p>
+<pre>DBHost database_host
+</pre><p><strong>注：</strong>MySQLまたはPostgreSQLを使う場合、<i>database_name</i>に指定したデータベースは<strong>必ず</strong>存在している必要があります。Movable Typeはデータベースを自動生成しません。</p>
+<p></p>
+<li><strong><a name="item_Set_your_password%2E"></a>パスワードを指定する</strong><br> <i>注：</i>SQLiteを使う場合は、このステップを飛ばしてください。 <p>セキュリティ上の理由から、あなたのSQLデータベースのパスワードを<i>mt.cfg</i>に保管しないようにしてください。 代わりに<i>mt-db-pass.cgi</i>というファイルに保管する必要があります。</p>
+<p>テキスト・エディタで<i>mt-db-pass.cgi</i>を開きます。 以下の行を見つけます。</p>
+<pre>database_password
+</pre><p><i>database_password</i>を、SQLデータベースへの接続時に使用するパスワードに置き換えます。</p>
+<p></p></li>
+<li><strong><a name="item_Run_mt%2Ddb2sql%2Ecgi"></a>mt-db2sql.cgiを実行する</strong><br> ウェブ・ブラウザを開いて、あなたのサイトにある<em>mt-check.cgi</em>のURLにアクセスします。 たとえば、あなたのサイトが<i><a href="http://www.your-site.com/">http://www.your-site.com/</a></i>で、Movable Typeのファイルを<i>/mt</i>ディレクトリにアップロードした場合は、<i><a href="http://www.your-site.com/mt/mt-db2sql.cgi">http://www.your-site.com/mt/mt-db2sql.cgi</a></i>のURLにアクセスします。 <p><i>mt-db2sql.cgi</i>はPerlスクリプトで、SQLデータベースに必要なスキーマを作成し、Berkeley DBファイルからのデータを使ってデータベースを生成します。</p>
+<p></p></li>
+<li><strong><a name="item_Check_for_success"></a>変換に成功したかどうかをチェックする</strong><br>
+
+<i>mt-db2sql.cgi</i>の実行が終了したら、ブラウザのページ下部を見て、変換に成功したがどうかをチェックします。 成功していると、以下のメッセージが表示されます。
+<pre>Done copying data from Berkeley DB to SQL database! All went well.
+</pre><p>このメッセージが表示されていれば、作業は終わりです。 Movable Typeにログインしてシステムを使うときに、そのシステムに対応するSQLバージョンが使用できます。</p>
+<p>エラーが生じると、以下のメッセージが表示されます。</p>
+<pre>An error occurred while loading data:
+</pre><p>このメッセージは具体的なエラー・メッセージと共に表示されます。 エラーが発生した場合は、<i>mt.cfg</i>ファイルを開き、以下の行を削除します。</p>
+<pre>ObjectDriver driver_name
+</pre><p><i>driver_name</i>はステップ1で指定したドライバー名です。</p>
+<p>これによって、Movable TypeのBerkeley DBバージョンを使用する状態に戻ります。 受け取ったエラー・メッセージはサポート・フォーラムに投稿してください。</p>
+<p></p></li></ol>
+
+<hr size="1" color="#CCCCCC"> <span class="copyright">Copyright (c) 2001-2004 Six Apart. All Rights Reserved.</span> </body>
+
+</html>

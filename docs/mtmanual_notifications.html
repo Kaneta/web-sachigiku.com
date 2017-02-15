@@ -1,0 +1,42 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>通知</title>
+<link rel="stylesheet" href="doc-styles.css" type="text/css"/>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+
+<body>
+<h3>Movable Typeユーザー・マニュアル: 通知</h3>
+<p><a href="mtmanual.html">≪ 目次</a></p>
+
+
+<p><a name="__index__"></a></p>
+<!-- INDEX BEGIN -->
+
+<ul>
+
+	<li><a href="#notifications">通知</a></li>
+</ul>
+<!-- INDEX END -->
+
+<hr/>
+<p>
+</p>
+<h1><a name="notifications">通知</a></h1>
+<p>新しいエントリーを投稿した後、時々はあなたの読者にメールでその新しいエントリーについて知らせたいと思うことがあることでしょう。 Movable Typeの通知システムを利用すると、これが簡単にできます。 <em>mt-add-notify.cgi</em>プログラムを使って簡単な「新規投稿を通知」ボタンを加えると、自動的に通知リストにユーザーが追加されていきます。 この通知リストは、Movable Typeの「<em>通知リストの編集</em>」を使うと手動でも、メールアドレスの追加や削除ができます。</p>
+<p>通知は、新しいエントリーを投稿しても自動的に送信されません。 読者に特定のエントリーについて通知するには、そのエントリーを選択して編集します。 「<em>おしらせを送信する</em>」セクションで、送信するメッセージのテキストを入力します。 また、通知メールに、エントリーの概要や全文を含める場合は、右側の該当するチェックボックスをチェックします。 読者へのメールには、エントリーへのリンクの次に、入力したメッセージが表示されます。</p>
+<p>Movable Typeには、訪問者があなたの通知リストに自らを加えることができる簡単なCGIスクリプトが用意されています。 HTMLフォームを使って訪問者にメールアドレスを入力・提出してもらうと、訪問者が通知リストに加わります。 このスクリプトを使うには、以下のHTMLコードを、フォームを表示するテンプレートに挿入します。</p>
+<pre>
+    &lt;form method="post" action="&lt;$MTCGIPath$&gt;mt-add-notify.cgi"&gt;
+    &lt;input type="hidden" name="blog_id" value="&lt;$MTBlogID$&gt;" /&gt;
+    &lt;input type="hidden" name="_redirect" value="&lt;$MTBlogURL$&gt;" /&gt;
+    &lt;input name="email" size="20" /&gt;
+    &lt;input type="submit" value="add" /&gt;
+    &lt;/form&gt;</pre>
+<p>その後、テンプレートを保存してサイトを再構築します。</p>
+<p><em>mt-add-notify.cgi</em>を使用する場合は、mt.cfg内に <a href="./mtmanual_configuration.html#item_emailverificationsecret">EmailVerificationSecret</a>を設定する必要があります。</p>
+
+<hr size="1" color="#CCCCCC"> <span class="copyright">Copyright (c) 2001-2004 Six Apart. All Rights Reserved.</span> </body>
+
+</html>

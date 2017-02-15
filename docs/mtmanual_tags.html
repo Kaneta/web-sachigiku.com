@@ -1,0 +1,1367 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>テンプレート・ タグ</title>
+<link rel="stylesheet" href="doc-styles.css" type="text/css"/>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+
+<body>
+<h3>Movable Type ユーザマニュアル: テンプレートタグ</h3>
+
+<p><a href="mtmanual.html">≪ 目次</a></p>
+
+
+<a name="__index__"></a>
+
+<ul>
+
+	<li><a href="#template_tags">テンプレートタグ</a></li>
+	<ul>
+
+		<li><a href="#weblog_data">ウェブログ・データ</a></li>
+		<li><a href="#entry_listings/archive_pages">エントリーリスト/アーカイブ・ページ</a></li>
+		<li><a href="#comments">コメント</a></li>
+		<li><a href="#comment_previewing">コメントのプレビュー</a></li>
+		<li><a href="#archive_templates_and_master_archive_index">アーカイブ・テンプレートとマスター・アーカイブ・インデックス</a></li>
+		<li><a href="#categoryrelated_tags">カテゴリー関連のタグ</a></li>
+		<li><a href="#calendar_display_tags">カレンダー表示タグ</a></li>
+		<li><a href="#trackback_tags">トラックバック・タグ</a></li>
+		<li><a href="#search_results_tags">検索結果タグ</a></li>
+		<li><a href="#miscellaneous_tags">その他のタグ</a></li>
+		<li><a href="#global_tag_attributes">グローバル・タグ・アトリビュート</a></li>
+		<li><a href="#date_tag_formats">日付タグのフォーマット</a></li>
+	</ul>
+
+</ul>
+<hr size="1" color="#CCCCCC">
+<p>
+<h1><a name="template_tags"></a>テンプレート・タグ</h1>
+<p>Movable Type のテンプレートは、標準テキスト、もしくはHTMLの標準的な構文の中に、特別なタグが埋め込まれることで構成されています。正確には、タグは「コンテナ」タグで、サブテンプレートと呼ばれるような、二つの異なるMTタグで囲まれたテキストとMTタグで構成されています。主には、コンテナ・タグはループか状態・条件(コンディション)を表しています。</p>
+<p>コンテナでないタグは、単純な変数タグで、情報の動的な一部に置き換わります。</p>
+<p>すべてのMovable Typeのタグは「<code>&lt;</code>」と「<code>&gt;</code>」で囲まれて、HTMLタグそっくりです。以下の例のように、記号の間に<code>$</code>を入れることがあります。
+<pre>&lt;$MTEntryBody$&gt;
+</pre><p>これはHTMLタグとMovableTypeタグのどちらのタグなのか、素早く区別するためです。</p>
+<p>Movable Typeタグには、アトリビューション(属性値)を設定できます。タグのアトリビューションはHTMLのタグのアトリビューションと同様の仕組みで、タグの中に <code>name=&quot;value&quot;</code> と名前と値のペアのリストが半角空白を区切りにリストされます。例えば
+<pre>&lt;MTEntries author=&quot;Foo&quot; category=&quot;Bar&quot;&gt;
+</pre><p>このタグがどう働くのかは、<a href="#item_MTEntries"><code>MTEntries</code></a>の説明を見てください。
+
+<p>アトリビュートの値は<i>必ず</i>「<code>"</code>」(ダブルクオーテーション)で囲んでください。さもないと、正しく動作しないことがあります。「<code>$</code>」付きのMTタグでアトリビュートを使うときは、後ろの「<code>$</code>」の前にアトリビューションをおいてください。以下に例を挙げます。
+<pre>&lt;$MTEntryDate format=&quot;%B %e, %Y&quot;$&gt;
+</pre><p>いくつかのアトリニュートはグローバル、すなわちMovable Typeの変数置換タグすべてに利用できます。グローバル・アトリビュートについては、「<a href="#global_tag_attributes">グローバル・タグ・アトリビュート</a>」で説明します。その他のアトリビュートは、タグそれぞれ違います。特定のタグでしか動作しません。これらのアトリビュートについては、それぞれのタグの説明のなかで紹介します。</p>
+<p>いくつかのMTタグでは、利用する場所が限定されます。例えば、<a href="#item_MTComments"><code>MTComments</code></a>は <code>コメント・ポップアップ</code> テンプレート、もしくは <a href="#item_Individual"><code>Individual</code></a>エントリー・アーカイブなど個別エントリーの中でのみ利用できます。</p>
+
+<p>
+<h2><a name="weblog_data"></a>ウェブログ・データ</h2>
+<ul>
+<li><strong><a name="item_MTBlogs"></a>MTBlogs</strong><br>
+
+システム全体のすべてのウェブログのリストなどを表示するときに使うコンテナ・タグです。アクセス権(テンプレートの編集、もしくはリビルトについて)のあるすべてのウェブログが対象になります。このコンテナ・タグの内側では、<code>&lt;$MTBlog*$&gt;</code> タグを利用できます。
+<p></p>
+<li><strong><a name="item_MTBlogID"></a>MTBlogID</strong><br>
+
+ウェブログの数字のID
+<p></p>
+<li><strong><a name="item_MTBlogName"></a>MTBlogName</strong><br>
+
+ウェブログの名前。ウェブログの設定画面で指定できます。
+<p></p>
+<li><strong><a name="item_MTBlogDescription"></a>MTBlogDescription</strong><br>
+
+ウェブログの説明。ウェブログの設定画面で指定できます。
+<p></p>
+<li><strong><a name="item_MTBlogURL"></a>MTBlogURL</strong><br>
+
+ウェブログの絶対URL(完全なURL)。ウェブログの設定画面に項目があります。
+<p></p>
+<li><strong><a name="item_MTBlogArchiveURL"></a>MTBlogArchiveURL</strong><br>
+
+ウェブログの<code>Archive URL</code> 。ウェブログの設定画面に項目があります。
+<p></p>
+<li><strong><a name="item_MTBlogRelativeURL"></a>MTBlogRelativeURL</strong><br>
+
+ウェブログの相対URL。ウェブログの設定画面に指定された<i>Site URL</i>からの相対アドレスです。この設定は、ウェブサイトのステージング・バージョンを用意するとき、URLをハードコードしなくてよくて便利です。
+<p></p>
+<li><strong><a name="item_MTBlogSitePath"></a>MTBlogSitePath</strong><br>
+
+ウェブログの <i>Local Site Path</i>。ウェブログの設定画面に項目があります。
+<p></p>
+<li><strong><a name="item_MTBlogHost"></a>MTBlogHost</strong><br>
+
+ウェブログの絶対URLのホスト名部分。例えば、<code>Site URL</code> (ウェブログの設定画面)が、<i><a href="http://www.your-site.com/blog/">http://www.your-site.com/blog/</a></i>ならば、<code>www.your-site.com</code>になります。
+<p></p>
+<li><strong><a name="item_MTBlogTimezone"></a>MTBlogTimezone</strong><br>
+
+ウェブログのタイムゾーン。UTCからの時差が<code>+|-hh:mm</code>のような形式で表示されます。例えば、タイムゾーンがUTCより<code>4</code>進んでいるときは、<code>+04:00</code>と表示されるでしょう。
+<p></p>
+<li><strong><a name="item_MTBlogEntryCount"></a>MTBlogEntryCount</strong><br>
+
+ウェブログのエントリー数。
+<p></p>
+<li><strong><a name="item_MTBlogCommentCount"></a>MTBlogCommentCount</strong><br>
+
+ウェブログのコメント数。
+<p></p>
+<li><strong><a name="item_MTBlogCCLicenseURL"></a>MTBlogCCLicenseURL</strong><br>
+
+選んだクリエイティブ・コモンズ・ライセンスに合わせた内容が書かれているURL。
+<p></p>
+<li><strong><a name="item_MTCCLicenseRDF"></a>MTCCLicenseRDF</strong><br>
+
+選んだクリエイティブ・コモンズ・ライセンスに合った、機械判別可能なRDFの出力。
+
+<p>このタグは使われる場面によって異なる動作をします。エントリーに適用されたときには、RDFに、そのエントリーについての情報が追加して含まれます。そうでなければ、一般のウェブログの情報に基づきます。</p>
+<p></p>
+<li><strong><a name="item_MTBlogIfCCLicense"></a>MTBlogIfCCLicense</strong><br>
+
+このコンテナ・タグは、クリエイティブ・コモンズ・ライセンスがウェブログの設定の中で選択されているときに、中身を実行します。選択されていないときは、中身は無視されます。
+
+<p></p></ul>
+<p>
+<h2><a name="entry_listings/archive_pages"></a>Entry Listings/Archive Pages</h2>
+<ul>
+<li><strong><a name="item_MTEntries"></a>MTEntries</strong><br>
+
+ウェブログのエントリー/投稿のリストのためのコンテナ・タグです。アトリビュートを使って、どのエントリーを表示するか設定することもできます。そのまま使うと、最近<code>N</code>日間に投稿されたエントリーが表示されます。この<code>N</code>日は、ウェブログの設定で、それぞれのウェブログごとに設定することができます。変更するには、以下のアトリビュートを使ってください。
+<ul>
+<li><strong><a name="item_lastn%3D%22N%22"></a>lastn=``N''</strong><br>
+
+ウェブログに投稿された最新の<code>N</code>個のエントリーを表示します。<code>N</code>は0より大きい数字にしてください。
+<p></p>
+<li><strong><a name="item_offset%3D%22M%22"></a>offset=``M''</strong><br>
+
+上の <code>lastn</code> を使うときに、最新の<code>M</code>個のエントリーを除外して、そこから、<code>N</code>個のエントリーを表示します。例えば、
+<pre>&lt;MTEntries lastn=&quot;5&quot; offset=&quot;5&quot;&gt;
+...
+&lt;/MTEntries&gt;
+</pre><p>と書いた場合、6番目から10番目の、5個のエントリーが表示されます。</p>
+<p><strong>注意:</strong> このタグは <code>lastn</code> と一緒に使います</p>
+<p></p>
+<li><strong><a name="item_category%3D%22category_name%22"></a>category=``category name''</strong><br>
+
+指定したカテゴリー <code>category name</code> のすべてのエントリーを表示します。カテゴリーに多数のエントリーがあるときには、大きなページになってしまう可能性がありますので、注意してください。<code>lastn</code>を使って、決まった数のエントリーだけを表示するようにしたほうがいいかもしれません。
+
+<p>複数のカテゴリーのエントリーを一緒に表示したいとき、もしくは、複数のカテゴリーを設定したエントリーに限定したちとき、<code>category name</code> に<code>AND</code>や<code>OR</code>を使います。同時にはどちらか一方しか使えません。例えば <code>Foo AND Bar OR Baz</code> は動きません。<code>Foo AND Bar AND ...</code> もしくは <code>Foo OR Bar OR ...</code> であれば、動きます。</p>
+<p>例えば、<code>Foo</code>と<code>Bar</code> の両方のカテゴリーを設定されているエントリーをすべて表示したいときには、次のように指定します。
+<pre>&lt;MTEntries category=&quot;Foo AND Bar&quot;&gt;
+...
+&lt;/MTEntries&gt;
+</pre><p></p>
+<li><strong><a name="item_author%3D%22author_name%22"></a>author=``author name''</strong><br>
+
+特定の著者<code>author name</code>による投稿をすべて表示します。たくさんのエントリーが表示さされてしまう可能性があります。そのような場合、<code>lastn</code>を使って、表示するエントリー数を制限することができます。
+<p></p>
+<li><strong><a name="item_days%3D%22N%22"></a>days=``N''</strong><br>
+
+<code>N</code>日以内のエントリーをすべて表示します。
+<p></p>
+<li><strong><a name="item_recently_commented_on%3D%22N%22"></a>recently_commented_on=``N''</strong><br>
+
+最近コメントがついた<code>N</code>個のエントリーを表示します。それぞれのエントリーは一度しか表示されません。例えば、エントリーAにコメントが付き、そしてエントリーBにコメントが、そして別のコメントがエントリーAに付いたとき、二つのエントリーとして、エントリーA、次にエントリーBの順で表示されます。
+<p></p>
+<li><strong><a name="item_sort_order%3D%22ascend%7Cdescend%22"></a>sort_order=``ascend|descend''</strong><br>
+
+<code>&lt;MTEntries&gt;</code>タグによって表示されるエントリーを並べ換える順序を指定します。ウェブログの設定で指定した、標準の並び換え順を上書きします。<code>ascend</code
+> と <code>descend</code>を指定できます。
+<p><code>ascend</code>  と <code>descend</code> は単に時間順だけでなく、<code>sort_by</code>アトリビュート(下で説明します)と一緒に使われてときには、アルファベットで A から Z (<code>ascend</code>) もしくは Z から A (<code>descend</code>) になります。</p>
+<p>標準では <code>descend</code> になります。</p>
+<p></p>
+<li><strong><a name="item_sort_by%3D%22field_name%22"></a>sort_by=``field name''</strong><br>
+
+エントリーの作成日以外を基に並べ換えを行うフィールドを指定します。<code>field name</code>で指定できるのは、<a href="#item_title"><code>title</code></a>、<code>status</code>、<code>modified_on</code>、<code>author_id</code>、または <a href="#item_excerpt"><code>excerpt</code></a> です。
+<p>
+このアトリビュートのもっともわかりやすい使い道は、日付順のエントリーをアルファベット順に並べることかもしれません。例えば、辞書サイトをMovable Typeを使って表示することを想像してみましょう。エントリーを文字ごとにグループ化したいと思い、AからZまでの26のカテゴリーを作ることでしょう。辞書に含まれるすべてのエントリーを、文字ごとにまとめ、アルファベット順に並べたリストを作るためには(あらかじめ、それぞれのエントリーのタイトルには、その単語か言葉を入力しておく必要がありますが)、次のようにします。</p>
+<pre>&lt;MTCategories&gt;
+&lt;$MTCategoryLabel$&gt;&lt;br /&gt;
+&lt;MTEntries sort_by=&quot;title&quot; sort_order=&quot;descend&quot;&gt;
+&lt;a href=&quot;&lt;$MTEntryPermalink$&gt;&quot;&gt;&lt;$MTEntryTitle$&gt;&lt;/a&gt;&lt;br /&gt;
+&lt;/MTEntries&gt;&lt;br /&gt;
+&lt;/MTCategories&gt;
+</pre><p></p></ul>
+<p><i>注意:</i> <code>lastn</code>、<code>category</code>、<code>author</code>を組み合わせて、エントリーのリストをフィルタできます。(<code>days</code>は、単独で使ってください。他のアトリビュートと一緒に使うと無視されます。) 例えば、<code>lastn</code> と <code>category</code> を <a href="#item_MTEntries"><code>MTEntries</code></a> に使うと、特定のカテゴリーの最新エントリーが N 個表示されます。さに著者名でフィルタしたいときには、<code>lastn</code> と <code>category</code> に加えて <code>author</code> の3つのアトリビュートを使います。
+<pre>&lt;MTEntries category=&quot;Fun&quot; author=&quot;Me&quot; lastn=&quot;10&quot;&gt;
+...
+&lt;/MTEntries&gt;
+</pre><p>これは、カテゴリーが <code>Fun</code> で著者が <code>Me</code> のエントリーから最新のエントリーを10個表示します。</p>
+
+<li><strong><a name="item_MTEntryTitle"></a>MTEntryTitle</strong><br>
+
+エントリーのタイトル。
+<p></p>
+<li><strong><a name="item_MTEntryStatus"></a>MTEntryStatus</strong><br>
+
+エントリーの Post Status(投稿の状態)。<code>draft</code> か <code>publish</code> のどちらかになります。このタグは使い道がありません。大抵のウェブログでは、<code>publish</code> のエントリーだけを表示します。このタグは Export 機能を利用するときに、Movable Type 内部で利用されています。
+<p></p>
+<li><strong><a name="item_MTEntryExcerpt"></a>MTEntryExcerpt</strong><br>
+
+エントリーの概要(Excerpt)。もし、概要に記述がないときは、エントリーの最初の20ワードに、省略を表わす <code>...</code> をつけて、代わりに使います。
+<p>概要に記述するときは、改行と段落分けが自動的に行われないことに注意しましょう。次のように、アトリビュート <code>convert_breaks</code> を利用する必要があります。
+<pre>Excerpt with line breaks converted:
+&lt;$MTEntryExcerpt convert_breaks=&quot;1&quot;$&gt;
+</pre><p></p>
+<li><strong><a name="item_MTEntryBody"></a>MTEntryBody</strong><br>
+
+エントリーの本文。
+<p>自動的に改行と段落分けしてほしいときには、エントリーの設定で、テキストフォーマットに <code>Convert line breaks</code> を選びます。段落--連続する二つの改行--は、&lt;p&gt; と &lt;/p&gt; の囲みに変換され、残る単独の改行には &lt;bt /&gt; が追加されます。</p>
+
+<p>エントリーごとの <code>Text Formatting</code> の設定は、<code>convert_breaks</code> をアトリビュートに指定することで上書きすることができます。このアトリビュートが指定されていれるときは、常にエントリーの設定は上書きされます。例えば、普段は設定を有効にしていたが、特定の場面で改行を無効にしたいときは、以下のようにします。</p>
+<pre>&lt;$MTEntryBody convert_breaks=&quot;0&quot;$&gt;
+</pre><p>エントリー本文の最初の N 語だけを表示したいときには、アトリビュートの <i>word</i> を使いましょう。例えば、エントリー本文の最初の 5 語だけをみせたいときには、次のようにします。
+<pre>&lt;$MTEntryBody words=&quot;5&quot;$&gt;
+</pre><p>最初の N 語を取り出すために、ます HTMLタグを取り除き、それから空白で分割しています。</p>
+<p></p>
+<li><strong><a name="item_MTEntryMore"></a>MTEntryMore</strong><br>
+
+エントリーの追記(extended)のテキスト。続きを読む...の部分です。
+<p>自動的に改行と段落分けしてほしいときには、エントリーの設定で、テキストフォーマットに <code>Convert line breaks</code> を選びます。段落--連続する二つの改行--は、&lt;p&gt; と &lt;/p&gt; の囲みに変換され、残る単独の改行には &lt;bt /&gt; が追加されます。</p>
+
+<p>エントリーごとの <code>Text Formatting</code> の設定は、<code>convert_breaks</code> をアトリビュートに指定することで上書きすることができます。このアトリビュートが指定されていれるときは、常にエントリーの設定は上書きされます。例えば、普段は設定を有効にしていたが、特定の場面で改行を無効にしたいときは、以下のようにします。</p>
+<pre>&lt;$MTEntryMore convert_breaks=&quot;0&quot;$&gt;
+</pre><p></p>
+<li><strong><a name="item_MTEntryLink"></a>MTEntryLink</strong><br>
+
+エントリーを含むアーカイブページへの絶対 URL。もし、複数のアーカイブの種類を選んでいたときには、ウェブログの設定にある、<code>優先するアーカイブの種類 (Preferred Archive Type)</code> によって決まります。これはデフォルトの場合で、特定のアーカイブのリンクを必要とするときには、アトリビュート <code>archive_type</code> を指定して上書きすることができます。
+<p>例えば、<code>Preferred Archive Type</code> として <a href="#item_Individual"><code>Individual</code></a> を設定していたとき、次のタグ</p>
+<pre>&lt;$MTEntryLink$&gt;
+</pre><p>は個別エントリー (Individual Entry) のアーカイブ・ページへのリンクになります。ファイル名は標準では、6桁の数字で表わされるエントリーIDに、ウェブログの設定にある<code>アーカイブファイルの拡張子(Archive File Extension)</code> を付けたもの (例えば、<code>html</code>) になります。もし、<code>カテゴリー (by Category)</code>のアーカイブを有効にして、特定のエントリーへのリンクを、そのカテゴリー・アーカイブにしたいときには、次のようにします。</p>
+<pre>&lt;$MTEntryLink archive_type=&quot;Category&quot;$&gt;
+</pre><p>このタグは、このエントリーのカテゴリー・アーカイブ・ページへのリンクになります。
+<p>本当のパーマリンク(変化しないリンク)--もし、他のエントリーと一緒に一つのページにそのエントリーが入っていたとしても、その特定のエントリーへのリンクを指し示めすリンク--を利用したいのであれれば、<code>&lt;$MTEntryPermalink$&gt;</code> タグを使ってください。</p>
+<p></p>
+<li><strong><a name="item_MTEntryPermalink"></a>MTEntryPermalink</strong><br>
+
+エントリーを含むアーカイブページへの絶対 URL。 その特定のエントリーを指すためのアンカー (<code>#</code>) が付いてきます。これは、<code>&lt;$MTEntryLink$&gt;</code> と同じですが、個別エントリーへのリンクでは重複してしまうのですが、個別のアーカイブ以外ではアンカーを含む分、正確にエントリーを指し示します。
+<p><code>&lt;$MTEntryLink$&gt;</code>タグと同様に、追加のアトリビュートとして<code>archive_type</code>を設定し、特定のアーカイブの種類へのリンクにすることができます。</p>
+<p></p>
+<li><strong><a name="item_MTEntryKeywords"></a>MTEntryKeywords</strong><br>
+
+エントリーの編集画面のキーワードフィールドの値
+<p></p>
+<li><strong><a name="item_MTEntryAuthor"></a>MTEntryAuthor</strong><br>
+
+エントリーの著作者(author)の名前。
+<p></p>
+<li><strong><a name="item_MTEntryAuthorNickname"></a>MTEntryAuthorNickname</strong><br>
+
+エントリーの著作者(author)のニックネーム。
+<p></p>
+<li><strong><a name="item_MTEntryAuthorEmail"></a>MTEntryAuthorEmail</strong><br>
+
+エントリーの著作者のメールアドレス。
+<p>アトリビュート <code>spam_protect</code> を設定すると、スパムボット(スパム用にアドレスを収集しているプログラム)対策にアドレスを変換します。変換後も、ウェブブラウザには、メールアドレスとして表示されます。例えば、メールアドレスが <code>foo@bar.com</code> であれば、次のように設定します。</p>
+<pre>&lt;$MTEntryAuthorEmail spam_protect=&quot;1&quot;$&gt;
+</pre><p>すると<code>foo&amp;#64;bar&amp;#46;com</code>と出力されます。</p>
+<p></p>
+<li><strong><a name="item_MTEntryAuthorURL"></a>MTEntryAuthorURL</strong><br>
+
+エントリーの著作者(author)のウェブサイトのURL。
+<p></p>
+<li><strong><a name="item_MTEntryAuthorLink"></a>MTEntryAuthorLink</strong><br>
+
+著作者(author)の名前のリンク付きバージョン。リンクの付き方のルールは次のとおりです。著作者が URL を入力していれば、名前はその URL へのリンクになります。次にメールアドレスがあれば、名前は、そのメールアドレスへのリンクになります。もし、URL もメールアドレスも両方設定されていなければ、リンクなしに名前を表示します。このルールは、アトリビュート <i>show_email</i> や <i>show_url</i> を指定すれば、変更できます。例えば
+<pre>&lt;$MTEntryAuthorLink show_email=&quot;0&quot;$&gt;
+</pre><p>とすれば、メールアドレスは表示されることはありません。すなわち、URL が入力されていれば、その URL へのリンク、URL が入力されていなければ、リンクなしに表示され、メールアドレスは表示されません。</p>
+<p>アトリビュート <code>spam_protect</code> を設定すると、スパムボット(スパム用にアドレスを収集しているプログラム)対策にアドレスを変換します。変換後も、ウェブブラウザには、メールアドレスとして表示されます。例えば、メールアドレスが <code>foo@bar.com</code> であれば、次のように設定します。</p>
+<pre>&lt;$MTEntryAuthorLink spam_protect=&quot;1&quot;$&gt;
+</pre><p>すると<code>foo&amp;#64;bar&amp;#46;com</code>と出力されます。</p>
+<p></p>
+<li><strong><a name="item_MTEntryDate"></a>MTEntryDate</strong><br>
+
+エントリーの日付。全ての日付関連のタグと同様、このタグにも <code>format</code> と <code>language</code> をアトリビュートとして設定できます。詳しくは <a href="#date_tag_formats">日付タグのフォーマット</a> を見てください。
+<p></p>
+<li><strong><a name="item_MTEntryCommentCount"></a>MTEntryCommentCount</strong><br>
+
+エントリーに付いたコメントの数。
+<p></p>
+<li><strong><a name="item_MTEntryTrackbackCount"></a>MTEntryTrackbackCount</strong><br>
+
+エントリーに付いたトラックバックの数
+<p></p>
+<li><strong><a name="item_MTEntryTrackbackData"></a>MTEntryTrackbackData</strong><br>
+
+エントリーに対してのトラックバック用データの RDF 出力。Bookmarklet が利用します。この出力はブラウザで見えないようになっています。
+<p></p>
+<li><strong><a name="item_MTEntryTrackbackLink"></a>MTEntryTrackbackLink</strong><br>
+
+エントリーが <i>Pingを受けつける(Allow Pings)</i> 設定になっているとき、このエントリーに Ping を送ってもらうためのトラックバック URL。
+<p></p>
+<li><strong><a name="item_MTEntryTrackbackID"></a>MTEntryTrackbackID</strong><br>
+
+エントリーに対応したトラックバック項目のIDナンバー。<i>Ping を受けつける(Allow Ping)</i> が設定されていれば、必要であれば、別の Trackback URL を作るために利用できます。
+<p></p>
+<li><strong><a name="item_MTEntryIfExtended"></a>MTEntryIfExtended</strong><br>
+
+エントリーに追記(extended)のテキストがあれば、コンテナのん内容を表示するタグ。Index のテンプレートで追記があるときに、「続きを読む...」とリンクを表示するときに便利です。次のように使います。
+<pre>&lt;MTEntryIfExtended&gt;
+&lt;a href=&quot;&lt;$MTEntryLink$&gt;#&lt;$MTEntryID$&gt;&quot;&gt;More...&lt;/a&gt;
+&lt;/MTEntryIfExtended&gt;
+</pre><p></p>
+<li><strong><a name="item_MTEntryIfAllowComments"></a>MTEntryIfAllowComments</strong><br>
+
+エントリーがコメントを受けつける設定のときに表示されるコンテナ・タグ。これは、エントリーの編集画面で、コメントの設定が <code>Open</code> もしくは <code>Closed</code> の場合に表示されます。コメントが許可されているときだけ、コメントへのリンクを表示するときに使います。
+<p>Movable Type のマニュアルの <i>Comments</i> コメントの部分に、このタグが使われていますので、参考にしてください。</p>
+<p></p>
+<li><strong><a name="item_MTEntryIfCommentsOpen"></a>MTEntryIfCommentsOpen</strong><br>
+
+エントリーの「<i>コメントを受けつける</i>」の設定が<code>Open</code>のときに内容が表示されるコンテナ・タグ。「コメントを投稿する」ためのHTMLフォームを表示するときなどに使います。
+<p></p>
+<li><strong><a name="item_MTEntryIfAllowPings"></a>MTEntryIfAllowPings</strong><br>
+
+
+エントリーがトラックバックを受けつける設定になっているときに、内容を表示するコンテナ・タグ。トラックバックの設定は、エントリーの編集画面で行います。
+<p>マニュアルのトラックバックの章で、このタグの使った例があります。</p>
+<p></p>
+<li><strong><a name="item_MTEntryID"></a>MTEntryID</strong><br>
+
+数字で表されるエントリーID。Permalinkへのアンカーを作るときに使います。標準では、左詰めの<code>0</code>はありません。いいかえると、エントリーIDが<code>8</code>であれば、このタグの値は<code>8</code>になります。必要なら、アトリビュートの <i>pad</i> を使ってこのタグを次のように書いてください。
+<pre>&lt;$MTEntryID pad=&quot;1&quot;$&gt;
+</pre><p>エントリーは6桁の数字として表示され、足らないときは、<code>000008</code> のように <code>0</code> が左詰めで追加されます。</p>
+<p></p>
+<li><strong><a name="item_MTEntryCategory"></a>MTEntryCategory</strong><br>
+
+エントリーの主(プライマリー)カテゴリーの名前。プルダウンメニューで選んだカテゴリーの名前を表示します。
+<p></p>
+<li><strong><a name="item_MTEntryCategories"></a>MTEntryCategories</strong><br>
+
+エントリーのカテゴリーリストのコンテナ・タグ。リストには、主カテゴリーも含みます。このコンテナ・タグの内側では、<code>&lt;$MTCategory*$&gt;</code> タグを使えます。(それぞれのタグについては、<a href="#categoryrelated_tags">カテゴリー・タグ</a> を参照してください。) 
+<p>アトリビュート <i>glue</i> を使うと、カテゴリーの区切り文字を設定できます。コンマ区切りしたいときに便利です。<i>glue</i> には「'(シングル・クオーテーション)」や「"(ダブル・クオーテーション)」は使えません。
+<p>サンプル</p>
+<pre>このエントリーは、次のカテゴリーに投稿されました:
+&lt;MTEntryCategories glue=&quot;, &quot;&gt;
+&lt;a href=&quot;&lt;$MTCategoryArchiveLink$&gt;&quot;&gt;&lt;$MTCategoryLabel$&gt;&lt;/a&gt;
+&lt;/MTEntryCategories&gt;
+</pre><p></p>
+<li><strong><a name="item_MTEntryFlag"></a>MTEntryFlag</strong><br>
+
+エントリーについて、いくつかの二値フラグのうちの一つを表示するためのタグ。現在使えるフラグは、<code>convert_breaks</code> と <code>allow_comments</code> の二つです。値が正の(設定されている)ときには、タグの値は <code>1</code> に、さもなくば <code>0</code> として表示されます。フラグの名前は、アトリビュート <code>flag</code> に設定します。次に例を挙げます。
+<pre>&lt;$MTEntryFlag flag=&quot;allow_comments&quot;$&gt;
+</pre><p>このタグは、データをエキスポートするときにシステムで利用します。普段、テンプレートの中で使うことはないでしょう。</p>
+<p></p>
+<li><strong><a name="item_MTEntryPrevious"></a>MTEntryPrevious</strong><br>
+
+現在のエントリーの前のエントリーの中身を表示させるためのコンテナ・タグ。<a href="#item_MTEntryPrevious"><code>MTEntryPrevious</code></a> の中では、例えば、&lt;$MTEntryTitle$&gt; タグは、前のエントリーのタイトルを表示します。&lt;/MTEntryPrevious&gt; でコンテナ・タグを閉じたら、現在のエントリーについての表示に戻ります。
+<p>例は後述の <a href="#item_MTEntryNext"><code>MTEntryNext</code></a> を参照してください。</p>
+<p></p>
+<li><strong><a name="item_MTEntryNext"></a>MTEntryNext</strong><br>
+
+現在のエントリーの次のエントリーの内容を表示させるためのコンテナ・タグ。<a href="#item_MTEntryNext"><code>MTEntryNext</code></a> の中では、例えば、&lt;$MTEntryTitle$&gt; タグは、次のエントリーのタイトルを表示します。&lt;/MTEntryNext&gt;でコンテナ・タグを閉じたら、現在のエントリーについての表示に戻ります。
+<p>以下は、前のエントリーと次のエントリーへのリンクによるナビゲーションの例です。</p>
+<pre>&lt;MTEntryPrevious&gt;
+&lt;a href=&quot;&lt;$MTEntryLink$&gt;&quot;&gt;&amp;lt;&amp;lt; &lt;$MTEntryTitle$&gt;&lt;/a&gt; |
+&lt;/MTEntryPrevious&gt;
+&lt;a href=&quot;&lt;$MTBlogURL$&gt;&quot;&gt;Main&lt;/a&gt;
+&lt;MTEntryNext&gt;
+| &lt;a href=&quot;&lt;$MTEntryLink$&gt;&quot;&gt;&lt;$MTEntryTitle$&gt; &amp;gt;&amp;gt;&lt;/a&gt;
+&lt;/MTEntryNext&gt;
+</pre><p></p>
+<li><strong><a name="item_MTDateHeader"></a>MTDateHeader</strong><br>
+
+エントリーのリストの中で、エントリーが前のエントリーと比較して、新しい日付になったときだけ、内容を表示するコンテナ・タグ。<a href="#item_MTEntries"><code>MTEntries</code></a> コンテナ・タグの中でのみ有効です。次のように使います。
+<pre>&lt;MTEntries&gt;
+  &lt;MTDateHeader&gt;
+    &lt;$MTEntryDate format=&quot;%B %e, %Y&quot;$&gt;
+  &lt;/MTDateHeader&gt;
+  タイトル: &lt;$MTEntryTitle$&gt;
+&lt;/MTEntries&gt;
+</pre><p></p>
+<li><strong><a name="item_MTDateFooter"></a>MTDateFooter</strong><br>
+
+エントリーが次に投稿されたエントリーと比較して異なる日付であったときだけに内容が表示されるコンテナ・タグ。前述の <a href="#item_MTDateHeader"><code>MTDateHeader</code></a> タグと一緒に使って、<code>div</code> などで、その日の複数のエントリーを構造化するときに使います。<a href="#item_MTDateHeader"><code>MTDateHeader</code></a> と同様に、このタグも <a href="#item_MTEntries"><code>MTEntries</code></a> の内側でのみ有効です。例は以下のとおりです。
+<pre>&lt;MTEntries&gt;
+  &lt;MTDateHeader&gt;
+    &lt;div class=&quot;day&quot;&gt;
+    &lt;$MTEntryDate format=&quot;%B %e, %Y&quot;$&gt;
+  &lt;/MTDateHeader&gt;
+  Title: &lt;$MTEntryTitle$&gt;
+  &lt;MTDateFooter&gt;
+    &lt;/div&gt;
+  &lt;/MTDateFooter&gt;
+&lt;/MTEntries&gt;
+</pre><p></p>
+<li><strong><a name="item_MTEntriesHeader"></a>MTEntriesHeader</strong><br>
+
+<code>&lt;MTEntries&gt;</code> コンテナの内側で最初のエントリーのときだけ内容を表示するコンテナ・タグです。
+<p></p>
+<li><strong><a name="item_MTEntriesFooter"></a>MTEntriesFooter</strong><br>
+
+<code>&lt;MTEntries&gt;</code> コンテナの内側で最後のエントリーのときだけ内容を表示するコンテナ・タグです。
+トップページから、アーカイブ・ページへのリンクを予告と一緒に作るときに使うことができます。次の例は Daily Archive を使っていっています。
+<pre>&lt;MTEntries days=&quot;1&quot;&gt;
+...
+&lt;MTEntriesFooter&gt;
+&lt;MTEntryPrevious&gt;
+&lt;a href=&quot;&lt;$MTEntryLink archive_type=&quot;Daily&quot;$&gt;&quot;&gt;Previously: &lt;$MTEntryDate format=&quot;%A, %B %d, %Y&quot;$&gt;&lt;/a&gt;
+&lt;/MTEntryPrevious&gt;
+&lt;/MTEntriesFooter&gt;
+&lt;/MTEntries&gt;
+</pre><p></p></ul>
+<p>
+<h2><a name="comments"></a>コメント</h2>
+<ul>
+<li><strong><a name="item_MTComments"></a>MTComments</strong><br>
+
+特定のウェブログ、もしくは特定のエントリーについてのコメントのリストを表示するためのコンテナ・タグ。後述するように、<code>lastn</code> アトリビュートの存在に依存します。
+<p>このタグを<a href="#item_lastn%3D%22N%22"><code>lastn=&quot;N&quot;</code></a> アトリビュートと一緒に利用すると、<code>N</code> に表示したいコメントの数を設定すれば、そのエントリー(もしくは、そのウェブログ)の最新の <code>N</code> 個のコメントを表示します。
+<p>アトリビュートを指定しないときは、<code>&lt;MTComments&gt;</code> はその特定のエントリーのコメントをすべてリストにします。その場合、エントリーの中で、すなわち、<code>&lt;MTEntries&gt;</code> の内側、もしくは <code>Individual entry archive template</code>、<code>Comment Preview template</code>、<code>Comment Listing template</code>、<code>Comment Error template</code> の中で使わないといけません。
+<p>デフォルトでは、コメントはウェブログの設定にある <i>コメントの表示順</i> の設定のとおりに並べ換えられます。これは <code>sort_order</code> アトリビュートを設定して変更することができます。値としては、<i>ascend</i>(昇順)もしくは、<i>desend</i>(降順)を設定します。</p>
+<p>特定のウェブログ全体への最新の6個のコメントを、新しいものから並べて表示するには、以下の例を Index テンプレートに記述します。</p>
+<pre>&lt;MTComments lastn=&quot;6&quot; sort_order=&quot;descend&quot;&gt;
+&lt;p&gt;&lt;$MTCommentAuthor$&gt; said:&lt;br /&gt;
+&lt;$MTCommentBody$&gt;&lt;/p&gt;
+&lt;/MTComments&gt;
+</pre><p>それぞれのコメントについて、コンテナの内側でテキストとタグが表示されます。以下で説明するタグは、コメントについての様々な値を表示します。</p>
+<p></p>
+<li><strong><a name="item_MTCommentID"></a>MTCommentID</strong><br>
+
+コメントID。数字で表示されます。特定のコメントへ直接リンクするためのアンカーを設定するときに使います。デフォルトでは、コメントIDは左詰めの <code>0</code> は付きません。いいかえると、コメントIDが <code>8</code> のとき、このタグの値は単なる <code>8</code> になります。左詰めの <code>0</code> を付けたいときには、<i>pad</i>アトリビュートを設定します。
+<pre>&lt;$MTCommentID pad=&quot;1&quot;$&gt;
+</pre><p>すると、<code>000008</code> のように <code>0</code> が左詰めされた 6 桁のコメントIDが表示されます。</p>
+<p></p>
+<li><strong><a name="item_MTCommentEntryID"></a>MTCommentEntryID</strong><br>
+
+コメントが付けられた元のエントリーの ID。<code>&lt;MTComments lastn=&quot;N&quot;&gt;</code> タグと一緒に、エントリーへのリンクを作るために使います。
+<p>このタグも、<code>&lt;$MTCommentID$&gt;</code> と同様に <code>pad</code> アトリビュートを使うことができます。</p>
+<p></p>
+<li><strong><a name="item_MTCommentIP"></a>MTCommentIP</strong><br>
+
+コメントを書き込んだホストの IP アドレス。
+<p></p>
+<li><strong><a name="item_MTCommentAuthor"></a>MTCommentAuthor</strong><br>
+
+コメントの著者の名前。以下のように、オプションでdefaultという引数を取ります。
+<pre>&lt;MTCommentAuthor default="Anonymous"&gt;
+</pre><p>著者名がない場合は、defaultに指定した名前が使われます。</p>
+<p></p>
+<li><strong><a name="item_MTCommentAuthorLink"></a>MTCommentAuthorLink</strong><br>
+
+リンク付きの著者の名前。次のルールでリンクを生成します。まず、URL が記述されていれば名前が URL へのリンクになります。メールアドレスが入力されていたら、メールアドレスへのリンクになります。両方とも入力さていないときは、リンクなしで名前を表示します。
+<p><i>show_email</i> と <i>show_url</i> アトリビュートを設定して、このルールを変更することができます。例えば</p>
+<pre>&lt;$MTCommentAuthorLink show_email=&quot;0&quot;$&gt;
+</pre><p>とすると、メールアドレスは表示されせん。このときのルールは、URL 入力さていれば、名前がその URL へのリンクとして、入力されていないときには、リンクなしで名前が表示されます。</p>
+<p>このようにすると、サイトの読者にメールアドレスを残すようにお願いしやすくなります。特に、ウェブログの設定で、<i>特定のコメントを許可する</i>にチェックしていないが、このメールアドレスを表示する気はないときに使います。</p>
+<p><code>spam_protect</code> アトリビュートを設定すれば、メールアドレスへのリンクは表示されますが、スパム・ボット対策されたアドレスに変更されます。ウェブ・ブラウザでは、正しいメールアドレスとして表示されます。例えば、以下の例</p>
+<pre>&lt;$MTCommentAuthorLink spam_protect=&quot;1&quot;$&gt;
+</pre><p>では、メールアドレスが <code>foo@bar.com</code> のとき、タグの値は <code>foo&amp;#64;bar&amp;#46;com となります。</code>.</p>
+
+
+<p>デフォルトでMTCommentAuthorLinkはリダイレクト機能を使い、コメント投稿者のURLを検索エンジンから見えないようにします。 この機能により、検索エンジンでのランクを上げるためのコメント・スパムを抑制できる可能性があります。 このリダイレクト機能を使わない場合は、属性<code>no_redirect</code>を指定できます。</p>
+<pre>
+</pre><p>またこのタグは、<code>&lt;MTCommentAuthor&gt;</code>で使うdefault引数のように機能するdefault_nameという引数を取ります。</p>
+<pre>&lt;MTCommentAuthorLink default_name="Anonymous"&gt;
+</pre><p>著者名がない場合は、default_nameが名前として使われます。</p>
+
+
+<p></p>
+
+
+<li><strong><a name="item_MTCommentEmail"></a>MTCommentEmail</strong><br>
+
+コメントの著者のメールアドレス。
+<p><code>spam_protect</code> アトリビュートを設定すれば、メールアドレスへのリンクは表示されますが、スパム・ボット対策されたアドレスに変更されます。ウェブ・ブラウザでは、正しいメールアドレスとして表示されます。例えば、以下の例</p>
+<pre>&lt;$MTCommentEmail spam_protect=&quot;1&quot;$&gt;
+</pre><p>では、メールアドレスが <code>foo@bar.com</code> のとき、タグの値は <code>foo&amp;#64;bar&amp;#46;com となります。</code>.</p>
+<p></p>
+<li><strong><a name="item_MTCommentURL"></a>MTCommentURL</strong><br>
+
+コメントの著者のURL。
+<p></p>
+<li><strong><a name="item_MTCommentBody"></a>MTCommentBody</strong><br>
+
+コメントの本文。ウェブログの設定で<code>改行と段落を自動的に変換する(Convert line and paragraph breaks)</code> を有効にしていれば、段落--連続する二つの改行--は、&lt;p&gt; と &lt;/p&gt; の囲みに変換され、残る単独の改行には &lt;bt /&gt; が追加されます。
+<p>ウェブゴグの設定 <code>改行と段落を自動的に変換する(Convert line and paragraph breaks)</code> は <code>convert_breaks</code> をアトリビュートに指定することで上書きすることができます。このアトリビュートが指定されていれるときは、常にエントリーの設定は上書きされます。例えば、普段は設定を有効にしていたが、特定の場面で改行を無効にしたいときは、以下のようにします。</p>
+<pre>&lt;$MTCommentBody convert_breaks=&quot;0&quot;$&gt;
+</pre><p></p>
+
+<li><strong><a name="item_MTCommentDate"></a>MTCommentDate</strong><br>
+
+コメントがウェブログに入力された日付。他の日付タグと同様 <code>format</code> と <code>language</code> アトリビュートを設定できます。詳しくは <a href="#date_tag_formats">日付タグのフォーマット</a> を見てください。
+<p></p>
+<li><strong><a name="item_MTCommentOrderNumber"></a>MTCommentOrderNumber</strong><br>
+
+リスト中のコメントの順番の数字。<code>1</code> から始まります。数字の並び方は、並び順 (昇順か降順) によります。
+<p></p>
+<li><strong><a name="item_MTCommentEntry"></a>MTCommentEntry</strong><br>
+
+コメントの元になったエントリーの内容を表示するためのコンテナ・タグ。コンテナ内では <code>&lt;$MTEntry*$&gt;</code> タグを利用することができます。次のようなことができます。
+<pre>&lt;MTComments lastn=&quot;5&quot; sort_order=&quot;descend&quot;&gt;
+&lt;MTCommentEntry&gt;
+エントリー &lt;$MTEntryTitle$&gt; についてのコメント。
+&lt;/MTCommentEntry&gt;
+&lt;/MTComments&gt;
+</pre><p></p></ul>
+<p>
+<h2><a name="comment_previewing">コメントのプレビュー</a></h2>
+<p>コメントを投稿する前に確認するとき使われる <code>Comment Preview Template</code> を作成するときに、以下のタグを使うことができます。これのタグは、<code>コメント</code> で説明した似た名前のタグと同じ機能を持っています。以下のタグは、確認のときにしか使えない、ということだけが違います。
+
+<ul>
+<li><strong><a name="item_MTCommentPreviewAuthor"></a>MTCommentPreviewAuthor</strong><br>
+
+<li><strong><a name="item_MTCommentPreviewIP"></a>MTCommentPreviewIP</strong><br>
+
+<li><strong><a name="item_MTCommentPreviewAuthorLink"></a>MTCommentPreviewAuthorLink</strong><br>
+
+<li><strong><a name="item_MTCommentPreviewEmail"></a>MTCommentPreviewEmail</strong><br>
+
+<li><strong><a name="item_MTCommentPreviewURL"></a>MTCommentPreviewURL</strong><br>
+
+<li><strong><a name="item_MTCommentPreviewBody"></a>MTCommentPreviewBody</strong><br>
+
+<li><strong><a name="item_MTCommentPreviewDate"></a>MTCommentPreviewDate</strong><br>
+
+以上のタグは <code>コメント</code> の似た名前のタグと同じ機能です。
+<p></p>
+<li><strong><a name="item_MTCommentPreviewIsStatic"></a>MTCommentPreviewIsStatic</strong><br>
+
+特別な秘匿タグで、<code>Comment Preview</code> and <code>Comment Error</code> テンプレートで使います。システムは、コメントを投稿後、どのページを表示したらよいか知るために、このタグを利用します。このタグを使うときは <code>Comment Preview</code> と <code>Comment Error</code> テンプレートの中の HTML フォーム の INPUT HIDDEN の中に埋め込みます。
+<pre>&lt;input type=&quot;hidden&quot; name=&quot;static&quot; value=&quot;&lt;$MTCommentPreviewIsStatic$&gt;&quot;&gt;
+</pre><p></p>
+<li><strong><a name="item_MTCommentPreviewState"></a>MTCommentPreviewState</strong><br>
+
+<strong>注意:</strong> このタグは Movable Type バージョン 1.4 からは利用しないことにしました。コメントのプレビューを作るためには、プレビューしたコメントを編集用のフォームに設定する方法を使います。<code>&lt;$MTCommentPreviewState$&gt;</code> タグは使わないでください。
+
+<p>コメントの確認のためのページ (<code>Comment Preview Template</code>) を使うための特別なタグ。コメントをインラインもしくはポップアップで入力するとき、どちらでも同様に、コメントを投稿するために必要なデータの代わりに用います。</p>
+<p></p></ul>
+<p>
+<h2><a name="archive_templates_and_master_archive_index"></a>アーカイブ・テンプレートとマスター・アーカイブ・インデックス</h2>
+<p>以下のテンプレート・タグと変数は、アーカイブ・ページとマスター・アーカイブ・インデックスに利用します。</p>
+<ul>
+<li><strong><a name="item_MTArchiveList"></a>MTArchiveList</strong><br>
+
+アーカイブ・ページのリストをすべて表示するためのコンテナ・タグ。それぞれのアーカイブ・ページについて、以下のタグ変数を使えます。加えて、<a href="#item_MTEntries"><code>MTEntries</code></a> 用のタグをそれぞれのエントリーを表示するために使うことができます。例えば、
+<pre>&lt;MTArchiveList&gt;
+  &lt;a href=&quot;&lt;$MTArchiveLink$&gt;&quot;&gt;&lt;$MTArchiveDate$&gt;&lt;/a&gt;&lt;br&gt;
+  &lt;MTEntries&gt;
+    [&lt;$MTEntryTitle$&gt;]
+  &lt;/MTEntries&gt;
+  &lt;br&gt;&lt;br&gt;
+&lt;/MTArchiveList&gt;
+</pre><p>とすると、アーカイブ・ページへのリンクを表示し、それぞれのページに含まれるエントリーのリストを表示します。
+
+<p>このタグには二つのアトリビュートを設定できます。<code>archive_type</code> はどのアーカイブを表示するかを設定します。<code>lastn</code> は、リストする数を設定します。</p>
+<p><code>archive_type</code>は設定しなくても構いません。もし省略されたときには、優先するアーカイブのタイプ、もしくはそのときのアーカイブのタイプを使います。このアトリビュートはウェブログのアーカイブ・タイプに、一つ以上の値を設定したときに便利です。例えば、<a href="#item_Individual"><code>Individual</code></a> と <a href="#item_Daily"><code>Daily</code></a> アーカイブを両方設定し、優先するアーカイブの種類には <a href="#item_Individual"><code>Individual</code></a> が設定してあるときに、次のようにして、<a href="#item_Daily"><code>Daily</code></a> アーカイブを使うことができます。</p><pre>&lt;MTArchiveList archive_type=&quot;Daily&quot;&gt; 
+...
+&lt;/MTArchiveList&gt;
+</pre><p><code>lastn</code> は、リストに表示する数を絞るときに使います。例えば、ウェブログに10ヶ月間のアーカイブがあるときに、5ヶ月間だけ表示したい場合、次のようにします。</p>
+<pre>&lt;MTArchiveList archive_type=&quot;Monthly&quot; lastn=&quot;5&quot;&gt;
+...
+&lt;/MTArchiveList&gt;
+</pre><p></p>
+<li><strong><a name="item_MTArchiveLink"></a>MTArchiveLink</strong><br>
+
+アーカイブ・ページへの絶対URL。
+<p>デフォルトでは、そのとき作成中のアーカイブの種類のページへのリンクになります。例えば、<a href="#item_Monthly"><code>Monthly</code></a> アーカイブを作成中だと、<code>&lt;$MTArchiveLink&gt;</code> はその <a href="#item_Monthly"><code>Monthly</code></a> アーカイブへのリンクになります。<code>archive_type</code> アトリビュートて変更できます。設定できる値は、<a href="#item_Individual"><code>Individual</code></a>、<a href="#item_Daily"><code>Daily</code></a>、<a href="#item_Weekly"><code>Weekly</code></a>、<a href="#item_Monthly"><code>Monthly</code></a>、<a href="#item_Category"><code>Category</code></a>のうちの一つです。</p>
+<p></p>
+<li><strong><a name="item_MTArchiveTitle"></a>MTArchiveTitle</strong><br>
+
+アーカイブページの「タイトル」。アーカイブの種類によって異なります。
+<ul>
+<li><strong><a name="item_Category"></a>Category</strong><br>
+
+カテゴリーの名前
+<p></p>
+<li><strong><a name="item_Daily"></a>Daily</strong><br>
+
+日付。フォーマットは <code>月 日, 年</code> になります。
+<p></p>
+<li><strong><a name="item_Weekly"></a>Weekly</strong><br>
+
+週の範囲。フォーマットは <code>月 日, 年 - 月 日, 年</code> になります。
+<p></p>
+<li><strong><a name="item_Monthly"></a>Monthly</strong><br>
+
+月。フォーマットは <code>月 年</code> になります。
+<p></p>
+<li><strong><a name="item_Individual"></a>Individual</strong><br>
+
+エントリーのタイトル。
+<p></p></ul>
+<p><a href="#item_MTArchiveTitle"><code>MTArchiveTitle</code></a> と <a href="#item_MTArchiveLink"><code>MTArchiveLink</code></a> を組み合わせると、簡単にマスター・アーカイブ・インデックスページを作ることができます。<a href="#item_MTArchiveTitle"><code>MTArchiveTitle</code></a> はアーカイブの種類に合わせて、値を変化させるからです。例えば、次のように使います。</p>
+<pre>&lt;MTArchiveList&gt;
+&lt;a href=&quot;&lt;$MTArchiveLink$&gt;&quot;&gt;&lt;$MTArchiveTitle$&gt;&lt;/a&gt;&lt;br&gt;
+&lt;/MTArchiveList&gt;
+</pre><p>この例では、どのアーカイブの種類のときにでも、アーカイブのページにいつも一覧を表示することができます。</p>
+<li><strong><a name="item_MTArchiveCount"></a>MTArchiveCount</strong><br>
+
+特定のアーカイブに含まれているエントリーの数。例えば、Monthly アーカイブを使うときは、その月のエントリーの数になります。このタグは <code>&lt;MTArchiveList&gt;</code> コンテナ・タグの中で以下のように使います。
+<pre>&lt;MTArchiveList&gt;
+&lt;a href=&quot;&lt;$MTArchiveLink$&gt;&quot;&gt;&lt;$MTArchiveTitle$&gt; (&lt;$MTArchiveCount$&gt;)&lt;/a&gt;&lt;br&gt;
+&lt;/MTArchiveList&gt;
+</pre><p></p>
+<li><strong><a name="item_MTArchiveDate"></a>MTArchiveDate</strong><br>
+
+アーカイブの最初の日付。<a href="#item_Daily"><code>Daily</code></a>、<a href="#item_Weekly"><code>Weekly</code></a>、もしくは <a href="#item_Monthly"><code>Monthly</code></a> アーカイブで使います。これは、標準の日付タグですから、<a href="#date_tag_formats">Date Tag Formats</a> でフォーマットを設定できます。
+
+<p>このタグは<a href="#item_MTArchiveList"><code>MTArchiveList</code></a>の内側と、<code>date-based</code> アーカイブの中の <a href="#item_MTEntries"><code>MTEntries</code></a> の <i>外側</i> で使うことができます。アーカイブのページに、日付をヘッダとして表示したいときに使います。例では「月 年」を表示します。</p>
+<pre>&lt;$MTBlogName$&gt; アーカイブ: &lt;$MTArchiveDate format=&quot;%B %Y&quot;$&gt;
+&lt;MTEntries&gt;
+...
+&lt;/MTEntries&gt;
+</pre><p></p>
+<li><strong><a name="item_MTArchiveDateEnd"></a>MTArchiveDateEnd</strong><br>
+
+アーカイブの最後の日付。<a href="#item_Daily"><code>Daily</code></a>、<a href="#item_Weekly"><code>Weekly</code></a>、もしくは <a href="#item_Monthly"><code>Monthly</code></a> アーカイブで使います。これは、標準の日付タグですから、<a href="#date_tag_formats">Date Tag Formats</a> でフォーマットを設定できます。
+
+<p><code>&lt;$MTArchiveDate&gt;</code>と同様の使い方ができます。</p>
+<p></p>
+<li><strong><a name="item_MTArchiveCategory"></a>MTArchiveCategory</strong><br>
+
+アーカイブのカテゴリーの名前。<a href="#item_Category"><code>Category</code></a> アーカイブのときに使います。
+
+<p>このタグは<a href="#item_MTArchiveList"><code>MTArchiveList</code></a>の内側と、<a href="#item_Category"><code>Category</code></a> アーカイブの中の <a href="#item_MTEntries"><code>MTEntries</code></a> の <i>外側</i> で使うことができます。アーカイブのページに、カテゴリーの名前をヘッダとして表示したいときに使います。例えば次のように使います。</p>
+
+<pre>&lt;$MTBlogName$&gt; アーカイブ: &lt;$MTArchiveCategory$&gt;
+&lt;MTEntries&gt;
+...
+&lt;/MTEntries&gt;
+</pre><p></p>
+<li><strong><a name="item_MTArchivePrevious"></a>MTArchivePrevious</strong><br>
+
+現在のアーカイブの前のアーカイブの中身を表示させるためのコンテナ・タグ。<a href="#item_MTArchivePrevious"><code>MTArchivePrevious</code></a> の中では、例えば、&lt;$MTArchiveTitle$&gt; タグは、前のアーカイブのタイトルを表示します。&lt;/MTArchivePrevious&gt; でコンテナ・タグを閉じたら、現在のアーカイブについての表示に戻ります。
+
+<p>このタグは <a href="#item_Daily"><code>Daily</code></a>、<a href="#item_Weekly"><code>Weekly</code></a>、もしくは <a href="#item_Monthly"><code>Monthly</code></a> アーカイブで使います。individual entry archives で同様のことをしたいときには、<code>&lt;MTEntryPrevious&gt;</code> タグを使います。</p>
+
+<p>デフォルトでは「前のアーカイブ」はアーカイブの種類によります。<a href="#item_Daily"><code>Daily</code></a> アーカイブでは「前のアーカイブ」は前日(なければ、そのエントリー以前の直近)のエントリーになります。例えば、先月のアーカイブに変更したいときには、<code>archive_type</code> アトリビュートを使って変更してください。</p>
+
+<p>例は後述の <code>&lt;MTArchiveNext&gt;</code> を参照してください。</p>
+<p></p>
+<li><strong><a name="item_MTArchiveNext"></a>MTArchiveNext</strong><br>
+
+現在のアーカイブの前のアーカイブの中身を表示させるためのコンテナ・タグ。<a href="#item_MTArchiveNext"><code>MTArchiveNext</code></a> の中では、例えば、&lt;$MTArchiveTitle$&gt; タグは、前のアーカイブのタイトルを表示します。&lt;/MTArchiveNext&gt; でコンテナ・タグを閉じたら、現在のアーカイブについての表示に戻ります。
+
+<p>このタグは <a href="#item_Daily"><code>Daily</code></a>、<a href="#item_Weekly"><code>Weekly</code></a>、もしくは <a href="#item_Monthly"><code>Monthly</code></a> アーカイブで使います。individual entry archives で同様のことをしたいときには、<code>&lt;MTEntryNext&gt;</code> タグを使います。</p>
+
+<p>デフォルトでは「次のアーカイブ」はアーカイブの種類によります。<a href="#item_Daily"><code>Daily</code></a> アーカイブでは「次のアーカイブ」は翌日(なければ、そのエントリー以降の直近)のエントリーになります。例えば、翌月のアーカイブに変更したいときには、<code>archive_type</code> アトリビュートを使って変更してください。</p>
+
+<p>以下は、前と次のカテゴリーへのリンクと、メイン・インデックス・ページへ戻るリンクよるナビゲーションの例です。</p>
+<pre>&lt;MTArchivePrevious&gt;
+&lt;a href=&quot;&lt;$MTArchiveLink$&gt;&quot;&gt;&amp;lt;&amp;lt; &lt;$MTArchiveTitle$&gt;&lt;/a&gt; |
+&lt;/MTArchivePrevious&gt;
+&lt;a href=&quot;&lt;$MTBlogURL$&gt;&quot;&gt;Main&lt;/a&gt;
+&lt;MTArchiveNext&gt;
+| &lt;a href=&quot;&lt;$MTArchiveLink$&gt;&quot;&gt;&lt;$MTArchiveTitle$&gt; &amp;gt;&amp;gt;&lt;/a&gt;
+&lt;/MTArchiveNext&gt;
+</pre><p>以下は、<a href="#item_Daily"><code>Daily</code></a> アーカイブから、先月、翌月のアーカイブへのリンクを表示します。<a href="#item_Daily"><code>Daily</code></a> でカレンダーを表示したときに、カレンダーに先月、翌月へのリンクを表示するために使えます。</p>
+<pre>&lt;MTArchivePrevious archive_type=&quot;Monthly&quot;&gt;
+&lt;a href=&quot;&lt;$MTArchiveLink archive_type=&quot;Monthly&quot;$&gt;&quot;&gt;&lt;$MTArchiveDate format=&quot;%b&quot;$&gt;&lt;/a&gt;
+&lt;/MTArchivePrevious&gt;
+&lt;MTArchiveNext archive_type=&quot;Monthly&quot;&gt;
+&lt;a href=&quot;&lt;$MTArchiveLink archive_type=&quot;Monthly&quot;$&gt;&quot;&gt;&lt;$MTArchiveDate format=&quot;%b&quot;$&gt;&lt;/a&gt;
+&lt;/MTArchiveNext&gt;
+</pre><p></p></ul>
+<p>
+<h2><a name="categoryrelated_tags"></a>カテゴリー関連のタグ</h2>
+
+
+<p>以下のタグは、カテゴリーのリストと、それぞれのカテゴリーに関連する情報(ID, ラベル、その他)を表示するために使います。</p>
+
+<p>カテゴリーの階層構造はテンプレートにも反映できます。 通常、テンプレート・デザイナーは、カテゴリーの表示において、1つのカテゴリのデザインを表すテンプレートのタグを1つのブロックにして作成します。そしてその1ブロックを、MTEntriesやMTCommentsなどのタグのように繰り返します。 各カテゴリーの子カテゴリーを表示するには、&lt;MTSubCatsRecurse&gt;タグを、子カテゴリーのリストが表示される位置に挿入し、<i>そのブロックに指定されたものと同じフォーマットを使うようにします。</i></p>
+<p>&lt;MTSubCategories&gt;...&lt;/MTSubCategories&gt;のタグに挟まれたテンプレート・コードのブロックに、&lt;MTSubCatsRecurse&gt;が含まれている場合、そのブロックは現在のカテゴリーの子カテゴリーの一つ一つに繰り返されます（例えば、前述にあるように「エンターテインメント」が現在のカテゴリーである場合、&lt;MTSubCatsRecurse&gt;がテンプレート・タグのブロックを通して、「本」と「音楽」を実行します)。</p>
+<p>望む結果を得るためには、通常、条件ブロック・タグの&lt;MTSubCatIsFirst&gt;と&lt;MTSubCatIsLast&gt;を使って、「現在」のカテゴリーが、兄弟カテゴリーの中で、最初にリストされるか最後にリストされるかを決める必要があります。 この作業は通常、階層リストを作成する上で、正しいHTMLタグを生成するのに必要です。</p>
+<p>たとえば、以下では、番号付きでないネストされたリストが生成されカテゴリーの階層を表示します。</p>
+<pre>    &lt;MTSubCategories&gt;
+    &lt;MTSubCatIsFirst&gt;&lt;ul&gt;&lt;/MTSubCatIsFirst&gt;
+    &lt;li&gt;
+    &lt;MTCategoryLabel&gt;
+    &lt;MTSubCatsRecurse&gt;
+    &lt;/li&gt;
+    &lt;MTSubCatIsLast&gt;&lt;/ul&gt;&lt;/MTSubCatIsLast&gt;
+    &lt;/MTSubCategories&gt;
+</pre><p>各タグについての詳細は、下記を参照してください。</p>
+<ul>
+<li><strong><a name="item_MTCategories"></a>MTCategories</strong><br> カテゴリーのリストを表示するためのコンテナ・タグ。 このタグは、MTSubCategoriesと異なり、階層構造が使われていたとしてもそれに関係なく、各カテゴリーの出力を生成します。 このタグは、カテゴリーに階層構造を持たせず、階層用タグでコードが複雑になることを避けたい場合に、使用できます。 <p>各カテゴリーには、下記のいずれのタグ変数も使うことができます。さらに、1つのカテゴリー下における各エントリーの情報を表示するときには、<code>&lt;MTEntries&gt;</code>を使うこともできます。 以下に例を挙げます。</p>
+
+
+
+<pre>&lt;MTCategories&gt;
+  &lt;a href=&quot;&lt;$MTCategoryArchiveLink$&gt;&quot;&gt;&lt;$MTCategoryLabel$&gt;&lt;/a&gt;&lt;br&gt;
+  &lt;MTEntries&gt;
+  &lt;$MTEntryTitle$&gt;&amp;nbsp;
+  &lt;/MTEntries&gt;
+  &lt;br /&gt;&lt;br /&gt;
+&lt;/MTCategories&gt;
+</pre><p>この例では、それぞれのカテゴリーへのリンクと、そのカテゴリーに属するエントリーのリストを表示します。</p>
+
+<p>カテゴリーに一つもエントリーがないときは、デフォルトでは表示されません。<code>&lt;MTArchiveList&gt;</code> と同様です。エントリーのないカテゴリーのアーカイブページは作られないので、もしリンクを作っても、正しくないリンクになってしまいます。</p>
+
+<p>この設定は<code>show_empty</code> アトリビュートを設定することで、変更できます。例えば、
+<pre>&lt;MTCategories show_empty=&quot;1&quot;&gt;
+&lt;$MTCategoryLabel$&gt;
+&lt;/MTCategories&gt;
+</pre><p>とすると、たとえ空のカテゴリーがあっても、すべてのカテゴリーを表示します。</p>
+
+
+<p>カテゴリーにサブカテゴリーが属している場合、このタグは階層を「階層のない平らな状態」にして、並べ替えの基準による順序で一覧表示します。 サブカテゴリーを階層構造で表示するには、下記のMTSubCategoriesを使います。</p>
+
+<p></p>
+<li><strong><a name="item_MTCategoryID"></a>MTCategoryID</strong><br>
+
+数字でできたカテゴリーのID。
+<p></p>
+<li><strong><a name="item_MTCategoryLabel"></a>MTCategoryLabel</strong><br>
+
+カテゴリーのラベル(名前)。
+<p></p>
+<li><strong><a name="item_MTCategoryArchiveLink"></a>MTCategoryArchiveLink</strong><br>
+
+カテゴリーへアーカイブページへのリンク。ウェブログの設定で、<a href="#item_Category"><code>カテゴリー</code></a> アーカイブを作る設定にしないと使うことはできません。設定されていないときは、ベージをリビルドするときにエラー・メッセージが表示されるでしょう。
+<p></p>
+<li><strong><a name="item_MTCategoryDescription"></a>MTCategoryDescription</strong><br>
+
+カテゴリーの説明。
+<p></p>
+<li><strong><a name="item_MTCategoryCount"></a>MTCategoryCount</strong><br>
+
+カテゴリーに属するエントリーの数。
+<p></p>
+<li><strong><a name="item_MTCategoryTrackbackLink"></a>MTCategoryTrackbackLink</strong><br>
+
+カテゴリーが <i>トラックバックを受けつける</i> 設定になっているとき、そのカテゴリーへのトラックバック用のURLを表示します。このタグは、カテゴリーの中、すなわちカテゴリー・アーカイブか、<code>&lt;MTCategories&gt;</code> の内側、もしくは <i>category</i> アトリビュートを指定して使います。
+<pre>&lt;$MTCategoryTrackbackLink category=&quot;Foo Bar&quot;$&gt;
+</pre><p>アトリビュートを設定したときは、このタグはどこでも使うことができます。</p>
+<p></p>
+
+
+<li><strong><a name="item_MTSubCategories"></a>MTSubCategories</strong><br> MTSubCategoriesは、カテゴリーの階層構造を配慮するMTCategoriesの代わりに設けられています(「<a href="./mtmanual_categories.html">カテゴリー</a>」を参照してください。) <p>アトリビュート: </p>
+<ul>
+<li><strong><a name="item_include_current"></a>include_current</strong><br> 現在のカテゴリーをリストに含める場合は1に設定します(たとえば、これがMTEntryCategoriesコンテナに使われていた場合)。 <p></p>
+<li><strong><a name="item_sort_method"></a>sort_method</strong><br>Perlのメソッド名(例: package::SubPackage::method_name)。sortと共に使いカテゴリーを並べ替えます。 詳細は例を参照してください。 <p></p>
+<li><strong><a name="item_sort_order"></a>sort_order</strong><br>アルファベットの昇順にカテゴリーを並べ替えない場合は、'descend' (アルファベット降順)に設定します。sort_methodが設定されていない場合だけに使います。 <p></p></ul>
+<li><strong><a name="item_MTSubCatsIsFirst"></a>MTSubCatsIsFirst</strong><br>現在のサブカテゴリーがそのレベルにおいて、最初にリストされているかどうかを判定する条件ダグ。 <p></p>
+<li><strong><a name="item_MTSubCatsIsLast"></a>MTSubCatsIsLast</strong><br>現在のサブカテゴリーがそのレベルにおいて、最後にリストされているかどうかを判定する条件ダグ。 <p></p>
+<li><strong><a name="item_MTSubCatsRecurse"></a>MTSubCatsRecurse</strong><br>現在のカテゴリーに属するサブカテゴリーのMTSubCategoriesコンテナを再帰的に呼び出します。 <p>アトリビュート:</p>
+<ul>
+<li><strong><a name="item_max_depth"></a>max_depth</strong><br>再帰最大数(たとえば、2レベル下がる場合は、max_depth='2') <p></p></ul>
+<li><strong><a name="item_MTParentCategories"></a>MTParentCategories</strong><br>現在のカテゴリーの最上レベルの親から始まり、コンテナの各再帰で、現在のカテゴリーまでのパスまで続くコンテナ・タグ。 <p>アトリビュート: </p>
+<ul>
+<li><strong><a name="item_glue"></a>glue</strong><br>リストをつなぎ合わせるテキスト <p></p>
+<li><strong><a name="item_exclude_current"></a>exclude_current</strong><br>「1」を設定するとリストから現在のカテゴリーを除く <p></p></ul>
+<li><strong><a name="item_MTEntriesWithSubCategories"></a>MTEntriesWithSubCategories</strong><br>サブカテゴリーを認識しているMTEntriesコンテナ・タグの代わり。 これをカテゴリー・アーカイブ・テンプレートの中でMTEntriesの代わりに使って、テンプレートにそのカテゴリーに属するサブカテゴリーの全エントリーを含めるようにします。 <p>アトリビュート: </p>
+<ul>
+<li><strong><a name="item_category"></a>category</strong><br>設定されると、MTEntriesWithSubCategoriesは、カテゴリーのOR付きリストとそのすべてのサブカテゴリーにまで拡張します(例: ``Parent Category OR Sub Category 1 OR Sub Category 2 OR Sub Sub Category 3 ... '') <p></p></ul>
+<p>そのほかの引数はすべて直接MTEntriesに渡されます。</p>
+<li><strong><a name="item_MTParentCategory"></a>MTParentCategory</strong><br>現在のカテゴリーの直接の親にだけ適用されるコンテナ・タグ。 <p></p>
+<li><strong><a name="item_MTSubCategoryPath"></a>MTSubCategoryPath</strong><br>ショートカット・タグ(通常のタグ)。以下のテンプレート・コードが使われているかのように戻ります。
+<pre>    &lt;MTParentCategories glue="/"&gt;&lt;MTCategoryLabel dirify="1"&gt;&lt;/MTParentCategories&gt;
+</pre><p></p>
+<li><strong><a name="item_MTHasSubCategories"></a>MTHasSubCategories</strong><br>現在のカテゴリーの下にサブカテゴリーがあるかどうかを判定する条件ダグ。 <p></p>
+<li><strong><a name="item_MTHasParentCategory"></a>MTHasParentCategory</strong><br>現在のカテゴリーの上に親カテゴリーがあるかどうかを判定する条件ダグ。 <p></p>
+<li><strong><a name="item_MTHasNoSubCategories"></a>MTHasNoSubCategories</strong><br>現在のカテゴリーの下にサブカテゴリーがないかどうかを判定する条件タグ。 <p></p>
+<li><strong><a name="item_MTHasNoParentCategory"></a>MTHasNoParentCategory</strong><br>現在のカテゴリーの上に親カテゴリーがないかどうかを判定する条件タグ。 このタグによって親カテゴリーがないことが判定されると、最上位カテゴリーに関するHTMLを扱うことができるようになります。 番号付きでないネストされたリストを使って、CSSドロップダウン・メニューを作成する場合は、CSSのidセレクターをルート・タグだけに適用する必要があります（すべてのタグに適用すると、コードが無効になります）。 次のように適用します。
+<pre>    &lt;ul&lt;MTHasNoParentCategory&gt; id="nav"&lt;/MTHasNoParentCategory&gt;&gt;
+</pre><p></p>
+<li><strong><a name="item_MTTopLevelCategories"></a>MTTopLevelCategories</strong><br>MTSubCategoriesのクローン。ただし、カテゴリー階層の最上位で常に開始します。 <p></p>
+<li><strong><a name="item_MTTopLevelParent"></a>MTTopLevelParent</strong><br>現在のカテゴリーの最上位の親カテゴリーにだけ適用されるコンテナ・タグ。 <p></p>
+<li><strong><a name="item_MTIfIsAncestor"></a>MTIfIsAncestor</strong><br>現在のカテゴリーが、指定したカテゴリーの親（直接の親またはさかのぼる親）であるかどうかを判定する条件タグ(たとえば、最上位のカテゴリーから指定したカテゴリーまでの間に、現在のカテゴリーが存在するかどうかを判定します)。 <p>アトリビュート: </p>
+<ul>
+<li><strong><a name="item_child"></a>child</strong><br>指定する子カテゴリー <p></p></ul>
+<li><strong><a name="item_MTIfIsDescendant"></a>MTIfIsDescendant</strong><br>現在のカテゴリーが、指定したカテゴリーの子孫であるかどうかを判定する条件タグ(たとえば、最上位のカテゴリーから現在のカテゴリーまでの間に、指定したカテゴリーが存在するかどうかを判定します)。 <p>アトリビュート: </p>
+<ul>
+<li><strong><a name="item_parent"></a>parent</strong><br>指定する親カテゴリー <p></p></ul>
+</ul>
+<p>
+
+
+
+
+<h2><a name="calendar_display_tags"></a>カレンダー表示タグ</h2>
+<p>以下のタグは、エントリーをカレンダー表示にして出力するために使います。Movable Typeのカレンダー出力は HTML のテーブルに限らず、他のさまざまなカレンダーを作るために十分な機能があります。</p>
+<ul>
+<li><strong><a name="item_MTCalendar"></a>MTCalendar</strong><br>
+
+一ケ月分のカレンダーを表示するために使うコンテナ・タグ。<code>&lt;MTCalendar&gt;</code> と <code>&lt;/MTCalendar&gt;</code> タグの間に、カレンダーの「セル」(日付、もしくは月によっては空白) を表示できます。
+<p>このタグには、特定の年、月の正確なカレンダーを表示するためのアトリビュート <code>month</code> を設定できます。このアトリビュートに <code>this</code> と設定されたときには、そのデータに合わせたカレンダーが表示されます。例えば、アーカイブ・テンプレートで次のように使ったときは</p>
+<pre>&lt;MTCalendar month=&quot;this&quot;&gt;
+...
+&lt;/MTCalendar&gt;
+</pre><p>そのアーカイブに表示されている月のカレンダーが表示されます。<a href="#item_Individual"><code>Individual</code></a>、<a href="#item_Daily"><code>Daily</code></a>、<a href="#item_Weekly"><code>Weekly</code></a>、<a href="#item_Monthly"><code>Monthly</code></a> のときに使えます。</p>
+<p><code>month</code> アトリビュートに <code>last</code> と設定したときには、現在の日付からみて前月のカレンダーを表示します。</p>
+<p>特定の月のカレンダーを表示したいときには、アトリビュート <code>month</code> に、<code>YYYYMM</code> のフォーマット (例えば <code>200112</code> )で、年月を設定してください。</p>
+<p>アトリビュート <code>month</code> が設定されていないときは、今月のカレンダーを表示します。</p>
+<p>特定のカテゴリーのエントリーについてのカレンダーを表示したいときには、アトリビュート <code>category</code> にカテゴリーの名前を設定します。以下のようにします。</p>
+<pre>&lt;MTCalendar month=&quot;200201&quot; category=&quot;Foo&quot;&gt;
+...
+&lt;/MTCalendar&gt;
+</pre><p>この例では、2002年1月のカテゴリー <code>Foo</code> に投稿されたエントリーがすべて表示されます。</p>
+<p></p>
+<li><strong><a name="item_MTCalendarDay"></a>MTCalendarDay</strong><br>
+
+数字の日付。(例えば <code>1</code>)。<code>&lt;MTCalendarIfEntries&gt;</code>、<code>&lt;MTCalendarIfNoEntries&gt;</code> コンテナ・タグで使います。
+<p></p>
+<li><strong><a name="item_MTCalendarCellNumber"></a>MTCalendarCellNumber</strong><br>
+
+カレンダーにおけるセルの番号。この番号は カレンダーの左上のセル <code>1</code> から始まり、水平に右に移動するごとに増加します。
+<p>このタグは、上の <code>&lt;$MTCalendarDay$&gt;</code> タグとは異なります。このタグは「空白でないセル」(例えば特定の月のある日のエントリー) の中でのみ使われます。</p>
+<p></p>
+<li><strong><a name="item_MTCalendarDate"></a>MTCalendarDate</strong><br>
+
+その月のそれぞれに日のタイムスタンプ。アトリビュート <code>format</code> を設定できます。数字で日を表示したいだけのときには、<code>&lt;$MTCalendarDay$&gt;</code> を使ってください。このタグは日付、時刻の情報まで表示したいときに使います。
+<p></p>
+<li><strong><a name="item_MTCalendarWeekHeader"></a>MTCalendarWeekHeader</strong><br>
+
+コンテナ・タグ。<code>&lt;MTCalendarWeekHeader&gt;</code> と <code>&lt;/MTCalendarWeekHeader&gt;</code> で囲まれた内容が、それぞれの週の始めにだけ表示されます。
+<p></p>
+<li><strong><a name="item_MTCalendarWeekFooter"></a>MTCalendarWeekFooter</strong><br>
+
+コンテナ・タグ。<code>&lt;MTCalendarWeekFooter&gt;</code> と <code>&lt;/MTCalendarWeekFooter&gt;</code> で囲まれた内容が、それぞれの週の終わりにだけ表示されます。
+week.
+<p></p>
+<li><strong><a name="item_MTCalendarIfBlank"></a>MTCalendarIfBlank</strong><br>
+
+コンテナ・タグ。<code>&lt;MTCalendarIfBlank&gt;</code> と <code>&lt;/MTCalendarIfBlank&gt;</code> に囲まれた内容は、そのセルが「空白」、すなわち、その月でない日のときに表示されます。
+<p></p>
+<li><strong><a name="item_MTCalendarIfEntries"></a>MTCalendarIfEntries</strong><br>
+
+コンテナ・タグ。<code>&lt;MTCalendarIfEntries&gt;</code> で囲まれた内容は、そのセルの日にエントリーがあれば表示されます。その日のエントリーをすべて表示したいときには、<code>&lt;MTEntries&gt;</code> タグを使うことができます。
+<p>例えば、次のようにします。</p>
+<pre>&lt;MTCalendarIfEntries&gt;
+    この日のエントリー:
+    &lt;MTEntries&gt;
+    &lt;a href=&quot;&lt;$MTEntryLink$&gt;&quot;&gt;&lt;$MTEntryTitle$&gt;&lt;/a&gt;&lt;br /&gt;
+    &lt;/MTEntries&gt;
+&lt;/MTCalendarIfEntries&gt;
+</pre><p></p>
+<li><strong><a name="item_MTCalendarIfNoEntries"></a>MTCalendarIfNoEntries</strong><br>
+
+コンテナ・タグ。<code>&lt;MTCalendarIfNoEntries&gt;</code> と <code>&lt;/MTCalendarIfNoEntries&gt;</code> で囲まれた内容は、そのセルの日にエントリーがないときに表示されます。
+<p></p>
+<li><strong><a name="item_MTCalendarIfToday"></a>MTCalendarIfToday</strong><br>
+
+コンテナ・タグ。<code>&lt;MTCalendarIfToday&gt;</code> と <code>&lt;/MTCalendarIfToday&gt;</code> に囲まれた内容は、そのセルが今日の日付であったときに表示されます。
+<p></p></ul>
+<p>次の例は、標準的なカレンダーを表示します。今月分を表示します。</p>
+<pre>&lt;table border=&quot;0&quot; cellspacing=&quot;4&quot; cellpadding=&quot;0&quot; summary=&quot;Monthly calendar&quot;&gt;
+&lt;caption&gt;&lt;$MTDate format=&quot;%B %Y&quot;$&gt;&lt;/caption&gt;
+&lt;tr&gt;
+&lt;th abbr=&quot;Sunday&quot; align=&quot;center&quot;&gt;Sun&lt;/th&gt;
+&lt;th abbr=&quot;Monday&quot; align=&quot;center&quot;&gt;Mon&lt;/th&gt;
+&lt;th abbr=&quot;Tuesday&quot; align=&quot;center&quot;&gt;Tue&lt;/th&gt;
+&lt;th abbr=&quot;Wednesday&quot; align=&quot;center&quot;&gt;Wed&lt;/th&gt;
+&lt;th abbr=&quot;Thursday&quot; align=&quot;center&quot;&gt;Thu&lt;/th&gt;
+&lt;th abbr=&quot;Friday&quot; align=&quot;center&quot;&gt;Fri&lt;/th&gt;
+&lt;th abbr=&quot;Saturday&quot; align=&quot;center&quot;&gt;Sat&lt;/th&gt;
+&lt;/tr&gt;
+&lt;MTCalendar&gt;
+&lt;MTCalendarWeekHeader&gt;&lt;tr&gt;&lt;/MTCalendarWeekHeader&gt;
+&lt;td &lt;MTCalendarIfToday&gt;bgcolor=&quot;#EEEEEE&quot;&lt;/MTCalendarIfToday&gt; align=&quot;center&quot;&gt;
+&lt;MTCalendarIfEntries&gt;&lt;MTEntries lastn=&quot;1&quot;&gt;&lt;a href=&quot;&lt;$MTEntryLink$&gt;&quot;&gt;&lt;$MTCalendarDay$&gt;&lt;/a&gt;&lt;/MTEntries&gt;&lt;/MTCalendarIfEntries&gt;
+&lt;MTCalendarIfNoEntries&gt;&lt;$MTCalendarDay$&gt;&lt;/MTCalendarIfNoEntries&gt;
+&lt;MTCalendarIfBlank&gt;&amp;nbsp;&lt;/MTCalendarIfBlank&gt;&lt;/td&gt;
+&lt;MTCalendarWeekFooter&gt;&lt;/tr&gt;&lt;/MTCalendarWeekFooter&gt;
+&lt;/MTCalendar&gt;
+&lt;/table&gt;
+</pre><p><strong>注意:</strong>カレンダーの表示は、サーバに比較的大きな負荷が加わります。複数のページに同じカレンダーを表示したいときには、そのカレンダーを Index テンレートとして作り、SSI (サーバ・サイド・インクルード) もしくは PHP や他の手段で、それぞれのページに読みこませるようにするといいでしょう。</p>
+<p>
+<h2><a name="trackback_tags"></a>トラックバック・タグ</h2>
+<p>以下は、<a href="./mtmanual_trackback.html">トラックバック</a> に関連するタグです。</p>
+<ul>
+<li><strong><a name="item_MTPings"></a>MTPings</strong><br>
+
+エントリー、カテゴリー、もしくはシステム全体への ping のリストを表示するためのコンテナ・タグ。
+
+<p>例えば、<i>TrackBack Listing Template</i> など、エントリーの内容に対して使われたとき、このタグはその特定のエントリーに送らせたトラックバックのリストを表示します。</p>
+<p>カテゴリー・アーカイブに関連するテンプレートで使われたときには、そのカテゴリーへのすべてのトラックバックのリストを表示します。</p>
+<p>その他の場合、システム全体で受けたすべてのトラックバックのリストを表示します(後述するように <i>lastn</i> を使うこともできます)。</p>
+<p>特定のカテゴリーへのトラックバックを表示したいときには、<i>category</i>アトリビュートを使います。</p>
+<pre>&lt;MTPings category=&quot;Foo&quot;&gt;
+...
+&lt;/MTPings&gt;
+</pre><p>アトリビュート <i>sort_order</i> and <i>lastn</i> を使うことができます。これらは、他の Movable Type タグのときと同様に使えます。<i>sort_order</i> に設定できるのは、<code>ascend</code> もしくは <code>descend</code> です。<i>lastn</i> には、1以上の整数 N を設定してください。最新の N 個のトラックバックを表示します。</p>
+<a name="mtpings_example"></a><p>例は、カテゴリー <code>Foo Bar</code> に送られた 15 個の最新のトラックバックをウェブログのトップページに表示するためのものです。以下を Main Index Template に追加してください。</p>
+<pre>&lt;MTPings category=&quot;Foo Bar&quot; lastn=&quot;15&quot;&gt;
+&lt;a href=&quot;&lt;$MTPingURL$&gt;&quot;&gt;&lt;$MTPingTitle$&gt;&lt;/a&gt;&lt;br /&gt;
+&lt;/MTPings&gt;
+</pre><p></p>
+<li><strong><a name="item_MTPingID"></a>MTPingID</strong><br>
+
+数字で構成されているトラックバックID。
+<p></p>
+<li><strong><a name="item_MTPingTitle"></a>MTPingTitle</strong><br>
+
+送られてきたトラックバックに設定されているタイトル。普通は相手のエントリーのタイトルです。
+<p></p>
+<li><strong><a name="item_MTPingURL"></a>MTPingURL</strong><br>
+
+送られてきたトラックバックのURL。普通は相手のエントリーへのリンクするためのURLです。
+<p></p>
+<li><strong><a name="item_MTPingExcerpt"></a>MTPingExcerpt</strong><br>
+
+送られてきたトラックバックの概要。
+<p></p>
+<li><strong><a name="item_MTPingDate"></a>MTPingDate</strong><br>
+
+トラックバックが送られてきた日付。他の日付タグと同様に、<code>format</code>、<code>language</code> アトリビュートを設定することができます。詳しくは <a href="#date_tag_formats">日付タグのフォーマット</a> を参照してください。
+<p></p>
+<li><strong><a name="item_MTPingBlogName"></a>MTPingBlogName</strong><br>
+
+トラックバックを送ってきたウェブログの名前。
+<p></p>
+<li><strong><a name="item_MTPingIP"></a>MTPingIP</strong><br>
+
+トラックバックを送ってきたホストの IP アドレス。
+<p></p>
+<li><strong><a name="item_MTPingsSent"></a>MTPingsSent</strong><br>
+
+あるエントリーが送信したトラックバックのリストを表示するためのコンテナ・タグ。これらは、permalink ではなく、トラックバック URL です。
+<p>以下に例を挙げます。</p>
+<pre>&lt;MTPingsSent&gt;
+URL: &lt;$MTPingsSentURL$&gt;&lt;br /&gt;
+&lt;/MTPingsSent&gt;
+</pre><p></p>
+<li><strong><a name="item_MTPingsSentURL"></a>MTPingsSentURL</strong><br>
+
+トラックバックが送られてきた URL。<code>&lt;MTPingsSent&gt;</code> タグで使います。
+<p></p></ul>
+<p>
+<h2><a name="search_results_tags"></a>検索結果タグ</h2>
+<p>以下のタグは、サーチ・テンプレートでのみ利用可能です。</p>
+<ul>
+<li><strong><a name="item_MTSearchResults"></a>MTSearchResults</strong><br>
+
+実行された検索の結果を表示するためのコンテナ・タグ。このコンテナ・タグの中では、サーチの結果はエントリーなので、<code>&lt;$MTEntry*$&gt;</code> を使うことができます。また、<code>&lt;$MTBlog*$&gt;</code>を使って、検索されたエントリーが投稿されているウェブログについてのデータを表示することもできます。
+<p>以下は例です。</p>
+<pre>&lt;MTSearchResults&gt;
+&lt;MTBlogResultHeader&gt;
+&lt;h2&gt;Results from &lt;$MTBlogName$&gt;&lt;/h2&gt;
+&lt;/MTBlogResultHeader&gt;
+&lt;h3&gt;&lt;a href=&quot;&lt;$MTEntryLink$&gt;#&lt;$MTEntryID pad=&quot;1&quot;$&gt;&quot;&gt;&lt;$MTEntryTitle$&gt;&lt;/a&gt;&lt;/h3&gt;
+&lt;$MTEntryExcerpt$&gt; &lt;$MTEntryEditLink$&gt;&lt;br /&gt;
+&lt;div class=&quot;posted&quot;&gt;Posted in &lt;$MTBlogName$&gt; on &lt;$MTEntryDate$&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/MTSearchResults&gt;
+</pre><p></p>
+<li><strong><a name="item_MTSearchResultCount"></a>MTSearchResultCount</strong><br>
+
+すべてのウェブログを検索して、該当した結果の数。これはウェブログごとの数字ではありません。
+<p></p>
+<li><strong><a name="item_MTNoSearchResults"></a>MTNoSearchResults</strong><br>
+
+検索したが、結果がなかったときに内容が表示されるコンテナ・タグ。
+<p>次のように使います</p>
+<pre>&lt;MTNoSearchResults&gt;
+&lt;h2&gt;Searched for &quot;&lt;$MTSearchString$&gt;&quot;&lt;/h2&gt;
+&lt;p&gt;No pages were found containing &quot;&lt;$MTSearchString$&gt;&quot;.&lt;/p&gt;
+&lt;/MTNoSearchResults&gt;
+</pre><p></p>
+<li><strong><a name="item_MTNoSearch"></a>MTNoSearch</strong><br>
+
+
+
+検索が実行されていないときに内容が表示されるコンテナ・タグ。 閲覧者が直接、ブラウザであなたの<i>mt-search.cgi</i>を閲覧しようとする場合は、以下のようなURLを使います。
+<pre>http://YOURDOMAIN.COM/PATH-TO/mt-search.cgi
+</pre><p>あるいは新しいコメントを検索する場合には、以下のようなURLを使います。</p>
+<pre>http://YOURDOMAIN.COM/PATH-TO/mt-search.cgi?Type=newcomments&amp;help=1
+</pre><p>そのとき、このタグを、検索方法の説明やより高度な検索フォームの表示に利用すると便利です。</p>
+<p>以下が一例です。
+
+
+
+
+</p>
+<pre>&lt;MTNoSearch&gt;
+&lt;h2&gt;Instructions&lt;/h2&gt;
+&lt;p&gt;... Some search instructions ...&lt;/p&gt;
+&lt;/MTNoSearch&gt;
+</pre><p></p>
+<li><strong><a name="item_MTBlogResultHeader"></a>MTBlogResultHeader</strong><br>
+
+普通の検索結果(新しいコメントの検索結果ではない)を表示するとき、検索結果は、ウェブログごとにグループにまとめられています。
+<p>このタグは、グループの中の最初の結果を表示するときに、その内容を表示するコンテナタグです。ウェブログのタイトルや、そのウェブログのトップページへのリンクを表示するのに便利です。</p>
+<p></p>
+<li><strong><a name="item_MTEntryEditLink"></a>MTEntryEditLink</strong><br>
+
+検索結果のエントリーを編集画面へのリンク。検索したユーザがMovable Typeにログインしていて、そのエントリーを編集できる権限を持っているときに表示されます。
+<p></p>
+<li><strong><a name="item_MTSearchString"></a>MTSearchString</strong><br>
+
+HTMLエンコードされたサーチ・クエリー。
+<p></p></ul>
+<p>
+<h2><a name="miscellaneous_tags"></a>その他のタグ</h2>
+<p>上記のどの分類にも、まったく当てはまらないタグがいくつかあります。</p>
+<ul>
+<li><strong><a name="item_MTElse"></a>MTElse</strong><br>
+
+条件(コンディション)タグすべてに対して「そうでない場合」に <code>&lt;MTElse&gt;</code> を利用します。普通は名前に <code>If</code> が含まれているタグ(例えば、<code>&lt;MTEntryIfExtended&gt;</code>)と一緒に使います。<code>&lt;MTElse&gt;</code>は、条件に合致しなかったときに内容が表示されるコンテナ・タグです。<code>&lt;MTElse&gt;</code> は、条件タグの<strong>内側</strong>で条件タグが「そうでない場合」のために使います。
+<p>次のように使います</p>
+<pre>&lt;MTEntryIfExtended&gt;
+このエントリーには追記(extended)があります。
+&lt;MTElse&gt;
+このエントリーには追記(extended)がありません。
+&lt;/MTElse&gt;
+&lt;/MTEntryIfExtended&gt;
+</pre><p></p>
+<li><strong><a name="item_MTInclude"></a>MTInclude</strong><br>
+
+テンプレート・モジュール(<a href="./mtmanual_templates.html">テンプレート・マニュアル</a>の<i>テンプレート・モジュール</i>の項を参照してください)や外部ファイルを別のテンプレートに読み込むために <a href="#item_MTInclude"><code>MTInclude</code></a> タグを使います。<code>&lt;MTInclude&gt;</code>には次のアトリビュートを利用できます。
+<ul>
+<li><strong><a name="item_module"></a>module</strong><br>
+
+テンプレートモジュールの名前を設定します。例えば、ヘッダなど、すべてのHTMLファイルに共通する部分があって、その部分をMovable Typeを使って管理したいとき、共通部分をテンプレート・モジュールにして、その名前を<code>Header</code>に設定した後で、<code>&lt;MTInclude&gt;</code>を使って、次のように読みこみます。
+<pre>&lt;$MTInclude module=&quot;Header&quot;$&gt;
+</pre><p></p>
+<li><strong><a name="item_file"></a>file</strong><br>
+
+テンプレートに読み込みたい外部ファイルのパスを設定します。パスはフルパスか、<code>Local Site Path</code>からの相対パスのいずれかです。例えば、<i>foo.html</i> がウェブログの Local Site Path ディレクトリにあるとき、次のようにして読み込みます。
+<pre>&lt;$MTInclude file=&quot;foo.html&quot;$&gt;
+</pre><p>このファイルは<i>ページがリビルトされる</i>そのときに読み込まれます。SSI (Server Side Includes)と混同しないように注意してください。SSIはウェブサーバにリクエストが来るたびに、毎回外部ファイルを読み込みます。<code>&lt;MTInclude&gt;</code>を使う場合は、まず外部ファイルを編集した後、編集されたページを読み込むためにリビルドしてください。</p>
+
+<p></p></ul>
+<li><strong><a name="item_MTLink"></a>MTLink</strong><br>
+
+Index Templateもしくは特定のエントリーへのURLを自動的に生成するためのタグ。<code>&lt;MTLink&gt;</code> には以下のアトリビュートを設定します。
+<ul>
+<li><strong><a name="item_template"></a>template</strong><br>
+
+テンプレートの編集画面で設定したテンプレートの名前を設定します。例えば、このウェブログについてのテンプレートを<code>About Page</code> という名前で作成したときには、次のように使います。
+<pre>&lt;a href=&quot;&lt;$MTLink template=&quot;About Page&quot;$&gt;&quot;&gt;このウェブログについて&lt;/a&gt;
+</pre><p></p>
+<li><strong><a name="item_entry_id"></a>entry_id</strong><br>
+
+リンクしたいエントリーのIDを設定します。次のように使います。
+<pre>&lt;a href=&quot;&lt;$MTLink entry_id=&quot;562&quot;$&gt;&quot;&gt;ある特定のエントリーへのリンク&lt;/a&gt;
+</pre><p></p></ul>
+<li><strong><a name="item_MTDate"></a>MTDate</strong><br>
+
+そのページがリビルトされた時間を表示する日付/時刻のタグ。<code>更新時刻:</code> を表示したいときに、次のように使います。
+<pre>このページの更新時刻: &lt;$MTDate format=&quot;%B %d, %Y %I:%M %p&quot;$&gt;
+</pre><p></p>
+<li><strong><a name="item_MTGoogleSearch"></a>MTGoogleSearch</strong><br>
+
+特定のクエリーに対してのGoogle APIを使った検索結果、もしくは特定のページに関連したページのリストを表示するためのタグ。以下のアトリビュートを設定できます。
+<ul>
+<li><strong><a name="item_query"></a>query</strong><br>
+
+検索・クエリー。
+<p></p>
+<li><strong><a name="item_related"></a>related</strong><br>
+
+似たページを検索したいその対象のページ。設定できる値は、対象ページのURL、もしくは <code>1</code>です。後者はユーザが設定した自分のウェブサイトのURLを意味します。例を参考にしてください。
+<p></p>
+<li><strong><a name="item_title"></a>title</strong><br>
+
+アトリビュートに <i>title=``1''</i> と設定すると、クエリーには、そのエントリーのタイトルが設定されます。
+<p></p>
+<li><strong><a name="item_excerpt"></a>excerpt</strong><br>
+
+アトリビュートに <i>excerpt=``1''</i> を設定すると、クエリーには、そのエントリーの概要(excerpt)が設定されます。
+<p></p>
+<li><strong><a name="item_keywords"></a>keywords</strong><br>
+
+アトリビュートに <i>keywords=``1''</i> を設定すると、クエリーには、そのエントリーのキーワードが設定されます。
+<p></p>
+<li><strong><a name="item_results"></a>results</strong><br>
+
+Googleから得る検索結果の数を設定します。Googleは現在、最大10個までしか結果を返しません。よって現在の最大値は <code>10</code> となります。
+<p></p></ul>
+<p>例として、<code>Movable ype</code>をクエリに設定して最初の5個の結果を表示します。</p>
+<pre>&lt;MTGoogleSearch query=&quot;movable type&quot; results=&quot;5&quot;&gt;
+&lt;a href=&quot;&lt;$MTGoogleSearchResult property=&quot;URL&quot;$&gt;&quot;&gt;&lt;$MTGoogleSearchResult property=&quot;title&quot;$&gt;&lt;/a&gt;&lt;br /&gt;
+&lt;/MTGoogleSearch&gt;
+</pre><p>ユーザのウェブ・サイトに似たページのリストです。</p>
+<pre>&lt;MTGoogleSearch related=&quot;1&quot;&gt;
+&lt;a href=&quot;&lt;$MTGoogleSearchResult property=&quot;URL&quot;$&gt;&quot;&gt;&lt;$MTGoogleSearchResult property=&quot;title&quot;$&gt;&lt;/a&gt;&lt;br /&gt;
+&lt;/MTGoogleSearch&gt;
+</pre><p>アトリビュート <i>query</i>、<i>related</i>、<i>title</i>、<i>excerpt</i>は同時に設定することはできません。</p>
+<p>Individual Archive TemplateでGoogle検索タグを使うのであれば、エントリーを保存するときに検索結果も保存されることに注意してください。リビルドの時間が余計にかかるようになり、もしコメントを多数受けとるサイトであれば、一日あたりのGoogle APIの利用制限を超えてしまうかもしれません。</p>
+<p><strong>注意:</strong> このタグは、「Google API key」を事前に入試して、ウェブログの設定画面に入力していないと使えません。また、<i>SOAP::Lite</i> と <i>LWP::UserAgent</i> がインストールされている必要があります。インストールされているかどうかは、<i>mt-check.cgi</i> を使えばわかります</p>
+<p><strong>訳注:</strong>UTF-8でなければ、日本語を利用することはできません。</p>
+<li><strong><a name="item_MTGoogleSearchResult"></a>MTGoogleSearchResult</strong><br>
+
+Google APIの個別の検索結果。(<code>&lt;MTGoogleSearch&gt;</code> を参照)
+
+
+<p>アトリビュート <i>property</i> に検索結果の特定の項目(タイトル、URL、概要)を設定できます。省略されたときは、<a href="#item_title"><code>title</code></a> になります。</p>
+<p>設定できる値は<code>summary</code>、<code>URL</code>、<code>snippet</code>、 <a href="#item_title"><code>title</code></a>です。
+
+<p></p>
+<li><strong><a name="item_MTSetVar"></a>MTSetVar</strong><br>
+
+変数に値を設定します。変数の名前は <code>name</code> アトリビュートに、値は <code>value</code> アトリビュートに設定します。設定した値は、次に説明する <code>&lt;MTGetVar&gt;</code> タグで参照することができます。
+<p></p>
+<li><strong><a name="item_MTGetVar"></a>MTGetVar</strong><br>
+
+変数の値を取得して、タグをその値に置き換えます。変数の名前は <code>name</code> アトリビュートに指定します。
+<p>例として、テンプレート・モジュールで、変数 <code>foo</code> に値を設定します。</p>
+<pre>&lt;MTSetVar name=&quot;foo&quot; value=&quot;bar&quot;&gt;
+</pre><p>そして、そのテンプレート・モジュールを読み込み、その変数の値を利用します。</p>
+<pre>&lt;MTGetVar name=&quot;foo&quot;&gt;
+</pre><p></p>
+<li><strong><a name="item_MTCGIPath"></a>MTCGIPath</strong><br>
+
+Movable TypeのCGIスクリプトがあるディレクトリのURLパス。ウェブログの設定ファイル mt.cfg の <code>CGIPath</code> に設定された値です。(インストールのときに設定します。インストールの手引を参照してください) <a href="#item_MTCGIPath"><code>MTCGIPath</code></a> は <i>mt-comments.cgi</i> や <i>mt-add-notify.cgi</i> といった Movable Type の CGIスクリプトをリンクするために使われます。単純に、いちいちCGIのパスをテンプレートに書き込まずに、このタグを使ってください。例えば、コメントの投稿用フォームを作るときに、次のように使います。
+<pre>&lt;form method=&quot;post&quot; action=&quot;&lt;$MTCGIPath$&gt;&lt;$MTCommentScript$&gt;&quot;&gt;
+</pre><p></p>
+<li><strong><a name="item_MTCommentScript"></a>MTCommentScript</strong><br>
+
+設定ファイル <i>mt.cfg</i> に設定された <i>CommentScript</i> の値。省略時は <i>mt-comments.cgi</i> となる。
+<p></p>
+<li><strong><a name="item_MTTrackbackScript"></a>MTTrackbackScript</strong><br>
+
+設定ファイル <i>mt.cfg</i> に設定された <i>TrackbackScript</i> の値。省略時は <i>mt-tb.cgi</i> となります。
+<p></p>
+<li><strong><a name="item_MTStaticWebPath"></a>MTStaticWebPath</strong><br>
+
+設定ファイル <i>mt.cfg</i> に設定された <i>StaticWebPath</i> の値。
+<p></p>
+<li><strong><a name="item_MTImageURL"></a>MTImageURL</strong><br>
+
+アップロードされた画像の絶対URL。<code>Uploaded Image Popup Template</code> の中で使われています。
+<p></p>
+<li><strong><a name="item_MTImageWidth"></a>MTImageWidth</strong><br>
+
+アップロードされた画像の幅。<code>Uploaded Image Popup Template</code> の中で使われています。
+<p></p>
+<li><strong><a name="item_MTImageHeight"></a>MTImageHeight</strong><br>
+
+アップロードされた画像の高さ。<code>Uploaded Image Popup Template</code> の中で使われています。
+<p></p>
+<li><strong><a name="item_MTErrorMessage"></a>MTErrorMessage</strong><br>
+
+このタグは <code>Comment Error Template</code> の中でのみ使われます。コメントの登録のときに起きたエラー、例えば、メールアドレスが入力されていないなどのエラーメッセージを表示します。。
+<p></p>
+<li><strong><a name="item_MTVersion"></a>MTVersion</strong><br>
+
+現在動いているMovable Typeのバージョンを表示します。例えば <code>3.01</code> となります。
+<p></p>
+<li><strong><a name="item_MTPublishCharset"></a>MTPublishCharset</strong><br>
+
+<i>mt.cfg</i> の中で設定された <i>PublishCharset</i>。設定されていないときは、<code>iso-8859-1</code> が設定されていると見なされます。
+<p></p>
+<li><strong><a name="item_MTRemoteSignInLink"></a>MTRemoteSignInLink</strong><br>
+
+コメント登録機能に利用されるユーザー認証で、サイン・インをするときのリンク先 URL。
+<p></p>
+<li><strong><a name="item_MTRemoteSignOutLink"></a>MTRemoteSignOutLink</strong><br>
+
+コメント登録機能に利用されるユーザー認証で、サイン・アウトをするときのリンク先 URL。
+<p></p></ul>
+<p>
+<h2><a name="global_tag_attributes"></a>タグ・アトリビュート</h2>
+<p>グローバル・タグ・アトリビュートはどの変数置換タグ(値に置き換えられるタグ、他のタグに指示を与えるために「囲む」コンテナ・タグとは異なります)に対しても使えます。しかし、どのタグで使っても、それが<strong>いい考え</strong>であるわけではありません。特定のタグでしか使えないアトリビュートを使うときの考え方と同様です。グローバル・アトリビュートは、それぞれのタグ専用のアトリビュートと同じように <code>name=&quot;value&quot;</code> と、例えば次のように使います。</p>
+<pre>&lt;$MTEntryExcerpt encode_html=&quot;1&quot;$&gt;
+</pre><p>HTMLエントコードされた概要を表示します。</p>
+<p>以下はグローバル・タグ・アトリビュートの一覧です。</p>
+<ul>
+<li><strong><a name="item_filters"></a>filters</strong><br>
+
+タグの値に対して適用されるテキストフォーマットのフィルタのリストを設定します。フィルタの名前は短かくて、確実に他のものと区別できるべきです。フィルタの名前は、コンマ(<code>,</code>)で区切ります。複数のフィルタを設定すると、リストの順番に適用します。例えば、CPANモジュール <i>Text::WikiFormat</i> を適用するための短い名前<i>wiki</i> を設定するためには、次のようになります。
+
+<pre>&lt;$MTEntryTitle filters=&quot;wiki&quot;$&gt;
+</pre><p><code>''これはタイトルです''</code> をタイトルに設定するためには 
+<code>&lt;em&gt;これはタイトルです&lt;/em&gt;</code>とします</p>
+<p></p>
+<li><strong><a name="item_encode_html"></a>encode_html</strong><br>
+
+<code>1</code>に設定すると、HTMLエンコードされます。例えば、<code>Foo &amp; Bar -&gt; Baz</code> は、HTMLエンコードすると <code>Foo &amp;amp; Bar -&amp;gt; Baz</code> に変わります。
+<p>使い方:</p>
+<pre>&lt;$MTEntryExcerpt encode_html=&quot;1&quot;$&gt;
+</pre><p></p>
+<li><strong><a name="item_encode_xml"></a>encode_xml</strong><br>
+
+<code>1</code>に設定すると、XMLフォーマットでエンコードされていなければならない、すべての文字がエンコードされます。対象となるのは、<code>&amp;</code>、<code>&lt;</code>、and <code>&gt;</code> です。
+
+例えば、<code>Foo &amp; Bar -&gt; Baz</code> は、XMLエンコードすると <code>Foo &amp;amp; Bar -&amp;gt; Baz</code> に変わります。
+<p>使い方 (RSS のテンプレートで使います);</p>
+<pre>&lt;item&gt;
+    &lt;title&gt;&lt;$MTEntryTitle encode_xml=&quot;1&quot;$&gt;&lt;/title&gt;
+</pre><p>注意: <i>encode_html</i>との違いは、<i>HTML::Entities</i> モジュールがインストールされていて、<i>mt.cfg</i>のオプション <i>NoHTMLEntities</i> を有効にしていないときには、HTML のほうが多くの文字が変換の対象になることです。</p>
+<p></p>
+<li><strong><a name="item_encode_js"></a>encode_js</strong><br>
+
+<code>1</code>に設定すると、タグの値が Javascript の文字列の値として使えるようにエンコードします。例えば、<code>Foo &quot;Bar&quot; Baz's 1/2 Quux</code> はエンコードすると <code>Foo \&quot;Bar\&quot; Baz\'s 1\/2 Quux</code> に変わります。
+<p>使い方:</p>
+<pre>&lt;script language=&quot;javascript&quot;&gt;
+var str = '&lt;$MTEntryTitle encode_js=&quot;1&quot;$&gt;';
+&lt;/script&gt;
+</pre><p></p>
+<li><strong><a name="item_encode_php"></a>encode_php</strong><br>
+
+PHPで使う三種類の値、シングル・クオート、ダブル・クオート、ヒア・ドキュメントのうち、いずれか一つのフォーマットに合わせてエンコードします。アトリビュートの値として、<code>q</code> (シングル・クオート), <code>qq</code> (ダブル・クオート) もしくは <code>heredoc</code> (ヒア・ドキュメント、<code>here</code>でも、ヒア・ドチュメントとして動きます) を設定できます。
+<p>例 <code>q</code> の使い方:</p>
+<pre>&lt;?php
+$str = '&lt;$MTEntryTitle encode_php=&quot;q&quot;$&gt;'
+?&gt;
+</pre><p>例 <code>heredoc</code> の使い方:</p>
+<pre>&lt;?php
+$str = &lt;&lt;&lt;HERE
+&lt;$MTEntryBody encode_php=&quot;heredoc&quot;$&gt;
+HERE;
+?&gt;
+</pre><p></p>
+<li><strong><a name="item_encode_url"></a>encode_url</strong><br>
+
+URLでの利用に合わせたフォーマットに、タグの値をエンコードをします。アルファベット以外の文字を16進数ベースのものに変換します。例えば、<code>foo bar</code> は <code>foo%20bar</code> に変換されます。
+<p>使い方:</p>
+<pre>&lt;a href=&quot;/search?q=&lt;$MTEntryTitle encode_url=&quot;1&quot;$&gt;&quot;&gt;Search&lt;/a&gt;
+</pre><p>(この例のもとを作ってくれたスコット・アンドリュー・レペラに感謝します)</p>
+<p></p>
+<li><strong><a name="item_decode_html"></a>decode_html</strong><br>
+
+<code>1</code>を設定すると、タグの値に含まれるすべてのHTMLエンティティをデコードします。例えば <code>foo&amp;lt;br&amp;gt;</code> は、デコードされて <code>foo&lt;br&gt;</code> に変換されます。
+<p>使い方:</p>
+<pre>&lt;$MTEntryTitle decode_html=&quot;1&quot;$&gt;
+</pre><p></p>
+<li><strong><a name="item_decode_xml"></a>decode_xml</strong><br>
+
+<code>1</code> を設定すると、タグの値に含まれるすべてのXMLエンティティをデコードします。例えば、<code>foo&amp;lt;br&amp;gt;</code> は、デコードされると <code>foo&lt;br&gt;</code> になります。
+<p>使い方:</p>
+<pre>&lt;$MTEntryTitle decode_xml=&quot;1&quot;$&gt;
+</pre><p></p>
+<li><strong><a name="item_remove_html"></a>remove_html</strong><br>
+
+<code>1</code>を設定すると、タグの値に含まれるすべての HTML タグを除去します。例えば <code>Foo&lt;br&gt; Bar</code> は、<code>Foo Bar</code> に変換されます。
+<p>使い方:</p>
+<pre>&lt;$MTEntryTitle remove_html=&quot;1&quot;$&gt;
+</pre><p></p>
+<li><strong><a name="item_dirify"></a>dirify</strong><br>
+
+<code>1</code> を設定すると、タグを「dirify」します。すなわち、タグの値を、ファイル名や検索用に合わせたものに変換します。値は、小文字(abc...)に変換され、HTMLのタグやエンティティは除去され、普通でない文字 (アルファベット、数字、アンダースコア (<code>_</code>)、空白以外の文字) は除去され、空白はアンダースコア (<code>_</code>) に変換されます。
+<p><i>dirify</i>は high-ASCII (アクセント文字など) も low-ASCII、すなわち <code>crudit&eacute;</code> は <code>crudite</code> に変換されます。
+<p>例えば、<code>Foo &quot;Baz&quot; is&lt;br&gt; Bar!</code> は <code>foo_baz_is_bar</code> になります。</p>
+<p>(訳注: 日本語版では <code>dirify</code> で、high-ASCII の変換は行いません。</p>
+<p>使い方:</p>
+<pre>&lt;$MTArchiveCategory dirify=&quot;1&quot;$&gt;
+</pre>
+<p>(訳注: 日本語は <code>dirify</code> によってすべて除去されてしまいます)</p>
+<p></p>
+<li><strong><a name="item_upper_case"></a>upper_case</strong><br>
+
+タグの値を大文字(ABC...)にします。
+<p>使い方:</p>
+<pre>&lt;$MTEntryTitle upper_case=&quot;1&quot;$&gt;
+</pre><p></p>
+<li><strong><a name="item_lower_case"></a>lower_case</strong><br>
+
+タグの値を小文字(abc...)にします。
+<p>使い方:</p>
+<pre>&lt;$MTArchiveDate format=&quot;%B&quot; lower_case=&quot;1&quot;$&gt;
+</pre><p></p>
+<li><strong><a name="item_trim_to"></a>trim_to</strong><br>
+
+最初のN文字を取り出します。N はアトリビュートの値として設定します。
+<p>使い方:</p>
+<pre>&lt;$MTEntryTitle trim_to=&quot;15&quot;$&gt;
+</pre><p>この例では、エントリータイトルの最初の15文字だけを表示します。</p>
+<p></p>
+<li><strong><a name="item_strip_linefeeds"></a>strip_linefeeds</strong><br> タグ・テキストから改行コード（キャリッジ・リターンおよびライン・フィード）を除きます。 <p>使用例: </p>
+<pre>&lt;$MTCommentURL strip_linefeeds="1"$&gt;
+</pre><p></p>
+<li><strong><a name="item_space_pad"></a>space_pad</strong><br>
+
+タグの値を、全体でN文字になるよう、余白を空白で埋めます。Nはアトリビュートの値として設定します。
+<p>使い方:</p>
+<pre>&lt;$MTCalendarDay space_pad=&quot;3&quot;$&gt;
+</pre><p>この例では、<code>3</code>という元の値が``<code>  3</code>''に変換されます。</p>
+<p></p>
+<li><strong><a name="item_zero_pad"></a>zero_pad</strong><br>
+
+タグの値を、全体でN文字になるよう、余白を <code>0</code> で埋めます。Nはアトリビュートの値として設定します。
+<p>使い方:</p>
+<pre>&lt;$MTCalendarDay zero_pad=&quot;5&quot;$&gt;
+</pre><p>この例では、<code>8</code> という元の値を <code>00008</code> に変換します。</p>
+<p></p>
+<li><strong><a name="item_sprintf"></a>sprintf</strong><br>
+
+<i>sprintf</i> のフォーマットで変換します。アトリビュートの値として、<i>sprintf</i>のフォーマットを指定します。タグの値は、<i>sprintf</i>に与える引数になります。例えば、<i>zero_pad</i> と同じことをするためには、次のようにします。
+<pre>&lt;$MTCalendarDay sprintf=&quot;%05s&quot;$&gt;
+</pre><p></p>
+<li><strong><a name="item_sanitize"></a>sanitize</strong><br>
+
+テキストの除去フィルタを実行します。アトリビュートに <code>1</code> を設定すると、デフォルトの設定、すなわちウェブログの設定か mt.cfg での設定に従って、タグを除去します。<code>0</code> を設定すると、除去機能は無効になります。その他の値を設定すると、除去機能は有効だと見なします。
+<p>使い方:</p>
+<pre>&lt;$MTEntryBody sanitize=&quot;a href&quot;$&gt;
+</pre><p>この例では、<code>&lt;a&gt;</code> (<code>href</code> アトリビュートと一緒に使われます) 以外のすべての HTML タグをエントリーの本文から除去します。</p>
+<p></p></ul>
+<p>
+<h2><a name="date_tag_formats"></a>日付タグのフォーマット</h2>
+<p>Movable Type は標準的な <code>strftime</code> の形式の文字列を日付と時刻を表示するために使います。(実際には <code>strftime</code> それ自体を使っているわけではありません。) どの日付タグでも、<code>format</code> アトリビュートを使って、表示文字列のフォーマットを設定することができます。次のようにします。
+<pre>&lt;$MTDate format=&quot;%B %e, %Y %I:%M %p&quot;$&gt;
+</pre><p>この例は、実際に使われている英語のデフォルト・フォーマットで、次のように表示されます。</p>
+<pre>September 20, 2001 11:44 PM
+</pre><p>曜日、月、AM/PM は言語によって設定が変ります。ウェブログの設定で、<code>日付の表示のための言語</code> を選択します。デフォルトの言語は <code>English</code> です。</p>
+<p>(訳注: ユーザプロファイルの設定での言語の設定とは異なります)</p>
+<p>アトリビュート <code>language</code> を使うと、設定を変更することができます。特定の部分だけの設定を変更することができます。設定できる言語は以下の通りです。<code>cz</code>, <code>dk</code>, <code>nl</code>, <code>en</code>, <code>fr</code>, <code>de</code>, <code>is</code>, <code>jp</code>, <code>it</code>, <code>no</code>, <code>pl</code>, <code>pt</code>, <code>si</code>, <code>es</code>, <code>fi</code>, <code>se</code></p>
+<p>以下は、フォーマットの設定の一覧です。</p>
+<ul>
+<li><strong><a name="item_%a"></a>%a</strong><br>
+
+省略された週の名前。例えば <code>Thu</code>。(訳注: <code>jp</code> のときは「火」)
+<p></p>
+<li><strong><a name="item_%A"></a>%A</strong><br>
+
+完全な週の名前。例えば <code>Thursday</code>。(訳注: <code>jp</code> のときは「火曜日」)
+<p></p>
+<li><strong><a name="item_%b"></a>%b</strong><br>
+
+省略された月の名前。例: <code>Sep</code>。(訳注: <code>jp</code> のときは「9」)
+<p></p>
+<li><strong><a name="item_%B"></a>%B</strong><br>
+
+完全な月の名前。例: <code>September</code>(訳注: <code>jp</code> のときは「9」)
+<p></p>
+<li><strong><a name="item_%d"></a>%d</strong><br>
+
+その月での日付。二桁の数字で、一桁のときは<code>0</code> が付きます。例: <code>09</code>
+<p></p>
+<li><strong><a name="item_%e"></a>%e</strong><br>
+
+その月での日付。二桁の数字で、一桁のときは空白が付きます。例: <code> 9</code>。
+<p></p>
+<li><strong><a name="item_%H"></a>%H</strong><br>
+
+24時間表示の時刻。二桁の数字で、一桁のときは <code>0</code>がつきます。例: <code>16</code>
+<p></p>
+<li><strong><a name="item_%I"></a>%I</strong><br>
+12時間表示の時刻。二桁の数字で、一桁のときは <code>0</code>がつきます。例: <code>04</code>
+<p></p>
+<li><strong><a name="item_%j"></a>%j</strong><br>
+
+年初からの日。三桁の数字で、一桁、二桁のときは、<code>0</code> がつきます。例: <code>056</code>
+<p></p>
+<li><strong><a name="item_%k"></a>%k</strong><br>
+
+24時間表示での時間。二桁の数字で、一桁のときは空白がつきます。例: <code> 9</code>
+<p></p>
+<li><strong><a name="item_%l"></a>%l</strong><br>
+
+12時間表示での時間。二桁の数字で、一桁のときは空白がつきます。例: <code> 4</code>
+<p></p>
+<li><strong><a name="item_%m"></a>%m</strong><br>
+
+月。二桁の数字で、一桁のときは <code>0</code>がつきます。例: <code>09</code>
+<p></p>
+<li><strong><a name="item_%M"></a>%M</strong><br>
+
+分。二桁の数字で、一桁のときは <code>0</code>がつきます。例: <code>02</code>
+<p></p>
+<li><strong><a name="item_%p"></a>%p</strong><br>
+
+午前か午後。<code>AM</code>、もしくは <code>PM</code> になります。
+<p></p>
+<li><strong><a name="item_%S"></a>%S</strong><br>
+
+秒。二桁の数字で、一桁のときは <code>0</code>がつきます。例: <code>04</code>
+<p></p>
+<li><strong><a name="item_%x"></a>%x</strong><br>
+
+言語に合わせた日付の表示。ほとんどの言語では、これは <i>%B %e, %Y</i> と同じです。
+例: <code>September 6, 2002</code> (訳注: <code>jp</code> では 2002年09月06日)
+<p></p>
+<li><strong><a name="item_%X"></a>%X</strong><br>
+
+言語に合わせた時間の表示。ほとんどの言語では、<i>%I:%M %p</i>と同じです。
+例: <code>4:31 PM</code> (訳注: <code>jp</code> では <code>16:31</code>)
+<p></p>
+<li><strong><a name="item_%y"></a>%y</strong><br>
+
+年。二桁の数字で、一桁のときは <code>0</code>がつきます。例: <code>01</code>
+<p></p>
+<li><strong><a name="item_%Y"></a>%Y</strong><br>
+
+年。四桁の数字。例: <code>2001</code>
+<p></p></ul>
+<p><strong>注意:</strong> Movable Type 2.0 以降は、<code>%Z</code> をサポートしません。タイムゾーンが必要なときは、<code>&lt;$MTBlogTimezone$&gt;</code> タグを利用してください。</p>
+
+<hr size="1" color="#CCCCCC"> <span class="copyright">Copyright (c) 2001-2004 Six Apart. All Rights Reserved.</span> </body>
+
+</html>

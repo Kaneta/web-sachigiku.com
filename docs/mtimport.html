@@ -1,0 +1,202 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>mtimport - Movable Typeの読み込みフォーマット</title>
+<link rel="stylesheet" href="doc-styles.css" type="text/css"/>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+
+<body>
+<h3>mtimport - Movable Typeの読み込みフォーマット</h3>
+
+
+<p><a name="__index__"></a></p>
+<!-- INDEX BEGIN -->
+
+<ul>
+
+	<li><a href="#name">名称</a></li>
+	<li><a href="#synopsis">要約</a></li>
+	<li><a href="#description">説明</a></li>
+	<ul>
+
+		<li><a href="#metadata">メタデータ</a></li>
+		<li><a href="#multiline_fields">複数行フィールド</a></li>
+	</ul>
+
+	<li><a href="#example">例</a></li>
+</ul>
+<!-- INDEX END -->
+
+<hr/>
+<p>
+</p>
+<h1><a name="name">名称</a></h1>
+<p>mtimport - Movable Typeの読み込みフォーマット</p>
+<p>
+</p>
+<hr/>
+<h1><a name="synopsis">要約</a></h1>
+<p>このドキュメントでは、Movable Typeのデータの取り込みで必要とされるフォーマットについて説明します。このメカニズムを使うと、他のコンテンツ管理システム（CMS）からエントリーやコメントを読み込めます。</p>
+<p>
+</p>
+<hr/>
+<h1><a name="description">説明</a></h1>
+<p>基本の読み込みフォーマットは、<code>--------\n</code> (「<code>-</code>」の8文字と改行コード)の文字列によって区切られたエントリーのリストから成ります。 各エントリーは2つの主要なセクションから成り、各セクションは、<code>-----\n</code> (「<code>-</code>」の5文字と改行コードの文字列によって区切られます。</p>
+<p>読み込むデータにHTMLが含まれている場合は、HTMLエンコードを<strong>使用しないでください。</strong>読み込みファイルのデータはMovable Typeのデータベースにそのままの形式で読み込まれます。 したがって、読み込むデータは、新しいエントリーを作成するときに入力するデータとまったく同じ形式にしてください。</p>
+<ul>
+<li><strong><a name="item_metadata">メタデータ</a></strong><br/> </li>
+<li><strong><a name="item_fields">複数行フィールド（Body(本文)、Extended Body（追記の本文）、Excerpt（概要）、Comments（コメント））</a></strong><br/> </li>
+</ul>
+<p>後述の「<a href="#example">例</a>」にある短い読み込みファイル例をご覧ください。</p>
+<p>
+</p>
+<h2><a name="metadata">メタデータ</a></h2>
+<p>メタデータの単位は、<code>KEY: VALUE</code>の形式で表され、各メタデータは改行コードによって区切られます。 一つ一つのメタデータの順序は重要ではありません。</p>
+<p>例：</p>
+<pre>
+    AUTHOR: Foo Bar
+    TITLE: A dummy title
+    DATE: 01/31/2002 03:31:05 PM
+    CATEGORY: News</pre>
+<ul>
+<li><strong><a name="item_author">AUTHOR:</a></strong><br/> </li> エントリーの著者。 <p>著者の名前が読み込み先に存在しない場合は、新しい<em>MT::Author</em>レコードが作られ、その著者は、エントリーの読み込み先であるウェブログへの投稿権限を割り当てられます。 そしてエントリーがその新しい著者に割り当てられます。 著者が存在する場合、エントリーはその既存の著者に割り当てられます。</p><p>このメタデータは、読み込む前に「<code>エントリーの投稿者を自分にする</code>」チェックボックスをチェックした場合は無視されますが、それ以外の場合は必要です。</p>
+<p></p>
+<li><strong><a name="item_title">TITLE:</a></strong><br/> </li> エントリーのタイトル。 <p>タイトルを指定しない場合は、タイトルが、エントリー本文の最初の数文字から自動的に生成されます。</p>
+<p>このメタデータはオプションです。</p>
+<p></p>
+<li><strong><a name="item_date">DATE:</a></strong><br/> </li> エントリーが作成された日時。 <p>これは<code>MM/DD/YYYY hh:mm:ss AM|PM</code>のフォーマットで表されます。 <code>AM|PM</code>はオプションで、それがない場合、<code>hh</code>は24時間制で表されます。</p>
+<p>このメタデータは必須です。</p>
+<p></p>
+<li><strong><a name="item_primary_category">PRIMARY CATEGORY</a></strong><br/> </li> エントリーに割り当てられる主カテゴリー。 <p>カテゴリー名が読み込み先に存在しない場合は、新しい<em>MT::Category</em>レコードが作られ、エントリーがその新しいカテゴリーに割り当てられます。 カテゴリー名が存在する場合、エントリーはその既存のカテゴリーに割り当てられます。</p>
+<p></p>
+<li><strong><a name="item_category">CATEGORY:</a></strong><br/> </li>
+エントリーに割り当てられる副カテゴリー。 複数の<em>CATEGORY</em>キーをメタデータ・セクションに記述することができ、それぞれが副カテゴリーを指定します。
+例：
+<pre>
+    CATEGORY: Foo
+    CATEGORY: Bar</pre>
+<p>カテゴリー名が読み込み先に存在しない場合は、新しい<em>MT::Category</em>レコードが作られ、エントリーがその新しいカテゴリーに割り当てられます。 カテゴリー名が存在する場合、エントリーはその既存のカテゴリーに割り当てられます。</p>
+<p><em>PRIMARY CATEGORY</em>で指定されたカテゴリーが、<em>CATEGORY</em>としても指定されている場合、そのカテゴリーは副カテゴリーのリストから自動削除され、主カテゴリーとして設定されます。</p>
+<p><em>PRIMARY CATEGORY</em>を指定せず、<em>CATEGORY</em>を使って1つ以上、副カテゴリーを指定した場合は、最初の<em>CATEGORY</em>が副カテゴリーではなく主カテゴリーとして使用されます。</p>
+<p></p>
+<li><strong><a name="item_status">STATUS</a></strong><br/> </li> エントリーの投稿の状態。 有効な値は、<code>draft</code>または<code>publish</code>のどちらかです。 <p></p>
+<li><strong><a name="item_allow_comments">ALLOW COMMENTS</a></strong><br/> </li> エントリーの"allow comments（コメントの許可）"フラグの値。 有効な値は、<code>0</code>または<code>1</code>のどちらかです。 <p></p>
+<li><strong><a name="item_allow_pings">ALLOW PINGS</a></strong><br/> </li> エントリーの"allow pings（PINGの許可）"フラグの値。 有効な値は、<code>0</code>または<code>1</code>のどちらかです。 <p></p>
+<li><strong><a name="item_convert_breaks">CONVERT BREAKS</a></strong><br/> </li> エントリーの"convert breaks（改行の変換）"フラグの値。 有効な値は、<code>0</code>または<code>1</code>のどちらかです。 <p></p>
+<li><strong><a name="item_no_entry">NO ENTRY</a></strong><br/> </li> エントリーはすべて読み込んだが、コメントは<strong>読み込んでいない</strong>システムのデータを読み込む際に使用される特別のキー。 このキーを使用するときには、<em>DATE</em>キーが必要です。このメタデータは、コメントに関連するエントリーを調べるために使用します。タイムスタンプが一致するエントリーが存在しなければ、コメントは読み込まれません。 このメタデータを使う機会はあまりありません。 <p>使用例：</p>
+<pre>
+    NO ENTRY: 1</pre>
+<p></p></ul>
+<p>
+</p>
+<h2><a name="multiline_fields">複数行フィールド</a></h2>
+<p>複数行フィールドは、<code>-----\n</code> (「<code>-</code>」の5文字と改行コード)の文字列によって区切られています。 複数行フィールドはそれぞれ、フィールドの型を表示するキーで始まり、その後に改行コード、フィールドの実際の本文、の順で続きます。</p>
+<p>例：</p>
+<pre>
+    BODY:
+    これは本文です。
+    -----
+    EXTENDED BODY:
+    ここに本文の追記が表示されます。
+    -----
+    COMMENT:
+    AUTHOR: Foo
+    DATE: 01/31/2002 15:47:06
+    ここに
+    このコメントの本文が来ます。
+    -----
+    PING:
+    TITLE: Foo Bar
+    URL: <a href="http://www.foo.com/baz/archives/000015.html">http://www.foo.com/baz/archives/000015.html</a>
+    DATE: 08/05/2002 04:05:23 PM
+    ここに
+    pingしたトラックバックの概要がきます。
+    -----</pre>
+<ul>
+<li><strong><a name="item_body">BODY:</a></strong><br/> </li> エントリーの本文。 <p></p>
+<li><strong><a name="item_extended_body">EXTENDED BODY:</a></strong><br/> </li> エントリーの本文への追記。 <p></p>
+<li><strong><a name="item_excerpt">EXCERPT</a></strong><br/> </li> エントリーの概要。 <p></p>
+<li><strong><a name="item_comment">COMMENT:</a></strong><br/> </li> このエントリーに対する1つのコメントを示します。 複数の<em>COMMENT</em>セクションを表示することも可能です。その際、各セクションは標準の複数行フィールド・セパレータ(<code>-----\n</code>)によって区切られます。 <p><em>COMMENT</em>セクションでは以下のフィールドが使用可能です。</p>
+<ul>
+<li><strong>AUTHOR</strong><br/> </li> コメントの著者名。 <p></p>
+<li><strong><a name="item_email">EMAIL</a></strong><br/> </li> コメントの著者の電子メールアドレス。 <p></p>
+<li><strong><a name="item_url">URL</a></strong><br/> </li> コメントの著者のURL。 <p></p>
+<li><strong><a name="item_ip">IP</a></strong><br/> </li> コメントの著者のIPアドレス。 <p></p>
+<li><strong>DATE</strong><br/> </li> コメントが投稿された日時。 これは上記の<em>DATA</em>メタデータ・キーと同じフォーマットにする必要があります。 <p></p></ul>
+<p>上記のキーのうち、どれとも一致しない行から、コメントの本文が始まります。この行から<em>COMMENT</em>セクションの終わりまでを、コメントの本文として扱います。 この説明が分かりにくい場合は、後述の「<a href="#example">例</a>」を参照してください。</p>
+<li><strong><a name="item_ping">PING</a></strong><br/> </li> このエントリーに対する1つのトラックバックを示します。 複数の<em>PING</em>セクションを表示することも可能です。その際、各セクションは標準の複数行フィールド・セパレータ(<code>-----\n</code>)によって区切られます。 <p><em>PING</em>セクションでは以下のフィールドが使用可能です。</p>
+<ul>
+<li><strong>TITLE</strong><br/> </li> このpingのタイトル。 <p></p>
+<li><strong>URL</strong><br/> </li> オリジナル・エントリーへのURL。 <p></p>
+<li><strong>IP</strong><br/> </li> pingを送ったサーバーのIPアドレス。 <p></p>
+<li><strong><a name="item_blog_name">BLOG NAME</a></strong><br/> </li> pingの送信元のウェブログの名前。 <p></p>
+<li><strong>DATE</strong><br/> </li> pingが送られた日時。 これは上記の<em>DATA</em>メタデータ・キーと同じフォーマットにする必要があります。 <p></p></ul>
+<p>上記のキーのうち、どれとも一致しない行からpingの概要が始まります。この行から<em>PING</em>セクションの終わりまでを、pingの概要として扱います。 この説明が分かりにくい場合は、後述の「<a href="#example">例</a>」を参照してください。</p>
+</ul>
+<p>
+</p>
+<hr/>
+<h1><a name="example">例</a></h1>
+<pre>
+    TITLE: A dummy title
+    AUTHOR: Foo Bar
+    DATE: 01/31/2002 03:31:05 PM
+    PRIMARY CATEGORY: Media
+    CATEGORY: News
+    -----
+    BODY:
+    これは本文です。
+    -----
+    EXTENDED BODY:
+    ここに追記の本文が表示されます。
+    -----
+    COMMENT:
+    AUTHOR: Foo
+    DATE: 01/31/2002 15:47:06
+    ここに
+    このコメントの本文が来ます。
+    -----
+    COMMENT:
+    AUTHOR: Bar
+    DATE: 02/01/2002 04:02:07 AM
+    IP: 205.66.1.32
+    EMAIL: me@bar.com
+    これは2番目の
+    コメントです。 これは
+    ここまで来ます。
+    -----
+    PING:
+    TITLE: My Entry
+    URL: <a href="http://www.foo.com/old/2002/08/">http://www.foo.com/old/2002/08/</a>
+    IP: 206.22.1.53
+    BLOG NAME: My Weblog
+    DATE: 08/05/2002 16:09:12
+    これがMy Entryの
+    始まりで、以下続きます。
+    -----
+    --------
+    TITLE: ここに新しいエントリーが来ます。
+    AUTHOR: Baz Quux
+    DATE: 01/31/2002 03:31:05
+    CATEGORY: Politics
+    -----
+    BODY:
+    これは2番目のエントリーの本文です。 これは
+    複数行から成ります。
+    -----
+    EXCERPT:
+    このエントリーは追記がありませんが、
+    概要はあります。 特殊な例です。
+    -----
+    COMMENT:
+    AUTHOR: Quux
+    URL: <a href="http://www.quux.com/">http://www.quux.com/</a>
+    DATE: 01/31/2002 04:23:01 PM
+    このエントリーに対する最初のコメントを示します。
+    -----
+    --------</pre>
+
+<hr size="1" color="#CCCCCC"> <span class="copyright">Copyright (c) 2001-2004 Six Apart. All Rights Reserved.</span> </body>
+
+</html>

@@ -1,0 +1,195 @@
+<TMPL_INCLUDE NAME="header.tmpl">
+
+<div id="list-comment">
+
+<script type="text/javascript">
+<!--
+function doBanIP (ip) {
+  window.location = ("<TMPL_VAR NAME=SCRIPT_URL>"
+    + "?__mode=save&amp;_type=banlist"
+    + "&amp;blog_id=<TMPL_VAR NAME=BLOG_ID>&amp;ip=" + ip);
+}
+//-->
+</script>
+
+<h2><MT_TRANS phrase="List &amp; Edit Comments"></h2>
+
+<p><MT_TRANS phrase="_USAGE_COMMENTS_LIST" params="<TMPL_VAR NAME=BLOG_NAME ESCAPE=HTML>"></p>
+
+<TMPL_IF NAME=SAVED>
+<div class="message"><MT_TRANS phrase="Your changes have been saved."> <TMPL_INCLUDE NAME="rebuild-stub.tmpl"></div>
+</TMPL_IF>
+
+<TMPL_IF NAME=SAVED_DELETED>
+<div class="message"><MT_TRANS phrase="The selected comment(s) has been deleted from the database."> </div>
+</TMPL_IF>
+
+<h5><MT_TRANS phrase="Filter Options"></h5>
+
+<div id="filters">
+<form method="get" action="<TMPL_VAR NAME=SCRIPT_URL>" id="filterform">
+<input type="hidden" name="__mode" value="list_comments" />
+<input type="hidden" name="blog_id" value="<TMPL_VAR NAME=BLOG_ID>" />
+
+<MT_TRANS phrase="Show comments where">&nbsp;
+<select name="filter">
+<option value="email"><MT_TRANS phrase="Email"></option>
+<option value="author"><MT_TRANS phrase="Name"></option>
+<option value="ip"><MT_TRANS phrase="IP Address"></option>
+</select>&nbsp;
+<MT_TRANS phrase="is">&nbsp;
+<input name="filter_val" value="" />&nbsp;
+<input type="submit" value="<MT_TRANS phrase="Filter">" />
+
+<TMPL_IF NAME=FILTER>
+<hr />
+<MT_TRANS phrase="Currently showing comments where">
+'<MT_TRANS phrase="<TMPL_VAR NAME=FILTER>">'
+<MT_TRANS phrase="is">
+'<TMPL_VAR NAME=FILTER_VAL ESCAPE=HTML>'.&nbsp;
+<input type="button" name="reset_filter" value="<MT_TRANS phrase="Reset Filter">" onclick="window.location='<TMPL_VAR NAME=SCRIPT_URL>?__mode=list_comments&amp;blog_id=<TMPL_VAR NAME=BLOG_ID>'" />
+</TMPL_IF>
+
+</form>
+</div>
+
+<form action="<TMPL_VAR NAME=SCRIPT_URL>" onsubmit="return false;">
+
+<div class="list">
+<table cellspacing="0">
+
+<tr>
+<th width="10%"><MT_TRANS phrase="Status"></th>
+<th width="18%" class="commenter"><MT_TRANS phrase="Commenter"></th>
+<th width="22%"><MT_TRANS phrase="Comment"></th>
+<th width="15%"><MT_TRANS phrase="Entry"></th>
+<th width="12%"><MT_TRANS phrase="Date"></th>
+<th width="18%"><MT_TRANS phrase="IP"></th>
+<th width="5%"><MT_TRANS phrase="Delete"></th>
+</tr>
+
+<TMPL_LOOP NAME=OBJECT_LOOP>
+<tr class="<TMPL_IF NAME=IS_ODD>odd<TMPL_ELSE>even</TMPL_IF>">
+
+<td class="status">
+<TMPL_IF NAME=COMMENTER_ID>
+<TMPL_IF NAME=COMMENTER_APPROVED>
+<img src="<TMPL_VAR NAME=STATIC_URI>images/author-approved.gif" alt="<MT_TRANS phrase="Approved">" width="8" height="8" /><br /><span class="approved"><MT_TRANS phrase="Approved"></span>
+<TMPL_ELSE>
+<TMPL_IF NAME=COMMENTER_BLOCKED>
+<img src="<TMPL_VAR NAME=STATIC_URI>images/author-blocked.gif" alt="<MT_TRANS phrase="Banned">" width="8" height="8" /><br /><span class="banned"><MT_TRANS phrase="Banned"></span>
+<TMPL_ELSE>
+<img src="<TMPL_VAR NAME=STATIC_URI>images/author-pending.gif" alt="<MT_TRANS phrase="Pending">" width="8" height="8" /><br /><span class="pending"><MT_TRANS phrase="Pending"></span>
+</TMPL_IF>
+</TMPL_IF>
+<TMPL_ELSE>
+<TMPL_IF NAME=VISIBLE>
+<img src="<TMPL_VAR NAME=STATIC_URI>images/author-approved.gif" alt="<MT_TRANS phrase="Approved">" width="8" height="8" /><br /><span class="approved"><MT_TRANS phrase="Approved"></span>
+<TMPL_ELSE>
+<img src="<TMPL_VAR NAME=STATIC_URI>images/author-pending.gif" alt="<MT_TRANS phrase="Pending">" width="8" height="8" /><br /><span class="pending"><MT_TRANS phrase="Pending"></span>
+</TMPL_IF>
+</TMPL_IF>
+</td>
+
+<td class="commenter">
+<TMPL_IF NAME=COMMENTER_ID>
+<TMPL_IF NAME=COMMENTER_APPROVED>
+<div><a href="<TMPL_VAR NAME=SCRIPT_URL>?__mode=list_comments&amp;blog_id=<TMPL_VAR NAME=BLOG_ID>&amp;filter=commenter_id&amp;filter_val=<TMPL_VAR NAME=COMMENTER_ID>" title="<MT_TRANS phrase="View all comments from this registered commenter">"><img src="<TMPL_VAR NAME=STATIC_URI>images/filter.gif" alt="<MT_TRANS phrase="View all comments from this registered commenter">" width="8" height="8" /></a> <TMPL_VAR NAME=AUTHOR ESCAPE=HTML> <img src="<TMPL_VAR NAME=STATIC_URI>images/reg-com.gif" alt="<MT_TRANS phrase="Registered Commenter">" width="8" height="8" /></div>
+<div class="comment-status-button"><a href="<TMPL_VAR NAME=SCRIPT_URL>?__mode=save_commenter_perm&amp;blog_id=<TMPL_VAR NAME=BLOG_ID>&amp;commenter_id=<TMPL_VAR NAME=COMMENTER_ID>&amp;action=block&amp;_return=list_comments" title="<MT_TRANS phrase="Ban this user from commenting">"><MT_TRANS phrase="Ban User"></a></div>
+<TMPL_ELSE>
+<TMPL_IF NAME=COMMENTER_BLOCKED>
+<div><a href="<TMPL_VAR NAME=SCRIPT_URL>?__mode=list_comments&amp;blog_id=<TMPL_VAR NAME=BLOG_ID>&amp;filter=commenter_id&amp;filter_val=<TMPL_VAR NAME=COMMENTER_ID>" title="<MT_TRANS phrase="View all comments from this registered commenter">"><img src="<TMPL_VAR NAME=STATIC_URI>images/filter.gif" alt="<MT_TRANS phrase="View all comments from this registered commenter">" width="8" height="8" /></a> <TMPL_VAR NAME=AUTHOR ESCAPE=HTML> <img src="<TMPL_VAR NAME=STATIC_URI>images/reg-com.gif" alt="<MT_TRANS phrase="Registered Commenter">" width="8" height="8" /></div>
+<div class="comment-status-button"><a href="<TMPL_VAR NAME=SCRIPT_URL>?__mode=save_commenter_perm&amp;blog_id=<TMPL_VAR NAME=BLOG_ID>&amp;commenter_id=<TMPL_VAR NAME=COMMENTER_ID>&amp;action=approve&amp;_return=list_comments" title="<MT_TRANS phrase="Approve comments from this user">"><MT_TRANS phrase="Approve User"></a></div>
+<TMPL_ELSE>
+<div><a href="<TMPL_VAR NAME=SCRIPT_URL>?__mode=list_comments&amp;blog_id=<TMPL_VAR NAME=BLOG_ID>&amp;filter=commenter_id&amp;filter_val=<TMPL_VAR NAME=COMMENTER_ID>" title="<MT_TRANS phrase="View all comments from this registered commenter">"><img src="<TMPL_VAR NAME=STATIC_URI>images/filter.gif" alt="<MT_TRANS phrase="View all comments from this registered commenter">" width="8" height="8" /></a> <TMPL_VAR NAME=AUTHOR ESCAPE=HTML> <img src="<TMPL_VAR NAME=STATIC_URI>images/reg-com.gif" alt="<MT_TRANS phrase="Registered Commenter">" width="8" height="8" /></div>
+<div class="comment-status-button"><a href="<TMPL_VAR NAME=SCRIPT_URL>?__mode=save_commenter_perm&amp;blog_id=<TMPL_VAR NAME=BLOG_ID>&amp;commenter_id=<TMPL_VAR NAME=COMMENTER_ID>&amp;action=approve&amp;_return=list_comments" title="<MT_TRANS phrase="Approve comments from this user">"><MT_TRANS phrase="Approve User"></a></div>
+<div class="comment-status-button"><a href="<TMPL_VAR NAME=SCRIPT_URL>?__mode=save_commenter_perm&amp;blog_id=<TMPL_VAR NAME=BLOG_ID>&amp;commenter_id=<TMPL_VAR NAME=COMMENTER_ID>&amp;action=block&amp;_return=list_comments" title="<MT_TRANS phrase="Ban this user from commenting">"><MT_TRANS phrase="Ban User"></a></div>
+</TMPL_IF>
+</TMPL_IF>
+<TMPL_ELSE>
+<div><TMPL_IF NAME=AUTHOR><a href="<TMPL_VAR NAME=SCRIPT_URL>?__mode=list_comments&amp;blog_id=<TMPL_VAR NAME=BLOG_ID>&amp;filter=author&amp;filter_val=<TMPL_VAR NAME=AUTHOR ESCAPE=HTML>" title="<MT_TRANS phrase="View all comments from this unregistered commenter">"><img src="<TMPL_VAR NAME=STATIC_URI>images/filter.gif" alt="<MT_TRANS phrase="View all comments from this unregistered commenter">" width="8" height="8" /></a> <TMPL_VAR NAME=AUTHOR_DISPLAY ESCAPE=HTML><TMPL_ELSE>[<MT_TRANS phrase="Anonymous">]</TMPL_IF> <img src="<TMPL_VAR NAME=STATIC_URI>images/unreg-com.gif" alt="<MT_TRANS phrase="Unregistered Commenter">" width="8" height="8" /></div>
+<TMPL_UNLESS NAME=VISIBLE>
+<div class="comment-status-button"><a href="<TMPL_VAR NAME=SCRIPT_URL>?__mode=approve_comment&amp;blog_id=<TMPL_VAR NAME=BLOG_ID>&amp;id=<TMPL_VAR NAME=ID>&amp;_return=list_comments" title="<MT_TRANS phrase="Approve this comment">"><MT_TRANS phrase="Approve Comment"></a></div>
+</TMPL_UNLESS>
+</TMPL_IF>
+</td>
+
+<td>
+<TMPL_IF NAME=HAS_EDIT_ACCESS>
+<a href="<TMPL_VAR NAME=SCRIPT_URL>?__mode=view&amp;_type=comment&amp;id=<TMPL_VAR NAME=ID>&amp;blog_id=<TMPL_VAR NAME=BLOG_ID>&amp;_return=list_comments"><TMPL_VAR NAME=COMMENT_SHORT ESCAPE=HTML></a>
+<TMPL_ELSE>
+<TMPL_VAR NAME=COMMENT_SHORT ESCAPE=HTML>
+</TMPL_IF>
+</td>
+
+<td>
+<TMPL_IF NAME=ENTRY_TITLE>
+<a href="<TMPL_VAR NAME=SCRIPT_URL>?__mode=list_comments&amp;blog_id=<TMPL_VAR NAME=BLOG_ID>&amp;filter=entry_id&amp;filter_val=<TMPL_VAR NAME=ENTRY_ID ESCAPE=HTML>" title="<MT_TRANS phrase="View all comments on this entry">"><img src="<TMPL_VAR NAME=STATIC_URI>images/filter.gif" alt="<MT_TRANS phrase="View all comments on this entry">" width="8" height="8" /></a>&nbsp;<TMPL_VAR NAME=ENTRY_TITLE ESCAPE=HTML>
+<TMPL_ELSE>
+&nbsp;
+</TMPL_IF>
+</td>
+
+<td><TMPL_VAR NAME=CREATED_ON_TIME_FORMATTED ESCAPE=HTML></td>
+
+<td>
+<div><a href="<TMPL_VAR NAME=SCRIPT_URL>?__mode=list_comments&amp;blog_id=<TMPL_VAR NAME=BLOG_ID>&amp;filter=ip&amp;filter_val=<TMPL_VAR NAME=IP ESCAPE=HTML>" title="<MT_TRANS phrase="View all comments from this IP address">"><img src="<TMPL_VAR NAME=STATIC_URI>images/filter.gif" alt="<MT_TRANS phrase="View all comments from this IP address">" width="8" height="8" /></a>&nbsp;<TMPL_VAR NAME=IP ESCAPE=HTML></div>
+<TMPL_IF NAME=HAS_EDIT_ACCESS>
+<!-- <div class="comment-status-button"><a href="#" onclick="window.open('?__mode=spam_confirm&blog_id=<TMPL_VAR NAME=BLOG_ID>&id=<TMPL_VAR NAME=ID>', 'confirm_delete', 'width=370,height=250,scrollbars=yes')" title="<MT_TRANS phrase="Mark all comments from this IP address as spam">"><MT_TRANS phrase="Mark as Spam"></a></div> -->
+</TMPL_IF>
+</td>
+
+<td>
+<TMPL_IF NAME=HAS_EDIT_ACCESS>
+<input type="checkbox" name="id" value="<TMPL_VAR NAME=ID>" />
+<TMPL_ELSE>
+&nbsp;
+</TMPL_IF>
+</td>
+
+</tr>
+</TMPL_LOOP>
+
+</table>
+</div>
+
+<div align="right">
+<TMPL_IF NAME=IS_IP_FILTER>
+<input type="button" onclick="doBanIP('<TMPL_VAR NAME=FILTER_VAL>')" name="banip" value="<MT_TRANS phrase="Ban This IP">" />
+</TMPL_IF>
+<input type="button" onclick="doCheckAll(this.form,true)" name="check_all" value="<MT_TRANS phrase="Check All">" />
+<input type="button" onclick="doCheckAll(this.form,false)" name="uncheck_all" value="<MT_TRANS phrase="Uncheck All">" />
+<input type="button" onclick="doRemoveItems(this.form, 'comment&amp;blog_id=<TMPL_VAR NAME=BLOG_ID>&amp;_return=list_comments', 'comments')" name="delete_comments" value="<MT_TRANS phrase="Delete">" />
+</div>
+
+</form>
+
+<hr />
+
+<div align="right">
+<form action="<TMPL_VAR NAME=SCRIPT_URL>" onsubmit="return false;">
+<TMPL_IF NAME=PREV_OFFSET>
+<input type="button" onclick="window.location='<TMPL_VAR NAME=SCRIPT_URL>?__mode=list_comments&amp;blog_id=<TMPL_VAR NAME=BLOG_ID>&amp;<TMPL_IF NAME=IS_POWER_EDIT>is_power_edit=1&amp;</TMPL_IF>limit=' + this.form.limit.options[this.form.limit.selectedIndex].value + '&amp;offset=<TMPL_VAR NAME=PREV_OFFSET_VAL><TMPL_VAR NAME=FILTER_ARGS>'" value="<MT_TRANS phrase="Previous [_1]" params="<TMPL_VAR NAME=LIMIT>">" />
+</TMPL_IF>
+<select name="limit" onchange="window.location='<TMPL_VAR NAME=SCRIPT_URL>?__mode=list_comments&amp;blog_id=<TMPL_VAR NAME=BLOG_ID>&amp;<TMPL_IF NAME=IS_POWER_EDIT>is_power_edit=1&amp;</TMPL_IF>limit=' + this.options[this.selectedIndex].value + '<TMPL_VAR NAME=FILTER_ARGS>'">
+<option value="5"<TMPL_IF NAME=LIMIT_5> selected="selected"</TMPL_IF>><MT_TRANS phrase="[quant,_1,comment,comments]" params="5"></option>
+<option value="20"<TMPL_IF NAME=LIMIT_20> selected="selected"</TMPL_IF>><MT_TRANS phrase="[quant,_1,comment,comments]" params="20"></option>
+<option value="75"<TMPL_IF NAME=LIMIT_75> selected="selected"</TMPL_IF>><MT_TRANS phrase="[quant,_1,comment,comments]" params="75"></option>
+<option value="125"<TMPL_IF NAME=LIMIT_125> selected="selected"</TMPL_IF>><MT_TRANS phrase="[quant,_1,comment,comments]" params="125"></option>
+<option value="none"<TMPL_IF NAME=LIMIT_NONE> selected="selected"</TMPL_IF>><MT_TRANS phrase="all comments"></option>
+</select>
+<TMPL_IF NAME=NEXT_OFFSET>
+<input type="button" onclick="window.location='<TMPL_VAR NAME=SCRIPT_URL>?__mode=list_comments&amp;blog_id=<TMPL_VAR NAME=BLOG_ID>&amp;<TMPL_IF NAME=IS_POWER_EDIT>is_power_edit=1&amp;</TMPL_IF>limit=' + this.form.limit.options[this.form.limit.selectedIndex].value + '&amp;offset=<TMPL_VAR NAME=NEXT_OFFSET_VAL><TMPL_VAR NAME=FILTER_ARGS>'" value="<MT_TRANS phrase="Next [_1]" params="<TMPL_VAR NAME=LIMIT>">" />
+</TMPL_IF>
+</form>
+</div>
+<TMPL_IF NAME=PLUGIN_ACTION_LOOP>
+Plugin actions: <br />
+<TMPL_LOOP NAME=PLUGIN_ACTION_LOOP>
+<a href="<TMPL_VAR NAME=PAGE>;from=list_comments;blog_id=<TMPL_VAR NAME=BLOG_ID>"><TMPL_VAR NAME=LINK_TEXT></a> <br />
+</TMPL_LOOP>
+</TMPL_IF>
+
+</div>
+
+<TMPL_INCLUDE NAME="footer.tmpl">

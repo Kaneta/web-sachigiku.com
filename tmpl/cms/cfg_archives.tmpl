@@ -1,0 +1,112 @@
+<TMPL_INCLUDE NAME="header.tmpl">
+
+<div id="cfg-archives">
+
+<div align="right">
+<a href="<TMPL_VAR NAME=SCRIPT_URL>?__mode=view&amp;_type=blog&amp;id=<TMPL_VAR NAME=BLOG_ID>&amp;blog_id=<TMPL_VAR NAME=BLOG_ID>"><MT_TRANS phrase="Core Setup"></a>&nbsp;|&nbsp;<a href="<TMPL_VAR NAME=SCRIPT_URL>?__mode=cfg_prefs&amp;blog_id=<TMPL_VAR NAME=BLOG_ID>"><MT_TRANS phrase="Preferences"></a>&nbsp;|&nbsp;<MT_TRANS phrase="Archive Files">&nbsp;|&nbsp;<a href="<TMPL_VAR NAME=SCRIPT_URL>?__mode=list&amp;_type=banlist&amp;blog_id=<TMPL_VAR NAME=BLOG_ID>"><MT_TRANS phrase="IP Banning"></a>
+</div>
+        
+<h2><MT_TRANS phrase="Archive Files"></h2>
+
+<TMPL_IF NAME=SAVED>
+<div class="message"><MT_TRANS phrase="Your weblog's archive configuration has been saved."><br /><TMPL_INCLUDE NAME="rebuild-stub.tmpl"></div>
+</TMPL_IF>
+
+<TMPL_IF NAME=SAVED_ADDED>
+<div class="message"><MT_TRANS phrase="You have successfully added a new archive-template association."></div>
+</TMPL_IF>
+
+<TMPL_IF NAME=SAVED_DELETED>
+<div class="message"><MT_TRANS phrase="The selected archive-template associations have been deleted."></div>
+</TMPL_IF>
+
+<p><MT_TRANS phrase="This screen allows you to enable or disable archive types and assign one or more templates to each archive. For example, you may want to create two different views of your monthly archives: one in which the entries for a particular month are presented as a list, and the other representing the entries in a calendar view of that month."></p>
+
+<hr />
+
+<h4><MT_TRANS phrase="Create A New Template/Archive Type Association"></h4>
+
+<p><MT_TRANS phrase="Select the type of archive you want to create, then choose which template to associate with that archive type. Finally, click the Add button. The new archive will be shown in the table below."></p>
+
+<form method="post" action="<TMPL_VAR NAME=SCRIPT_URL>">
+<input type="hidden" name="__mode" value="cfg_archives_do_add" />
+<input type="hidden" name="blog_id" value="<TMPL_VAR NAME=BLOG_ID>" />
+
+<p>
+<label for="archive_type"><MT_TRANS phrase="Archive Type:"></label>
+<select name="archive_type" id="archive_type">
+<option value="Individual"><MT_TRANS phrase="Individual"></option>
+<option value="Daily"><MT_TRANS phrase="Daily"></option>
+<option value="Weekly"><MT_TRANS phrase="Weekly"></option>
+<option value="Monthly"><MT_TRANS phrase="Monthly"></option>
+<option value="Category"><MT_TRANS phrase="Category"></option>
+</select>
+&nbsp;
+<label for="template_id"><MT_TRANS phrase="Template:"></label>
+<select name="template_id" id="template_id">
+<TMPL_LOOP NAME=TEMPLATES>
+<option value="<TMPL_VAR NAME=TEMPLATE_ID>"><TMPL_VAR NAME=TEMPLATE_NAME></option>
+</TMPL_LOOP>
+</select>
+&nbsp;
+<input type="submit" value="<MT_TRANS phrase="Add">" />
+</p>
+
+</form>
+
+<hr />
+
+<h4><MT_TRANS phrase="Archives"></h4>
+
+<p><MT_TRANS phrase="In the table below you can enable or disable each archive type, customize the output path for each archive template, select a preferred template for each archive type, or delete any template from an archive type."></p>
+
+<form method="post" action="<TMPL_VAR NAME=SCRIPT_URL>" onsubmit="return validate(this)">
+<input type="hidden" name="__mode" value="cfg_archives_save" />
+<input type="hidden" name="blog_id" value="<TMPL_VAR NAME=BLOG_ID>" />
+
+<div class="list">
+<table cellspacing="0">
+
+<tr>
+<th width="20%"><MT_TRANS phrase="Archive Types"></th>
+<th width="30%"><MT_TRANS phrase="Template"> <a href="#" onclick="return openManual('weblog_config', 'item_archive_templates')" class="help">?</a></th>
+<th width="30%"><MT_TRANS phrase="Archive File Template"> <a href="#" onclick="return openManual('weblog_config', 'item_archive_file_templates')" class="help">?</a></th>
+<th width="10%"><MT_TRANS phrase="Preferred"></th>
+<th width="10%"><MT_TRANS phrase="Delete"></th>
+</tr>
+
+<TMPL_LOOP NAME=ARCHIVE_TYPES>
+<tr>
+<td colspan="5" class="subhead">
+<input type="checkbox" name="archive_type" id="archive_type" value="<TMPL_VAR NAME=ARCHIVE_TYPE ESCAPE=HTML>"<TMPL_IF NAME=IS_SELECTED> checked="checked"</TMPL_IF> /> <label for="archive_type"><TMPL_VAR NAME=ARCHIVE_TYPE_TRANSLATED ESCAPE=HTML></label>
+</td>
+</tr>
+<TMPL_LOOP NAME=TEMPLATE_MAP>
+<tr>
+<td>&nbsp;</td>
+<td><TMPL_VAR NAME=MAP_TEMPLATE_NAME></td>
+<td><input name="archive_file_tmpl_<TMPL_VAR NAME=MAP_ID>" value="<TMPL_VAR NAME=MAP_FILE_TEMPLATE>" /></td>
+<td><input type="radio" name="archive_tmpl_preferred_<TMPL_VAR NAME=ARCHIVE_TYPE ESCAPE=HTML>"<TMPL_IF NAME=MAP_IS_PREFERRED> checked="checked"</TMPL_IF> value="<TMPL_VAR NAME=MAP_ID>" /></td>
+<td><input type="checkbox" name="id" value="<TMPL_VAR NAME=MAP_ID>" /></td>
+</tr>
+</TMPL_LOOP>
+</TMPL_LOOP>
+
+</table>
+</div>
+
+<div>
+<div style="float: left;">
+<input type="submit" value="<MT_TRANS phrase="Save Changes">" />
+</div>
+<div style="float: right;">
+<input onclick="doRemoveItems(this.form, 'templatemap&amp;blog_id=<TMPL_VAR NAME=BLOG_ID>', 'archive templates', 'id')" type="button" value="<MT_TRANS phrase="Delete">" />
+</div>
+<br style="clear: both;" />
+</div>
+
+</form>
+
+</div>
+
+<TMPL_INCLUDE NAME="footer.tmpl">

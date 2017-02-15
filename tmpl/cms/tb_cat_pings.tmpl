@@ -1,0 +1,40 @@
+<TMPL_INCLUDE NAME="header-popup.tmpl">
+
+<p><MT_TRANS phrase="Click on the title to view the corresponding entry on the original site. To delete a ping, check the box to the right, then click the Delete Checked button."></p>
+
+<TMPL_IF NAME=SAVED_DELETED>
+<h4 class="message"><MT_TRANS phrase="You have successfully deleted the checked TrackBack pings from this category."></h4>
+</TMPL_IF>
+
+<form action="<TMPL_VAR NAME=SCRIPT_URL>" onsubmit="return false;">
+
+<div class="list">
+<table cellspacing="0">
+
+<tr>
+<th><MT_TRANS phrase="Title"></th>
+<th><MT_TRANS phrase="Date Added"></th>
+<th><MT_TRANS phrase="IP Address"></th>
+<th><MT_TRANS phrase="Delete"></th>
+</tr>
+
+<TMPL_LOOP NAME=PING_LOOP>
+<tr>
+<td><a target="_blank" href="<TMPL_VAR NAME=PING_URL ESCAPE=HTML>"><TMPL_VAR NAME=PING_TITLE ESCAPE=HTML></a></td>
+<td><TMPL_VAR NAME=PING_CREATED></td>
+<td><TMPL_VAR NAME=PING_IP></td>
+<td><input type="checkbox" name="id" value="<TMPL_VAR NAME=PING_ID>" /></td>
+</tr>
+</TMPL_LOOP>
+
+</table>
+</div>
+
+<div align="center">
+<input type="button" onclick="window.close()" value="<MT_TRANS phrase="Close">" />
+<input type="button" onclick="doRemoveItems(this.form, 'ping_cat&amp;blog_id=<TMPL_VAR NAME=BLOG_ID>', 'TrackBack pings')" value="<MT_TRANS phrase="Delete Checked">" />
+</div>
+
+</form>
+
+<TMPL_INCLUDE NAME="footer-popup.tmpl">

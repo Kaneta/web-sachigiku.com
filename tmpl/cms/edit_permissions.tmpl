@@ -1,0 +1,167 @@
+<TMPL_INCLUDE NAME="header.tmpl">
+
+<div id="edit-permissions">
+
+<TMPL_IF NAME=SELECTED_AUTHOR_NAME>
+<p><MT_TRANS phrase="_USAGE_PERMISSIONS_1" params="<TMPL_VAR NAME=SELECTED_AUTHOR_NAME ESCAPE=HTML>"></p>
+
+<p><MT_TRANS phrase="_USAGE_PERMISSIONS_2"></p>
+
+<TMPL_IF NAME=SAVED>
+<h4 class="message"><MT_TRANS phrase="Your changes to [_1]'s permissions have been saved. You can select another author to edit or return to the main Author menu." params="<TMPL_VAR NAME=SELECTED_AUTHOR_NAME ESCAPE=HTML>"></h4>
+</TMPL_IF>
+
+<TMPL_IF NAME=SAVED_ADD_TO_BLOG>
+<h4 class="message"><MT_TRANS phrase="[_1] has been successfully added to [_2]." params="<TMPL_VAR NAME=SELECTED_AUTHOR_NAME ESCAPE=HTML>%%<TMPL_VAR NAME=SAVED_ADD_TO_BLOG>"></h4>
+</TMPL_IF>
+
+<TMPL_ELSE>
+<p><MT_TRANS phrase="_USAGE_PERMISSIONS_3"></p>
+</TMPL_IF>
+
+<form method="get" action="<TMPL_VAR NAME=SCRIPT_URL>">
+<input type="hidden" name="__mode" value="edit_permissions" />
+
+<p>
+<label for="author_id"><MT_TRANS phrase="Select an author to edit:"></label>
+<select name="author_id">
+<TMPL_LOOP NAME=AUTHOR_LOOP>
+<option value="<TMPL_VAR NAME=AUTHOR_ID>"<TMPL_IF NAME=AUTHOR_SELECTED> selected="selected"</TMPL_IF>><TMPL_VAR NAME=AUTHOR_NAME></option>
+</TMPL_LOOP>
+</select>
+<input type="submit" value="<MT_TRANS phrase="Edit">" />
+</p>
+
+</form>
+
+<p><a href="<TMPL_VAR NAME=SCRIPT_URL>?__mode=list&amp;_type=author"><MT_TRANS phrase="View complete list of authors"></a><br />
+<MT_TRANS phrase="Delete, view, and edit authors via a complete list of authors in the system."></p>
+
+<hr />
+
+<TMPL_IF NAME=SELECTED_AUTHOR_NAME>
+<form method="post" action="<TMPL_VAR NAME=SCRIPT_URL>">
+<input type="hidden" name="author_id" value="<TMPL_VAR NAME=EDIT_AUTHOR_ID>" />
+<input type="hidden" name="__mode" value="save_permissions" />
+
+<h4><MT_TRANS phrase="General Permissions"></h4>
+
+<p>
+<label><input type="checkbox" name="can_create_blog" value="1"<TMPL_IF NAME=CAN_CREATE_BLOG> checked="checked"</TMPL_IF> /><MT_TRANS phrase="User can create new weblogs"></label><br />
+<label><input type="checkbox" name="can_view_log" value="1"<TMPL_IF NAME=CAN_VIEW_LOG> checked</TMPL_IF> /><MT_TRANS phrase="User can view activity log"></label>
+</p>
+
+<hr />
+
+<TMPL_LOOP NAME=BLOG_LOOP>
+<input type="hidden" name="role_mask-<TMPL_VAR NAME=BLOG_ID>" value="0" />
+
+<h4><MT_TRANS phrase="Weblog:"> <a href="<TMPL_VAR NAME=SCRIPT_URL>?__mode=menu&amp;blog_id=<TMPL_VAR NAME=BLOG_ID>"><TMPL_VAR NAME=BLOG_NAME ESCAPE=HTML></a></h4>
+
+<div id="leftcol-full">
+<TMPL_LOOP NAME=PERM_LOOP1>
+<label><input type="checkbox" name="role_mask-<TMPL_VAR NAME=BLOG_ID>" value="<TMPL_VAR NAME=MASK>"<TMPL_IF NAME=HAVE_ACCESS> checked="checked"</TMPL_IF> /><MT_TRANS phrase="<TMPL_VAR NAME=PROMPT ESCAPE=HTML>"></label><br />
+</TMPL_LOOP>
+</div>
+
+<div id="rightcol-full">
+<TMPL_LOOP NAME=PERM_LOOP2>
+<label><input type="checkbox" name="role_mask-<TMPL_VAR NAME=BLOG_ID>" value="<TMPL_VAR NAME=MASK>"<TMPL_IF NAME=HAVE_ACCESS> checked</TMPL_IF> /><MT_TRANS phrase="<TMPL_VAR NAME=PROMPT ESCAPE=HTML>"></label><br />
+</TMPL_LOOP>
+</div>
+
+<br style="clear: both;" />
+
+<hr />
+
+</TMPL_LOOP>
+
+<div align="center">
+<input type="submit" value="<MT_TRANS phrase="Save">" />
+</div>
+
+<hr />
+
+<p>
+<label for="add_role_mask"><MT_TRANS phrase="Add user to an additional weblog:"></label>
+<select name="add_role_mask" id="add_role_mask">
+<option value=""><MT_TRANS phrase="Select a weblog"></option>
+<TMPL_LOOP NAME=BLOG_NO_ACCESS_LOOP>
+<option value="<TMPL_VAR NAME=BLOG_ID>"><TMPL_VAR NAME=BLOG_NAME ESCAPE=HTML></option>
+</TMPL_LOOP>
+</select>
+<input type="submit" value="<MT_TRANS phrase="Add">" />
+</p>
+
+</form>
+
+<TMPL_ELSE>
+
+<form method="post" action="<TMPL_VAR NAME=SCRIPT_URL>">
+<input type="hidden" name="__mode" value="save" />
+<input type="hidden" name="_type" value="author" />
+<input type="hidden" name="created_by" value="<TMPL_VAR NAME=AUTHOR_ID>" />
+
+<h4><MT_TRANS phrase="Add an author"></h4>
+
+<p><MT_TRANS phrase="_USAGE_PERMISSIONS_4"></p>
+
+<div id="leftcol-full">
+
+<TMPL_IF NAME=ERROR>
+<h4 class="error-message"><TMPL_VAR NAME=ERROR></h4>
+</TMPL_IF>
+
+<p>
+<label for="name"><MT_TRANS phrase="Username"></label><br />
+<input name="name" id="name" value="<TMPL_VAR NAME=AUTHOR_STATE_NAME ESCAPE=HTML>" />
+</p>
+
+<p>
+<label for="email"><MT_TRANS phrase="Email Address"></label><br />
+<input name="email" id="email" value="<TMPL_VAR NAME=AUTHOR_STATE_EMAIL ESCAPE=HTML>" />
+</p>
+
+<p>
+<label for="url"><MT_TRANS phrase="Website URL (optional)"></label><br />
+<input name="url" id="url" value="<TMPL_VAR NAME=AUTHOR_STATE_URL ESCAPE=HTML>" />
+</p>
+
+<p>
+<label for="pass"><MT_TRANS phrase="Password"></label><br />
+<input type="password" name="pass" id="pass" value="" />
+</p>
+
+<p>
+<label for="pass_verify"><MT_TRANS phrase="Password confirm"></label><br />
+<input type="password" name="pass_verify" id="pass_verify" value="" />
+</p>
+
+</div>
+
+<div id="rightcol-full">
+
+<p><MT_TRANS phrase="This user will be associated with:"></p>
+
+<ul>
+<TMPL_LOOP NAME=BLOG_NO_ACCESS_LOOP>
+<li><label><input type="checkbox" name="add_to_blog" value="<TMPL_VAR NAME=BLOG_ID>"<TMPL_IF NAME=IS_CHECKED> checked="checked"</TMPL_IF> />&nbsp;<TMPL_VAR NAME=BLOG_NAME ESCAPE=HTML></label></li>
+</TMPL_LOOP>
+</ul>
+
+</div>
+
+<br style="clear: both;" />
+
+<hr />
+
+<p>
+<input type="submit" value="<MT_TRANS phrase="Save">" />
+</p>
+
+</form>
+</TMPL_IF>
+
+</div>
+
+<TMPL_INCLUDE NAME="footer.tmpl">

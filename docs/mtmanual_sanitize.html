@@ -1,0 +1,86 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>サニタイス: 入力された文字を安全に</title>
+<link rel="stylesheet" href="doc-styles.css" type="text/css"/>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+
+<body>
+<h3>Movable Typeユーザー・マニュアル: サニタイス: 入力された文字を安全に</h3>
+<p><a href="mtmanual.html">≪ 目次</a></p>
+
+
+<p><a name="__index__"></a></p>
+<!-- INDEX BEGIN -->
+
+<ul>
+
+	<li><a href="#sanitize:_cleaning_up_incoming_data">サニタイス: 入力された文字を安全に</a></li>
+	<ul>
+
+		<li><a href="#default_usage">デフォルトでの使用</a></li>
+		<li><a href="#overriding_defaults">デフォルトを上書きしたい場合</a></li>
+	</ul>
+
+</ul>
+<!-- INDEX END -->
+
+<hr/>
+<p>
+</p>
+<h1><a name="sanitize:_cleaning_up_incoming_data">サニタイス: 入力された文字を安全に</a></h1>
+<p><strong>注：</strong>以下の説明は、ウェブログの設定にある「<em>コメントでのHTMLの利用を許可する</em>」オプションをオンにしている場合だけに該当します。</p>
+<p>訪問者があなたのサイトに提出したデータは、必ずしも常に信頼できるとは限りません。 たとえば、コメントでのHTMLを許可している場合、あなたのサイトの訪問者は、悪意のあるHTMLやJavaScriptのスクリプトやPHPを提出し、あなたのサイトでコードを実行しようとするかもしれません。 このコードは、クッキーの読み取りから、サーバーにある私的なファイルの読み取りに到る、あらゆることを引き起こしかねません。</p>
+<p>あなたのサイトを保護するため、Movable Typeは、訪問者が投稿したすべてのデータを無害化（サニタイズ）します。 この中にはコメント・データとトラックバックのデータが含まれます。 この無害化は、サイトのセキュリティを脅かす可能性があるコード（HTMLその他）を削除することによります。 サニタイズ・プロセスでは、一部のHTMLタグだけが機能するようにし、そのほかのタグ、実行命令およびスクリプティング命令（PHP、JSP、JavaScript）はすべて取り除きます。</p>
+<p>デフォルトで許可されているHTMLのタグとアトリビュート（属性）は<code>a href</code>、<code>b</code>、<code>br</code>、<code>p</code>、<code>strong</code>、<code>em</code>、<code>ul</code>、<code>li</code>、および<code>blockquote</code>です。 この設定は、<em>mt.cfg</em>ファイルの<em>GlobalSanitizeSpec</em>設定を変更して全体的に上書きできます。また、ウェブログごとに変更したい場合は、ウェブログの設定で上書きできます。 <strong>注：</strong>この領域に精通していない方には、デフォルト設定のままにしておくことを推奨します。</p>
+<p>サニタイズ・プロセスの別の機能として、テキストがサニタイズされた後、開いたままのタグに終了タグを補う機能があります。 たとえば、あなたのサイトの訪問者が<code>&lt;b&gt;</code>タグを開き、閉じるのを忘れた場合は、サニタイズ・プロセスが<code>&lt;/b&gt;</code>を追加します。</p>
+<p>
+</p>
+<h2><a name="default_usage">デフォルトでの使用</a></h2>
+<p>デフォルト（標準）でサニタイズ機能は、以下のタグに対し自動的に有効になります。</p>
+<ul>
+<li><strong><a name="item_%3c%24mtcommentauthor%24%3e"><code>&lt;$MTCommentAuthor$&gt;</code></a></strong><br/> </li>
+<li><strong><a name="item_%3c%24mtcommentemail%24%3e"><code>&lt;$MTCommentEmail$&gt;</code></a></strong><br/> </li>
+<li><strong><a name="item_%3c%24mtcommenturl%24%3e"><code>&lt;$MTCommentURL$&gt;</code></a></strong><br/> </li>
+<li><strong><a name="item_%3c%24mtcommentbody%24%3e"><code>&lt;$MTCommentBody$&gt;</code></a></strong><br/> </li>
+<li><strong><a name="item_%3c%24mtpingtitle%24%3e"><code>&lt;$MTPingTitle$&gt;</code></a></strong><br/> </li>
+<li><strong><a name="item_%3c%24mtpingurl%24%3e"><code>&lt;$MTPingURL$&gt;</code></a></strong><br/> </li>
+<li><strong><a name="item_%3c%24mtpingblogname%24%3e"><code>&lt;$MTPingBlogName$&gt;</code></a></strong><br/> </li>
+<li><strong><a name="item_%3c%24mtpingexcerpt%24%3e"><code>&lt;$MTPingExcerpt$&gt;</code></a></strong><br/> </li>
+</ul>
+<p>これは、以上のタグをセキュリティ上安全にするため、テンプレートを修正しなくてもよいことを意味します。 これらのタグのサニタイズを無効にする場合は、<em>sanitize</em>アトリビュートを使います。</p>
+<pre>
+    &lt;$MTPingTitle sanitize="0"$&gt;</pre>
+<p>
+</p>
+<h2><a name="overriding_defaults">デフォルトを上書きしたい場合</a></h2>
+<p>デフォルト（標準）のサニタイズ仕様を上書きするには、まずその理由を明確にし、上書きが本当に必要であるかどうかを確かめてください。 さらに、ここに説明するサニタイズ仕様のフォーマットを確実に理解してから上書きするようにしてください。</p>
+<p>サニタイズ仕様はHTMLタグ名がコンマで区切られたものです。 各タグに対しあなたが許可するアトリビュートをスペースで区切り列挙します。 以下に例を挙げます。</p>
+<p>これは、<code>a</code>タグとその<code>href</code>アトリビュート、そして<code>b</code>タグを許可したものです。</p>
+<pre>
+    a href,b</pre>
+<p>これは、<code>p</code>タグと<code>br</code>タグを許可したものです。</p>
+<pre>
+    p,br/</pre>
+<p>上の例にある<code>br/</code>タグの<code>/</code>に注目してください。 これは、上述のタグを閉じる機能のために必要です。これがないと、サニタイズ・プロセス時に、テキストを解析するパーサーが、<code>&lt;br></code>タグだけを見つけた場合、テキストの最後に終了タグを付ける必要があると判断します。 しかしタグ名の後に<code>/</code>を加えると、パーサーはそのタグには終了タグが必要ないと判断します。</p>
+<p>あなたが許可するタグのアトリビュートは一つ一つ指定する必要があります。指定しないと、アトリビュートはどれも許可されない状態になります。 たとえば、<code>a</code>タグを許可した場合は、<code>href</code>アトリビュートも許可するのが賢明です。さもないと、</p>
+<pre>
+    &lt;a href="http://www.foo.com/"&gt;</pre>
+<p>というHTMLコードは、上書きしたサニタイズ機能によって、以下のようになってしまいます。</p>
+<pre>
+    &lt;a&gt;</pre>
+<p>これはおそらくあなたが望んだものではないことでしょう。</p>
+<p>複数のHTMLタグに共通する1つのアトリビュートを許可する場合は、タグ名に<code>*</code>を用いた後、そのアトリビュート名を記述します。 以下に例を挙げます。</p>
+<pre>
+    br/,p,blockquote,* style</pre>
+<p>この設定は、以下のHTMLコードを許可します。</p>
+<pre>
+    &lt;br style="..." /&gt;
+    &lt;p style="..." /&gt;
+    &lt;blockquote style="..."&gt;</pre>
+<p>このとき注意するのは、許可する<em>タグ</em>のリストを一つ一つ列挙する必要があるということです。<code>*</code>は、単にこれらの列挙したタグの中で、指定した<em>アトリビュート</em>を許可するという意味で使われます。</p>
+
+<hr size="1" color="#CCCCCC"> <span class="copyright">Copyright (c) 2001-2004 Six Apart. All Rights Reserved.</span> </body>
+
+</html>

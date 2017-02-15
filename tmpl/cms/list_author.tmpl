@@ -1,0 +1,42 @@
+<TMPL_INCLUDE NAME="header.tmpl">
+
+<h2><MT_TRANS phrase="Weblog Authors"></h2>
+
+<p><MT_TRANS phrase="_USAGE_AUTHORS"></p>
+
+<TMPL_IF NAME=SAVED_DELETED>
+<h4 class="message"><MT_TRANS phrase="You have successfully deleted the authors from the Movable Type system."></h4>
+</TMPL_IF>
+
+<form action="<TMPL_VAR NAME=SCRIPT_URL>" onsubmit="return false;">
+
+<div class="list">
+<table cellspacing="0">
+
+<tr>
+<th width="30%"><MT_TRANS phrase="Username"></th>
+<th width="30%"><MT_TRANS phrase="Email Address"></th>
+<th width="20%"><MT_TRANS phrase="Created By"></th>
+<th width="10%"><MT_TRANS phrase="Delete"></th>
+</tr>
+
+<TMPL_LOOP NAME=OBJECT_LOOP>
+<tr class="<TMPL_IF NAME=IS_ODD>odd<TMPL_ELSE>even</TMPL_IF>">
+<td><a href="<TMPL_VAR NAME=SCRIPT_URL>?__mode=edit_permissions&amp;author_id=<TMPL_VAR NAME=ID>"><TMPL_VAR NAME=NAME ESCAPE=HTML></a></td>
+<td><TMPL_VAR NAME=EMAIL ESCAPE=HTML></td>
+<td><TMPL_VAR NAME=ADDED_BY ESCAPE=HTML></td>
+<td><TMPL_IF NAME=CAN_DELETE><input type="checkbox" name="id" value="<TMPL_VAR NAME=ID>" /></TMPL_IF></td>
+</tr>
+
+</TMPL_LOOP>
+
+</table>
+</div>
+
+<div align="right">
+<input onclick="doRemoveItems(this.form, 'author', 'authors')" type="button" value="<MT_TRANS phrase="Delete">" />
+</div>
+
+</form>
+
+<TMPL_INCLUDE NAME="footer.tmpl">

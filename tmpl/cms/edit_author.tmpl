@@ -1,0 +1,92 @@
+<TMPL_INCLUDE NAME="header.tmpl">
+
+<form method="post" action="<TMPL_VAR NAME=SCRIPT_URL>">
+<input type="hidden" name="__mode" value="save" />
+<input type="hidden" name="_type" value="author" />
+<input type="hidden" name="id" value="<TMPL_VAR NAME=ID>" />
+
+<p><MT_TRANS phrase="_USAGE_PROFILE"></p>
+
+<TMPL_IF NAME=SAVED>
+<h4 class="message"><MT_TRANS phrase="Your profile has been updated."></h4>
+</TMPL_IF>
+
+<TMPL_IF NAME=ERROR>
+<h4 class="error-message"><TMPL_VAR NAME=ERROR ESCAPE=HTML></h4>
+</TMPL_IF>
+
+<p>
+<label for="name"><MT_TRANS phrase="Username"></label><br />
+<input name="name" id="name" value="<TMPL_VAR NAME=NAME ESCAPE=HTML>" />
+</p>
+
+<p>
+<label for="nickname"><MT_TRANS phrase="Nickname"></label><br />
+<input name="nickname" id="nickname" value="<TMPL_VAR NAME=NICKNAME ESCAPE=HTML>" />
+</p>
+
+<p>
+<label for="email"><MT_TRANS phrase="Email Address"></label><br />
+<input name="email" id="email" value="<TMPL_VAR NAME=EMAIL ESCAPE=HTML>" />
+</p>
+
+<p>
+<label for="url"><MT_TRANS phrase="Website URL (optional)"></label><br />
+<input name="url" id="url" value="<TMPL_VAR NAME=URL ESCAPE=HTML>" />
+</p>
+
+<p>
+<label for="preferred_language"><MT_TRANS phrase="Preferred Language"></label><br />
+<select name="preferred_language" id="preferred_language">
+<TMPL_LOOP NAME=LANGUAGES>
+<option value="<TMPL_VAR NAME=L_TAG>"<TMPL_IF NAME=L_SELECTED> selected="selected"</TMPL_IF>><TMPL_VAR NAME=L_NAME></option>
+</TMPL_LOOP>
+</select>
+</p>
+
+<hr />
+
+<h4><MT_TRANS phrase="Remote Authentication"></h4>
+
+<p>
+<label for="remote_auth_token"><MT_TRANS phrase="TypeKey site token:"></label> <br />
+<input type="text" id="remote_auth_token" name="remote_auth_token" value="<TMPL_VAR NAME=REMOTE_AUTH_TOKEN>">
+</p>
+
+<p>
+<label for="remote_auth_token"><MT_TRANS phrase="TypeKey username:"></label> <br />
+<input type="text" id="remote_auth_username" name="remote_auth_username" value="<TMPL_VAR NAME=REMOTE_AUTH_USERNAME>">
+</p>
+
+<p>
+<MT_TRANS phrase="Atom authentication token:"><br />
+<strong><TMPL_VAR NAME=PASSWORD></strong>
+</p>
+
+<hr />
+
+<h4><MT_TRANS phrase="Change your password"></h4>
+
+<p>
+<label for="pass"><MT_TRANS phrase="Password"></label><br />
+<input type="password" name="pass" id="pass" value="" />
+</p>
+
+<p>
+<label for="pass_verify"><MT_TRANS phrase="Password confirm"></label><br />
+<input type="password" name="pass_verify" id="pass_verify" value="" />
+</p>
+
+<hr />
+
+<h4><MT_TRANS phrase="For Password Recovery"></h4>
+
+<p>
+<label for="hint"><MT_TRANS phrase="Birthplace"></label><br />
+<input name="hint" id="hint" value="<TMPL_VAR NAME=HINT ESCAPE=HTML>" />
+
+<p><input type="submit" value="<MT_TRANS phrase="Save">" /></p>
+
+</form>
+
+<TMPL_INCLUDE NAME="footer.tmpl">

@@ -1,0 +1,36 @@
+<TMPL_INCLUDE NAME="header-popup.tmpl">
+
+<form method="post" action="<TMPL_VAR NAME=SCRIPT_URL>">
+<input type="hidden" name="__mode" value="cfg_archives_do_add" />
+<input type="hidden" name="blog_id" value="<TMPL_VAR NAME=BLOG_ID>" />
+
+<p><MT_TRANS phrase="_USAGE_ARCHIVING_3"></p>
+
+<p>
+<label for="archive_type"><MT_TRANS phrase="Archive Type"></label><br />
+<select name="archive_type" id="archive_type">
+<option value="Individual"><MT_TRANS phrase="Individual"></option>
+<option value="Daily"><MT_TRANS phrase="Daily"></option>
+<option value="Weekly"><MT_TRANS phrase="Weekly"></option>
+<option value="Monthly"><MT_TRANS phrase="Monthly"></option>
+<option value="Category"><MT_TRANS phrase="Category"></option>
+</select>
+</p>
+
+<p>
+<label for="template_id"><MT_TRANS phrase="Template"></label><br />
+<select name="template_id" id="template_id">
+<TMPL_LOOP NAME=TEMPLATES>
+<option value="<TMPL_VAR NAME=TEMPLATE_ID>"><TMPL_VAR NAME=TEMPLATE_NAME></option>
+</TMPL_LOOP>
+</select>
+</p>
+
+<div align="right">
+<input type="button" onClick="window.close()" value="<MT_TRANS phrase="Cancel">" />
+<input type="submit" value="<MT_TRANS phrase="Add">" />
+</div>
+
+</form>
+
+<TMPL_INCLUDE NAME="footer-popup.tmpl">

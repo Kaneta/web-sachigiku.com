@@ -1,0 +1,62 @@
+<TMPL_INCLUDE NAME="header.tmpl">
+
+<h2><MT_TRANS phrase="Search &amp; Replace"></h2>
+
+<p><MT_TRANS phrase="_USAGE_SEARCH"></p>
+
+<form method="get" action="<TMPL_VAR NAME=SCRIPT_URL>">
+<input type="hidden" name="__mode" value="search_replace" />
+<input type="hidden" name="blog_id" value="<TMPL_VAR NAME=BLOG_ID>" />
+
+<h4><label for="search"><MT_TRANS phrase="Search for:"></label></h4>
+
+<p><input name="search" id="search" value="<TMPL_VAR NAME=SEARCH ESCAPE=HTML>" />
+<input name="do_search" type="submit" value="<MT_TRANS phrase="Search">" /></p>
+
+<p>
+<label><input type="checkbox" name="case" value="1"<TMPL_IF NAME=CASE> checked="checked"</TMPL_IF>> <MT_TRANS phrase="Case Sensitive"></label> <a href="#" onclick="return openManual('search', 'item_case_sensitive')" class="help">?</a>&nbsp;&nbsp;
+<label><input type="checkbox" name="is_regex" value="1"<TMPL_IF NAME=IS_REGEX> checked="checked"</TMPL_IF>> <MT_TRANS phrase="Regular Expression Match"></label> <a href="#" onclick="return openManual('search', 'item_regular_expression_match')" class="help">?</a>
+</p>
+
+<p><strong><MT_TRANS phrase="Search fields:"></strong> <a href="#" onclick="return openManual('search', 'item_search_fields')" class="help">?</a><br />
+<label><input type="checkbox" name="search_cols" value="title"<TMPL_IF NAME=SEARCH_COLS_TITLE> checked="checked"</TMPL_IF>> <MT_TRANS phrase="Title"></label>
+<label><input type="checkbox" name="search_cols" value="text"<TMPL_IF NAME=SEARCH_COLS_TEXT> checked="checked"</TMPL_IF>> <MT_TRANS phrase="Entry Body"></label>
+<label><input type="checkbox" name="search_cols" value="text_more"<TMPL_IF NAME=SEARCH_COLS_TEXT_MORE> checked="checked"</TMPL_IF>> <MT_TRANS phrase="Extended Entry"></label>
+<label><input type="checkbox" name="search_cols" value="keywords"<TMPL_IF NAME=SEARCH_COLS_KEYWORDS> checked="checked"</TMPL_IF>> <MT_TRANS phrase="Keywords"></label>
+</p>
+
+<h4><label for="replace"><MT_TRANS phrase="Replace with:"></label></h4>
+
+<p><input name="replace" id="replace" value="<TMPL_VAR NAME=REPLACE ESCAPE=HTML>" />
+<input type="submit" name="do_replace" value="<MT_TRANS phrase="Replace">" /></p>
+
+</form>
+
+<TMPL_IF NAME=HAVE_RESULTS>
+<hr />
+
+<h3><MT_TRANS phrase="Search Results"></h3>
+
+<div class="message"><MT_TRANS phrase="The following entries match the search string [_1]" params="<TMPL_VAR NAME=SEARCH ESCAPE=HTML>"><TMPL_IF NAME=DO_REPLACE><MT_TRANS phrase="; that search string has been replaced by [_1]" params="<TMPL_VAR NAME=REPLACE ESCAPE=HTML>">. <TMPL_INCLUDE NAME="rebuild-stub.tmpl"><TMPL_ELSE>.</TMPL_IF></div>
+
+<div class="list">
+<table cellspacing="0">
+
+<tr>
+<th width="70%"><MT_TRANS phrase="Title"></th>
+<th width="30%"><MT_TRANS phrase="Authored On"></th>
+</tr>
+
+<TMPL_LOOP NAME=RESULTS>
+<tr class="<TMPL_IF NAME=IS_ODD>odd<TMPL_ELSE>even</TMPL_IF>">
+<td><a href="<TMPL_VAR NAME=SCRIPT_URL>?__mode=view&amp;_type=entry&amp;id=<TMPL_VAR NAME=ENTRY_ID>&amp;blog_id=<TMPL_VAR NAME=BLOG_ID>"><TMPL_VAR NAME=ENTRY_TITLE></a></td>
+<td><TMPL_VAR NAME=ENTRY_CREATED_ON></td>
+</tr>
+
+</TMPL_LOOP>
+
+</table>
+</div>
+</TMPL_IF>
+
+<TMPL_INCLUDE NAME="footer.tmpl">

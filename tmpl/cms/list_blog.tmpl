@@ -1,0 +1,181 @@
+<TMPL_INCLUDE NAME="header.tmpl">
+
+<div id="list-blog">
+
+<div id="rightcol-full">
+
+<div class="news-box">
+<h4><a href="http://<TMPL_VAR NAME=MT_PORTAL>/?v=<TMPL_VAR NAME=MT_VERSION>"><MT_TRANS phrase="Movable Type News"></a></h4>
+<div class="inner">
+<TMPL_VAR NAME=NEWS_HTML>
+<p><MT_TRANS phrase="More news about "><a href="http://<TMPL_VAR NAME=MT_PORTAL>/?v=<TMPL_VAR NAME=MT_VERSION>">Movable Type</a>.</p>
+</div>
+</div>
+
+<div class="box">
+<h4><MT_TRANS phrase="Shortcuts"></h4>
+<div class="inner">
+<br />
+
+<TMPL_IF NAME=CAN_CREATE_BLOG>
+<div class="field">
+<div class="icon"><a href="<TMPL_VAR NAME=SCRIPT_URL>?__mode=view&amp;_type=blog"><img alt="" src="<TMPL_VAR NAME=STATIC_URI>images/frontnav-create-weblog.gif" width="18" height="24" border="0" /></a></div>
+<div class="label"><a href="<TMPL_VAR NAME=SCRIPT_URL>?__mode=view&amp;_type=blog"><MT_TRANS phrase="Create new Weblog"></a><br />
+<MT_TRANS phrase="Set up a new weblog"></div>
+<br style="clear: left;" />
+</div>
+</TMPL_IF>
+
+<TMPL_IF NAME=CAN_EDIT_AUTHORS>
+<div class="field">
+<div class="icon"><a href="<TMPL_VAR NAME=SCRIPT_URL>?__mode=edit_permissions"><img alt="" src="<TMPL_VAR NAME=STATIC_URI>images/frontnav-authors.gif" width="23" height="27" border="0" /></a></div>
+<div class="label"><a href="<TMPL_VAR NAME=SCRIPT_URL>?__mode=edit_permissions"><MT_TRANS phrase="Add/Edit Weblog authors"></a><br />
+<MT_TRANS phrase="Add authors, set permissions"></div>
+<br style="clear: left;" />
+</div>
+</TMPL_IF>
+
+<div class="field">
+<div class="icon"><a href="<TMPL_VAR NAME=SCRIPT_URL>?__mode=view&amp;_type=author&amp;id=<TMPL_VAR NAME=AUTHOR_ID>"><img alt="" src="<TMPL_VAR NAME=STATIC_URI>images/frontnav-profile.gif" width="19" height="25" border="0" /></a></div>
+<div class="label"><a href="<TMPL_VAR NAME=SCRIPT_URL>?__mode=view&amp;_type=author&amp;id=<TMPL_VAR NAME=AUTHOR_ID>"><MT_TRANS phrase="Edit your profile"></a><br />
+<MT_TRANS phrase="Change password, contact info, select language"></div>
+<br style="clear: left;" />
+</div>
+
+<TMPL_IF NAME=CAN_VIEW_LOG>
+<div class="field">
+<div class="icon"><a href="<TMPL_VAR NAME=SCRIPT_URL>?__mode=view_log"><img alt="" src="<TMPL_VAR NAME=STATIC_URI>images/frontnav-activity-log.gif" width="19" height="25" border="0" /></a></div>
+<div class="label"><a href="<TMPL_VAR NAME=SCRIPT_URL>?__mode=view_log"><MT_TRANS phrase="View Activity Log"></a><br />
+<MT_TRANS phrase="System activity, logins"></div>
+<br style="clear: left;" />
+</div>
+</TMPL_IF>
+
+<div class="field">
+<div class="icon"><a href="<TMPL_VAR NAME=SCRIPT_URL>?__mode=bookmarklets"><img alt="" src="<TMPL_VAR NAME=STATIC_URI>images/frontnav-quickpost.gif" width="19" height="27" border="0" /></a></div>
+<div class="label"><a href="<TMPL_VAR NAME=SCRIPT_URL>?__mode=bookmarklets"><MT_TRANS phrase="Set up QuickPost"></a><br />
+<MT_TRANS phrase="QuickPost enables one-click publishing"></div>
+<br style="clear: left;" />
+</div>
+
+</div>
+</div>
+
+<TMPL_IF NAME=CAN_VIEW_BLOG_COUNT>
+<div class="box">
+<h4><MT_TRANS phrase="Movable Type System Stats"></h4>
+<div class="inner">
+<p>
+<MT_TRANS phrase="Total Blogs:"> <TMPL_VAR NAME=BLOG_COUNT>
+&nbsp;|&nbsp;
+<MT_TRANS phrase="Total Authors:"> <TMPL_VAR NAME=AUTHOR_COUNT>
+</p>
+</div>
+</div>
+</TMPL_IF>
+
+</div>
+<div id="leftcol-full">
+
+<TMPL_IF NAME=SAVED_DELETED>
+<h4 class="message"><MT_TRANS phrase="Your selected weblog has been deleted."></h4>
+</TMPL_IF>
+
+<div class="blog-loop">
+
+<h3><MT_TRANS phrase="Maintain Your Existing Weblogs"></h3>
+
+<TMPL_LOOP NAME=BLOG_LOOP>
+
+<div class="blog-item">
+
+<div class="blog-info">
+<h4><a href="<TMPL_VAR NAME=SCRIPT_URL>?__mode=menu&amp;blog_id=<TMPL_VAR NAME=ID>"><TMPL_VAR NAME=NAME></a></h4>
+<p><TMPL_VAR NAME=DESCRIPTION></p>
+<hr />
+<p>
+<MT_TRANS phrase="Total Posts:"> <strong><TMPL_VAR NAME=NUM_ENTRIES></strong>
+&nbsp;|&nbsp;
+<MT_TRANS phrase="Total Comments:"> <strong><TMPL_VAR NAME=NUM_COMMENTS></strong>
+&nbsp;|&nbsp;
+<MT_TRANS phrase="Total Authors:"> <strong><TMPL_VAR NAME=NUM_AUTHORS></strong>
+</p>
+<p><MT_TRANS phrase="URL:"> <a href="<TMPL_VAR NAME=SITE_URL>"><TMPL_VAR NAME=SITE_URL></a></p>
+</div>
+
+<div class="shortcuts">
+<ul>
+<li class="top"><img alt="<MT_TRANS phrase="Create Entry">" src="<TMPL_VAR NAME=STATIC_URI>images/mininav-new-entry.gif" width="9" height="11" border="0" /><a href="<TMPL_VAR NAME=SCRIPT_URL>?__mode=view&amp;_type=entry&amp;blog_id=<TMPL_VAR NAME=ID>"><MT_TRANS phrase="Create Entry"></a></li>
+<TMPL_IF NAME=CAN_EDIT_ENTRIES>
+<li><img alt="<MT_TRANS phrase="Entries">" src="<TMPL_VAR NAME=STATIC_URI>images/mininav-entries.gif" width="9" height="11" border="0" /><a href="<TMPL_VAR NAME=SCRIPT_URL>?__mode=list_entries&amp;blog_id=<TMPL_VAR NAME=ID>"><MT_TRANS phrase="Entries"></a></li>
+</TMPL_IF>
+<TMPL_IF NAME=CAN_EDIT_ENTRIES>
+<li><img alt="<MT_TRANS phrase="Comments">" src="<TMPL_VAR NAME=STATIC_URI>images/mininav-comments.gif" width="9" height="11" border="0" /><a href="<TMPL_VAR NAME=SCRIPT_URL>?__mode=list_comments&amp;blog_id=<TMPL_VAR NAME=ID>"><MT_TRANS phrase="Comments"></a></li>
+</TMPL_IF>
+<TMPL_IF NAME=CAN_EDIT_TEMPLATES>
+<li><img alt="<MT_TRANS phrase="Templates">" src="<TMPL_VAR NAME=STATIC_URI>images/mininav-templates.gif" width="9" height="11" border="0" /><a href="<TMPL_VAR NAME=SCRIPT_URL>?__mode=list&amp;_type=template&amp;blog_id=<TMPL_VAR NAME=ID>"><MT_TRANS phrase="Templates"></a></li>
+</TMPL_IF>
+<TMPL_IF NAME=CAN_EDIT_CONFIG>
+<li><img alt="<MT_TRANS phrase="Configuration">" src="<TMPL_VAR NAME=STATIC_URI>images/mininav-config.gif" width="9" height="11" border="0" /><a href="<TMPL_VAR NAME=SCRIPT_URL>?__mode=view&amp;_type=blog&amp;id=<TMPL_VAR NAME=ID>&amp;blog_id=<TMPL_VAR NAME=ID>"><MT_TRANS phrase="Configuration"></a></li>
+</TMPL_IF>
+<TMPL_IF NAME=CAN_EDIT_CONFIG>
+<li class="bottom"><img alt="<MT_TRANS phrase="Delete Weblog">" src="<TMPL_VAR NAME=STATIC_URI>images/mininav-delete.gif" width="9" height="11" border="0" /><a href="#" onclick="doRemoveItem('<TMPL_VAR NAME=ID>', 'blog'); return false"><MT_TRANS phrase="Delete Weblog"></a></li>
+</TMPL_IF>
+</ul>
+</div>
+
+<br style="clear: both;" />
+</div>
+
+<hr />
+
+</TMPL_LOOP>
+
+</div>
+
+<TMPL_IF NAME=PLUGIN_LOOP>
+
+<div class="blog-loop">
+
+<h3><MT_TRANS phrase="Configure Active Plugins"></h3>
+
+<TMPL_LOOP NAME=PLUGIN_LOOP>
+
+<div class="blog-item">
+
+<div class="blog-info">
+<h4 class="plugin">
+<TMPL_IF NAME=PLUGIN_PAGE>
+<a title="Settings for <TMPL_VAR NAME=PLUGIN_NAME>" href="<TMPL_VAR NAME=PLUGIN_PAGE>"><TMPL_VAR NAME=PLUGIN_NAME></a>
+<TMPL_ELSE>
+<TMPL_VAR NAME=PLUGIN_NAME>
+</TMPL_IF>
+</h4>
+<p><TMPL_VAR NAME=PLUGIN_DESC></p>
+</div>
+
+<div class="shortcuts">
+<ul>
+<TMPL_IF NAME=PLUGIN_DOC_LINK>
+<li><img alt="Plugin Documentation" src="<TMPL_VAR NAME=STATIC_URI>images/mininav-docs.gif" width="9" height="11" border="0" /><a title="Documentation for <TMPL_VAR NAME=PLUGIN_NAME ESCAPE=HTML>" href="<TMPL_VAR NAME=PLUGIN_DOC_LINK>"><MT_TRANS phrase="Documentation"></a></li>
+</TMPL_IF>
+</ul>
+</div>
+
+<br style="clear: both;" />
+</div>
+
+<hr />
+
+</TMPL_LOOP>
+
+</div>
+
+</TMPL_IF>
+
+</div>
+<br style="clear: both;" />
+
+</div>
+
+<TMPL_INCLUDE NAME="footer.tmpl">

@@ -1,0 +1,82 @@
+<TMPL_INCLUDE NAME="header.tmpl">
+
+<script type="text/javascript">
+<!--
+
+function listPings () {
+    window.open('<TMPL_VAR NAME=SCRIPT_URL>?__mode=tb_cat_pings&blog_id=<TMPL_VAR NAME=BLOG_ID>&category_id=<TMPL_VAR NAME=ID>', 'urls', 'width=450,height=350,resizable=yes,scrollbars=yes');
+}
+
+//-->
+</script>
+
+<h2><MT_TRANS phrase="Category: [_1]" params="<TMPL_VAR NAME=LABEL ESCAPE=HTML>"></h2>
+
+<p><MT_TRANS phrase="Use this page to edit the attributes of the category [_1]. You can set a description for your category to be used in your public pages, as well as configuring the TrackBack options for this category." params="<TMPL_VAR NAME=LABEL ESCAPE=HTML>"></p>
+
+<form method="post" action="<TMPL_VAR NAME=SCRIPT_URL>">
+<input type="hidden" name="blog_id" value="<TMPL_VAR NAME=BLOG_ID>" />
+<input type="hidden" name="__mode" value="save" />
+<input type="hidden" name="_type" value="category" />
+<input type="hidden" name="id" value="<TMPL_VAR NAME=ID>" />
+
+<TMPL_IF NAME=SAVED>
+<div class="message"><MT_TRANS phrase="Your category changes have been made."> <TMPL_INCLUDE NAME="rebuild-stub.tmpl"></div>
+</TMPL_IF>
+
+<p><label class="bold" for="label"><MT_TRANS phrase="Category Title"></label><br />
+<input type="text" name="label" id="label" value="<TMPL_VAR NAME=LABEL ESCAPE=HTML>" /></p>
+
+<p><label class="bold" for="description"><MT_TRANS phrase="Category Description"></label><br />
+<textarea name="description" id="description" rows="5" cols="60"><TMPL_VAR NAME=DESCRIPTION ESCAPE=HTML></textarea></p>
+
+<h3><MT_TRANS phrase="TrackBack Settings"></h3>
+
+<h4 class="blue-bar"><MT_TRANS phrase="Outgoing Pings"></h4>
+
+<p><label class="bold" for="ping_urls"><MT_TRANS phrase="TrackBack URLs to ping"></label> <a href="#" onclick="return openManual('categories', 'item_trackback_urls_to_ping')" class="help">?</a></p>
+
+<p><MT_TRANS phrase="Enter the URL(s) of the websites that you would like to ping each time you post an entry in this category. (Separate URLs with a carriage return.)"><br />
+<textarea name="ping_urls" id="ping_urls" rows="5" cols="50"><TMPL_VAR NAME=PING_URLS ESCAPE=HTML></textarea></p>
+
+<h4 class="blue-bar"><MT_TRANS phrase="Incoming Pings"></h4>
+
+<p><strong><MT_TRANS phrase="Accept incoming TrackBack pings?"></strong> <a href="#" onclick="return openManual('categories', 'item_accept_incoming_trackback_pings')" class="help">?</a>
+<TMPL_IF NAME=TB_URL>
+<br /><a href="#" onclick="listPings(); return false"><MT_TRANS phrase="View TrackBack pings for this category"></a>
+</TMPL_IF>
+</p>
+		
+<p><label class="bold"><input type="radio" name="allow_pings" value="1"<TMPL_IF NAME=ALLOW_PINGS> checked</TMPL_IF> /><MT_TRANS phrase="On"></label>
+&nbsp;&nbsp;
+<label class="bold"><input type="radio" name="allow_pings" value="0"<TMPL_UNLESS NAME=ALLOW_PINGS> checked</TMPL_UNLESS> /><MT_TRANS phrase="Off"></label></p>
+
+<TMPL_IF NAME=TB_URL>
+<p><label class="bold" for="tb_passphrase"><MT_TRANS phrase="Passphrase Protection (Optional)"></label> <a href="#" onclick="return openManual('categories', 'item_passphrase_protection')" class="help">?</a><br />
+<input name="tb_passphrase" id="tb_passphrase" value="<TMPL_VAR NAME=TB_PASSPHRASE ESCAPE=HTML>" /></p>
+
+<hr />
+
+<p><strong><MT_TRANS phrase="TrackBack URL for this category"></strong><br />
+<MT_TRANS phrase="This is the URL that others will use to ping your weblog. If you wish for anyone to ping your weblog when they have a post specific to this category, post this URL publicly. If you choose to only allow a select group of individuals to ping, send this URL to them privately."></p>
+
+<div class="box"><TMPL_VAR NAME=TB_URL ESCAPE=HTML></div>
+
+<p><MT_TRANS phrase="To include a list of incoming pings in your Main Index Template, look here for sample code:"> <a href="#" onclick="return openManual('categories', 'mtpings_example', 'tags')" class="help">?</a></p>
+
+</TMPL_IF>
+
+<div align="center">
+<input type="submit" value="<MT_TRANS phrase="Save">" />
+</div>
+
+</form>
+
+<TMPL_IF NAME=PLUGIN_ACTION_LOOP>
+Plugin actions: <br />
+<TMPL_LOOP NAME=PLUGIN_ACTION_LOOP>
+<a href="<TMPL_VAR NAME=PAGE>;from=edit_category;id=<TMPL_VAR NAME=ID>;blog_id=<TMPL_VAR NAME=BLOG_ID>"><TMPL_VAR NAME=LINK_TEXT></a> <br />
+</TMPL_LOOP>
+</TMPL_IF>
+
+<TMPL_INCLUDE NAME="footer.tmpl">

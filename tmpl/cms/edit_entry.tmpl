@@ -1,0 +1,460 @@
+<TMPL_INCLUDE NAME="header.tmpl">
+
+<div id="edit-entry">
+
+<script type="text/javascript">
+<!--
+
+function listPreviousPings () {
+    window.open('<TMPL_VAR NAME=SCRIPT_URL>?__mode=pinged_urls&entry_id=<TMPL_VAR NAME=ID>&blog_id=<TMPL_VAR NAME=BLOG_ID>', 'urls', 'width=370,height=250,resizable=yes,scrollbars=yes');
+}
+
+function editPlacements () {
+    window.open('<TMPL_VAR NAME=SCRIPT_URL>?__mode=edit_placements&entry_id=<TMPL_VAR NAME=ID>&blog_id=<TMPL_VAR NAME=BLOG_ID>', 'placements', 'width=550,height=520,resizable=yes');
+}
+
+function doRebuildThis () {
+    window.open('<TMPL_VAR NAME=SCRIPT_URL>?__mode=start_rebuild&blog_id=<TMPL_VAR NAME=BLOG_ID>&next=0&type=entry-<TMPL_VAR NAME=ID>&entry_id=<TMPL_VAR NAME=ID>', 'rebuild', 'width=400,height=250,resizable=yes');
+}
+
+function doAddCategory (s) {
+    if (s.options[s.selectedIndex].text != '<MT_TRANS phrase="Add new category...">')
+        return;
+    window.open('<TMPL_VAR NAME=SCRIPT_URL>?__mode=category_add&blog_id=<TMPL_VAR NAME=BLOG_ID>', 'category_add', 'width=400,height=350,resizable=yes');
+}
+
+function doAddCategoryItem (label, value) {
+    var s = document.forms['entry_form'].category_id;
+    var l = s.length;
+    s.options[s.length] = new Option(label, value);
+    s.length = l + 1;
+    s.selectedIndex = l;
+}
+
+function doViewLog () {
+    window.open('<TMPL_VAR NAME=SCRIPT_URL>?__mode=view_log#last', '_blank');
+    return true;
+}
+
+var docs = new Array();
+<TMPL_LOOP NAME=TEXT_FILTERS>
+docs['<TMPL_VAR NAME=FILTER_KEY>'] = '<TMPL_VAR NAME=FILTER_DOCS>';
+</TMPL_LOOP>
+function openTFDocs () {
+    var s = document.forms['entry_form'].convert_breaks;
+    var key = s.options[s.selectedIndex].value;
+    if (url = docs[key]) {
+        if (url.indexOf('http://') == -1)
+            url = '<TMPL_VAR NAME=STATIC_URI>docs/' + url;
+        window.open(url, 'manual', 'width=450,height=550,scrollbars=yes,status=yes,resizable=yes');
+    } else {
+        return openManual('entries', 'item_Text_Formatting');
+    }
+}
+
+//-->
+</script>
+
+<TMPL_IF NAME=NEW_OBJECT>
+<h2><MT_TRANS phrase="Create New Entry"></h2>
+<TMPL_ELSE>
+<h2><MT_TRANS phrase="Edit Entry"></h2>
+</TMPL_IF>
+
+<TMPL_IF NAME=SAVED_ADDED>
+<h4 class="message"><MT_TRANS phrase="Your entry has been saved. You can now make any changes to the entry itself, edit the authored-on date, edit comments, or send a notification."></h4>
+</TMPL_IF>
+
+<TMPL_IF NAME=SAVED_CHANGES>
+<h4 class="message"><MT_TRANS phrase="Your changes have been saved."></h4>
+</TMPL_IF>
+
+<TMPL_IF NAME=PING_ERRORS>
+<h4 class="error-message"><MT_TRANS phrase="One or more errors occurred when sending update or TrackBack pings."> <TMPL_IF NAME=CAN_VIEW_LOG><MT_TRANS phrase="_USAGE_VIEW_LOG"></TMPL_IF></h4>
+</TMPL_IF>
+
+<TMPL_IF NAME=SAVED_PREFS>
+<h4 class="message"><MT_TRANS phrase="Your customization preferences have been saved, and are visible in the form below."></h4>
+</TMPL_IF>
+
+<TMPL_IF NAME=SAVED_COMMENT>
+<h4 class="message"><MT_TRANS phrase="Your changes to the comment have been saved."> <TMPL_INCLUDE NAME="rebuild-stub.tmpl"></h4>
+</TMPL_IF>
+
+<TMPL_IF NAME=SAVED_NOTIFY>
+<h4 class="message"><MT_TRANS phrase="Your notification has been sent."></h4>
+</TMPL_IF>
+
+<TMPL_IF NAME=SAVED_DELETED>
+<h4 class="message"><MT_TRANS phrase="You have successfully deleted the checked comment(s)."></h4>
+</TMPL_IF>
+
+<TMPL_IF NAME=SAVED_DELETED_PING>
+<h4 class="message"><MT_TRANS phrase="You have successfully deleted the checked TrackBack ping(s)."></h4>
+</TMPL_IF>
+
+<TMPL_UNLESS NAME=NEW_OBJECT>
+<div>
+<div class="entry-nav">
+<TMPL_IF NAME=PREVIOUS_ENTRY_ID>
+<a href="<TMPL_VAR NAME=SCRIPT_URL>?__mode=view&amp;_type=entry&amp;id=<TMPL_VAR NAME=PREVIOUS_ENTRY_ID>&amp;blog_id=<TMPL_VAR NAME=BLOG_ID>">&laquo; <MT_TRANS phrase="Previous"></a> |
+</TMPL_IF>
+<a href="<TMPL_VAR NAME=SCRIPT_URL>?__mode=list_entries&amp;blog_id=<TMPL_VAR NAME=BLOG_ID>"><MT_TRANS phrase="List &amp; Edit Entries"></a>
+<TMPL_IF NAME=NEXT_ENTRY_ID>
+| <a href="<TMPL_VAR NAME=SCRIPT_URL>?__mode=view&amp;_type=entry&amp;id=<TMPL_VAR NAME=NEXT_ENTRY_ID>&amp;blog_id=<TMPL_VAR NAME=BLOG_ID>"><MT_TRANS phrase="Next"> &raquo;</a>
+</TMPL_IF>
+</div>
+<TMPL_IF NAME="STATUS_PUBLISH"> 
+<div class="view-entry">
+<TMPL_IF NAME=ENTRY_PERMALINK><a href="<TMPL_VAR NAME=ENTRY_PERMALINK>"><MT_TRANS phrase="View Entry"></a></TMPL_IF>
+</div>
+</TMPL_IF>
+<br style="clear: both;" />
+</div>
+</TMPL_UNLESS>
+
+<form name="entry_form" method="post" action="<TMPL_VAR NAME=SCRIPT_URL>">
+<TMPL_IF NAME=NEW_OBJECT>
+<input type="hidden" name="author_id" value="<TMPL_VAR NAME=AUTHOR_ID>" />
+<TMPL_ELSE>
+<input type="hidden" name="id" value="<TMPL_VAR NAME=ID>" />
+</TMPL_IF>
+<input type="hidden" name="blog_id" value="<TMPL_VAR NAME=BLOG_ID>" />
+<input type="hidden" name="__mode" value="save_entry" />
+
+<TMPL_IF NAME=POSITION_BUTTONS_TOP>
+<div id="button-bar">
+<input type="submit" name="preview_entry" value="<MT_TRANS phrase="Preview">" />
+<input type="submit" value="<MT_TRANS phrase="Save">" />
+<TMPL_UNLESS NAME=NEW_OBJECT>
+<input onclick="doRemoveItem('<TMPL_VAR NAME=ID>', 'entry&amp;blog_id=<TMPL_VAR NAME=BLOG_ID>')" type="button" value="<MT_TRANS phrase="Delete Entry">" />
+</TMPL_UNLESS>
+</div>
+</TMPL_IF>
+
+<div id="title-box">
+
+<div id="title-field"<TMPL_IF NAME=DISP_PREFS_BASIC> class="leftcol"<TMPL_ELSE><TMPL_IF NAME=DISP_PREFS_SHOW_CATEGORY> class="leftcol"</TMPL_IF></TMPL_IF>>
+<label for="title"><MT_TRANS phrase="Title"></label><br />
+<input name="title" id="title" tabindex="1" value="<TMPL_VAR NAME=TITLE ESCAPE=HTML>" maxlength="255" />
+</div>
+
+<div id="status-field">
+<TMPL_IF NAME=DISP_PREFS_BASIC>
+<label for="status"><MT_TRANS phrase="Post Status"></label> <a href="#" onclick="return openManual('entries', 'item_post_status');return false;" class="help">?</a><br />
+<select name="status" id="status" tabindex="2">
+<option value="1"<TMPL_IF NAME="STATUS_DRAFT"> selected="selected"</TMPL_IF>><MT_TRANS phrase="Draft"></option>
+<option value="2"<TMPL_IF NAME="STATUS_PUBLISH"> selected="selected"</TMPL_IF>><MT_TRANS phrase="Publish"></option>
+<option value="4"<TMPL_IF NAME="STATUS_FUTURE"> selected="selected"</TMPL_IF>><MT_TRANS phrase="Future"></option>
+</select>
+<TMPL_UNLESS NAME=NEW_OBJECT>
+<span class="tip"><TMPL_VAR NAME=CREATED_ON_FORMATTED ESCAPE=HTML></span>
+</TMPL_UNLESS>
+<TMPL_ELSE>
+<TMPL_IF NAME=DISP_PREFS_SHOW_CATEGORY>
+<label for="category_id"><MT_TRANS phrase="Primary Category"></label><br />
+<select name="category_id" id="category_id" tabindex="2" onchange="doAddCategory(this)">
+<TMPL_LOOP NAME="CATEGORY_LOOP">
+<option value="<TMPL_VAR NAME=CATEGORY_ID>"<TMPL_IF NAME="CATEGORY_IS_SELECTED"> selected="selected"</TMPL_IF>><TMPL_VAR NAME=CATEGORY_LABEL></option>
+</TMPL_LOOP>
+<TMPL_IF NAME=CAN_EDIT_CATEGORIES>
+<option value=""><MT_TRANS phrase="Add new category..."></option>
+</TMPL_IF>
+</select><br />
+<TMPL_UNLESS NAME=NEW_OBJECT><a id="assign-multiple" href="javascript:editPlacements()"><MT_TRANS phrase="Assign Multiple Categories"></a></TMPL_UNLESS>
+</TMPL_IF>
+</TMPL_IF>
+</div>
+
+</div>
+
+<div id="body-box">
+
+<div class="field">
+<div class="field-header">
+<div class="field-label"><label for="text"><MT_TRANS phrase="Entry Body"></label></div>
+<div class="field-buttons">
+<script type="text/javascript">
+<!--
+if (canFormat) {
+    with (document) {
+        write('<a title="<MT_TRANS phrase="Bold">" href="#" onclick="return formatStr(document.entry_form.text, \'strong\')"><img src="<TMPL_VAR NAME=STATIC_URI>images/html-bold.gif" alt="<MT_TRANS phrase="Bold">" width="22" height="16" /></a>');
+        write('<a title="<MT_TRANS phrase="Italic">" href="#" onclick="return formatStr(document.entry_form.text, \'em\')"><img src="<TMPL_VAR NAME=STATIC_URI>images/html-italic.gif" alt="<MT_TRANS phrase="Italic">" width="22" height="16" /></a>');
+        write('<a title="<MT_TRANS phrase="Underline">" href="#" onclick="return formatStr(document.entry_form.text, \'u\')"><img src="<TMPL_VAR NAME=STATIC_URI>images/html-underline.gif" alt="<MT_TRANS phrase="Underline">" width="22" height="16" /></a>');
+        write('<a title="<MT_TRANS phrase="Insert Link">" href="#" onclick="return insertLink(document.entry_form.text)"><img src="<TMPL_VAR NAME=STATIC_URI>images/html-link.gif" alt="<MT_TRANS phrase="Insert Link">" width="22" height="16" /></a>');
+        write('<a title="<MT_TRANS phrase="Insert Email Link">" href="#" onclick="return insertLink(document.entry_form.text, 1)"><img src="<TMPL_VAR NAME=STATIC_URI>images/html-email.gif" alt="<MT_TRANS phrase="Insert Email Link">" width="22" height="16" /></a>');
+        write('<a title="<MT_TRANS phrase="Quote">" href="#" onclick="return formatStr(document.entry_form.text, \'blockquote\')"><img src="<TMPL_VAR NAME=STATIC_URI>images/html-quote.gif" alt="<MT_TRANS phrase="Quote">" width="22" height="16" /></a>');
+    }
+}
+<TMPL_IF NAME=CAN_UPLOAD>
+if (canFormat) {
+	with (document) {
+		write('<a title="<MT_TRANS phrase="Upload File">" href="<TMPL_VAR NAME=SCRIPT_URL>?__mode=start_upload&amp;blog_id=<TMPL_VAR NAME=BLOG_ID>" onclick="window.open(this.href, \'upload\', \'width=400,height=450,resizable=yes\'); return false"><img src="<TMPL_VAR NAME=STATIC_URI>images/html-file.gif" alt="<MT_TRANS phrase="Upload File">" width="22" height="16" /></a>');
+	}
+}
+</TMPL_IF>
+// -->
+</script>
+</div>
+</div>
+<textarea class="full-width" name="text" id="text" tabindex="3" rows="<TMPL_IF NAME=DISP_PREFS_SHOW_EXTENDED>10<TMPL_ELSE>20</TMPL_IF>"><TMPL_VAR NAME=TEXT ESCAPE=HTML></textarea>
+</div>
+
+<TMPL_IF NAME=DISP_PREFS_SHOW_EXTENDED>
+<div class="field">
+<div class="field-header">
+<div class="field-label"><label for="text_more"><MT_TRANS phrase="Extended Entry"></label> <a href="#" onclick="return openManual('entries', 'item_main_entry_text')" class="help">?</a></div>
+<div class="field-buttons">
+<script type="text/javascript">
+<!--
+if (canFormat) {
+    with (document) {
+        write('<a title="<MT_TRANS phrase="Bold">" href="#" onclick="return formatStr(document.entry_form.text_more, \'strong\')"><img src="<TMPL_VAR NAME=STATIC_URI>images/html-bold.gif" alt="<MT_TRANS phrase="Bold">" width="22" height="16" /></a>');
+        write('<a title="<MT_TRANS phrase="Italic">" href="#" onclick="return formatStr(document.entry_form.text_more, \'em\')"><img src="<TMPL_VAR NAME=STATIC_URI>images/html-italic.gif" alt="<MT_TRANS phrase="Italic">" width="22" height="16" /></a>');
+        write('<a title="<MT_TRANS phrase="Underline">" href="#" onclick="return formatStr(document.entry_form.text_more, \'u\')"><img src="<TMPL_VAR NAME=STATIC_URI>images/html-underline.gif" alt="<MT_TRANS phrase="Underline">" width="22" height="16" /></a>');
+        write('<a title="<MT_TRANS phrase="Insert Link">" href="#" onclick="return insertLink(document.entry_form.text_more)"><img src="<TMPL_VAR NAME=STATIC_URI>images/html-link.gif" alt="<MT_TRANS phrase="Insert Link">" width="22" height="16" /></a>');
+        write('<a title="<MT_TRANS phrase="Insert Email Link">" href="#" onclick="return insertLink(document.entry_form.text_more, 1)"><img src="<TMPL_VAR NAME=STATIC_URI>images/html-email.gif" alt="<MT_TRANS phrase="Insert Email Link">" width="22" height="16" /></a>');
+        write('<a title="<MT_TRANS phrase="Quote">" href="#" onclick="return formatStr(document.entry_form.text_more, \'blockquote\')"><img src="<TMPL_VAR NAME=STATIC_URI>images/html-quote.gif" alt="<MT_TRANS phrase="Quote">" width="22" height="16" /></a>');
+    }
+}
+<TMPL_IF NAME=CAN_UPLOAD>
+if (canFormat) {
+	with (document) {
+		write('<a title="<MT_TRANS phrase="Upload File">" href="<TMPL_VAR NAME=SCRIPT_URL>?__mode=start_upload&amp;blog_id=<TMPL_VAR NAME=BLOG_ID>" onclick="window.open(this.href, \'upload\', \'width=400,height=450,resizable=yes\'); return false"><img src="<TMPL_VAR NAME=STATIC_URI>images/html-file.gif" alt="<MT_TRANS phrase="Upload File">" width="22" height="16" /></a>');
+	}
+}
+</TMPL_IF>
+// -->
+</script>
+</div>
+</div>
+<textarea class="full-width" name="text_more" id="text_more" tabindex="4" rows="15"><TMPL_VAR NAME=TEXT_MORE ESCAPE=HTML></textarea>
+</div>
+</TMPL_IF>
+
+<TMPL_IF NAME=DISP_PREFS_SHOW_EXCERPT>
+<div class="field">
+<label for="excerpt"><MT_TRANS phrase="Excerpt"></label> <a href="#" onclick="return openManual('entries', 'item_excerpt')" class="help">?</a><br />
+<textarea class="full-width" name="excerpt" id="excerpt" tabindex="5" rows="5"><TMPL_VAR NAME=EXCERPT ESCAPE=HTML></textarea>
+</div>
+</TMPL_IF>
+
+<TMPL_IF NAME=DISP_PREFS_SHOW_KEYWORDS>
+<div class="field">
+<label for="keywords"><MT_TRANS phrase="Keywords"></label> <a href="#" onclick="return openManual('entries', 'item_keywords')" class="help">?</a><br />
+<textarea class="full-width" name="keywords" id="keywords" tabindex="6" rows="2"><TMPL_VAR NAME=KEYWORDS ESCAPE=HTML></textarea>
+</div>
+</TMPL_IF>
+
+</div>
+
+<TMPL_IF NAME=DISP_PREFS_BASIC>
+<input type="hidden" name="convert_breaks" value="<TMPL_VAR NAME=CONVERT_BREAKS ESCAPE=HTML>" />
+<input type="hidden" name="allow_comments" value="<TMPL_VAR NAME=ALLOW_COMMENTS ESCAPE=HTML>" />
+<input type="hidden" name="allow_pings" value="<TMPL_VAR NAME=ALLOW_PINGS ESCAPE=HTML>" />
+<TMPL_ELSE>
+
+<div id="settings-box">
+
+<div id="status-box">
+<div class="field">
+<label for="status"><MT_TRANS phrase="Post Status"></label> <a href="#" onclick="return openManual('entries', 'item_post_status')" class="help">?</a><br />
+<select name="status" id="status" tabindex="7">
+<option value="1"<TMPL_IF NAME="STATUS_DRAFT"> selected="selected"</TMPL_IF>><MT_TRANS phrase="Draft"></option>
+<option value="2"<TMPL_IF NAME="STATUS_PUBLISH"> selected="selected"</TMPL_IF>><MT_TRANS phrase="Publish"></option>
+<option value="4"<TMPL_IF NAME="STATUS_FUTURE"> selected="selected"</TMPL_IF>><MT_TRANS phrase="Future"></option>
+</select>
+</div>
+
+<div class="field">
+<TMPL_IF NAME=DISP_PREFS_SHOW_AUTHORED_ON>
+<label><MT_TRANS phrase="Authored On"></label> <a href="#" onclick="return openManual('entries', 'item_authored_on')" class="help">?</a><br />
+<input type="hidden" name="created_on_old" value="<TMPL_VAR NAME=CREATED_ON_FORMATTED ESCAPE=HTML>" />
+<input name="created_on_manual" id="created_on_manual" tabindex="8" value="<TMPL_VAR NAME=CREATED_ON_FORMATTED ESCAPE=HTML>" />
+<TMPL_ELSE>
+<label><MT_TRANS phrase="Authored On"></label><br />
+<TMPL_VAR NAME=CREATED_ON_FORMATTED ESCAPE=HTML>
+</TMPL_IF>
+</div>
+</div>
+
+<div id="comments-box">
+<TMPL_IF NAME=DISP_PREFS_SHOW_ALLOW_COMMENTS>
+<div class="field">
+<label for="allow_comments"><MT_TRANS phrase="Comments"></label> <a href="#" onclick="return openManual('entries', 'item_allow_comments'); return false" class="help">?</a><br />
+<select name="allow_comments" id="allow_comments" tabindex="9">
+<option value="0"<TMPL_IF NAME=ALLOW_COMMENTS_0> selected="selected"</TMPL_IF>><MT_TRANS phrase="None"></option>
+<option value="1"<TMPL_IF NAME=ALLOW_COMMENTS_1> selected="selected"</TMPL_IF>><MT_TRANS phrase="Open"></option>
+<option value="2"<TMPL_IF NAME=ALLOW_COMMENTS_2> selected="selected"</TMPL_IF>><MT_TRANS phrase="Closed"></option>
+</select>
+</div>
+<TMPL_ELSE>
+<input type="hidden" name="allow_comments" value="<TMPL_VAR NAME=ALLOW_COMMENTS ESCAPE=HTML>" />
+</TMPL_IF>
+
+<TMPL_IF NAME=DISP_PREFS_SHOW_CONVERT_BREAKS>
+<div class="field">
+<label for="convert_breaks"><MT_TRANS phrase="Text Formatting"></label> <a href="#" onclick="openTFDocs(); return false" class="help">?</a><br />
+<select name="convert_breaks" id="convert_breaks" tabindex="10">
+<TMPL_LOOP NAME=TEXT_FILTERS>
+<option value="<TMPL_VAR NAME=FILTER_KEY>"<TMPL_IF NAME=FILTER_SELECTED> selected="selected"</TMPL_IF>><TMPL_VAR NAME=FILTER_LABEL></option>
+</TMPL_LOOP>
+</select>
+</div>
+<TMPL_ELSE>
+<input type="hidden" name="convert_breaks" value="<TMPL_VAR NAME=CONVERT_BREAKS ESCAPE=HTML>" />
+</TMPL_IF>
+</div>
+
+<div id="trackback-box">
+<TMPL_IF NAME=DISP_PREFS_SHOW_ALLOW_PINGS>
+<div class="field">
+<label><MT_TRANS phrase="Accept TrackBack Pings"> <input type="checkbox" name="allow_pings" id="allow_pings" tabindex="11" value="1"<TMPL_IF NAME="ALLOW_PINGS"> checked="checked"</TMPL_IF> /></label>
+</div>
+<TMPL_ELSE>
+<input type="hidden" name="allow_pings" value="<TMPL_VAR NAME=ALLOW_PINGS ESCAPE=HTML>" />
+</TMPL_IF>
+
+<TMPL_IF NAME=DISP_PREFS_SHOW_PING_URLS>
+<div class="field">
+<label for="to_ping_urls"><MT_TRANS phrase="URLs to Ping"></label> <a href="#" onclick="return openManual('entries', 'item_urls_to_ping'); return false" class="help">?</a><br />
+<textarea style="width: 100%;" name="to_ping_urls" id="to_ping_urls" tabindex="12" rows="3"><TMPL_VAR NAME=TO_PING_URLS ESCAPE=HTML></textarea>
+<div align="right"><a href="#" onclick="listPreviousPings(); return false"><MT_TRANS phrase="View Previously Sent Pings"></a></div>
+</div>
+</TMPL_IF>
+</div>
+
+<br style="clear: left;" />
+</div>
+
+</TMPL_IF>
+
+<TMPL_IF NAME=POSITION_BUTTONS_BOTTOM>
+<div id="button-bar">
+<input type="submit" name="preview_entry" value="<MT_TRANS phrase="Preview">" />
+<input type="submit" tabindex="13" value="<MT_TRANS phrase="Save">" />
+<TMPL_UNLESS NAME=NEW_OBJECT>
+<input onclick="doRemoveItem('<TMPL_VAR NAME=ID>', 'entry&amp;blog_id=<TMPL_VAR NAME=BLOG_ID>')" type="button" value="<MT_TRANS phrase="Delete Entry">" />
+</TMPL_UNLESS>
+</div>
+</TMPL_IF>
+
+<div class="side-link">
+<a href="#" onclick="window.open('<TMPL_VAR NAME=SCRIPT_URL>?__mode=show_entry_prefs&amp;blog_id=<TMPL_VAR NAME=BLOG_ID><TMPL_UNLESS NAME=NEW_OBJECT>&amp;entry_id=<TMPL_VAR NAME=ID></TMPL_UNLESS>', 'display', 'width=500,height=500,scrollbars=yes'); return false"><MT_TRANS phrase="Customize the display of this page."></a>
+</div>
+
+</form>	
+
+<TMPL_UNLESS NAME=NEW_OBJECT>
+
+<hr />
+
+<div id="manage-comments">
+<h4><MT_TRANS phrase="Manage Comments"></h4>
+<p><MT_TRANS phrase="Click on the author's name to edit the comment. To delete a comment, check the box to its right and then click the Delete button."></p>
+
+<form action="<TMPL_VAR NAME=SCRIPT_URL>" onsubmit="return false;">
+
+<div class="list">
+<table cellspacing="0">
+
+<tr>
+<th width="45%"><MT_TRANS phrase="Author"></th>
+<th width="45%"><MT_TRANS phrase="Date Added"></th>
+<th width="10%"><MT_TRANS phrase="Delete"></th>
+</tr>
+
+<TMPL_LOOP NAME=COMMENT_LOOP>
+<tr class="<TMPL_IF NAME=IS_ODD>odd<TMPL_ELSE>even</TMPL_IF>">
+<td><a href="<TMPL_VAR NAME=SCRIPT_URL>?__mode=view&amp;_type=comment&amp;id=<TMPL_VAR NAME=COMMENT_ID>&amp;blog_id=<TMPL_VAR NAME=BLOG_ID>&amp;_return=edit_entry"><TMPL_VAR NAME=COMMENT_AUTHOR ESCAPE=HTML></a></td>
+<td><TMPL_VAR NAME=COMMENT_CREATED ESCAPE=HTML></td>
+<td><input type="checkbox" name="id" value="<TMPL_VAR NAME=COMMENT_ID>" /></td>
+</tr>
+</TMPL_LOOP>
+
+</table>
+</div>
+
+<div align="right">
+<input type="button" onclick="doRemoveItems(this.form, 'comment&amp;blog_id=<TMPL_VAR NAME=BLOG_ID>&amp;_return=edit_entry', 'comments')" value="<MT_TRANS phrase="Delete">" />
+</div>
+</form>
+
+</div>
+
+<div id="manage-trackbacks">
+<h4><MT_TRANS phrase="Manage TrackBack Pings"></h4>
+<p><MT_TRANS phrase="Click on the ping title to view the page. To delete a ping, check the box to its right and then click the Delete button."></p>
+
+<form action="<TMPL_VAR NAME=SCRIPT_URL>" onsubmit="return false;">
+
+<div class="list">
+<table cellspacing="0">
+
+<tr>
+<th width="45%"><MT_TRANS phrase="Title"></th>
+<th width="45%"><MT_TRANS phrase="Date Added"></th>
+<th width="10%"><MT_TRANS phrase="Delete"></th>
+</tr>
+
+<TMPL_LOOP NAME=PING_LOOP>
+<tr class="<TMPL_IF NAME=IS_ODD>odd<TMPL_ELSE>even</TMPL_IF>">
+<td><a target="_blank" href="<TMPL_VAR NAME=PING_URL ESCAPE=HTML>"><TMPL_VAR NAME=PING_TITLE ESCAPE=HTML></a></td>
+<td><TMPL_VAR NAME=PING_CREATED ESCAPE=HTML></td>
+<td><input type="checkbox" name="id" value="<TMPL_VAR NAME=PING_ID>" /></td>
+</tr>
+</TMPL_LOOP>
+
+</table>
+</div>
+
+<div align="right">
+<input type="button" onclick="doRemoveItems(this.form, 'ping&amp;blog_id=<TMPL_VAR NAME=BLOG_ID>&_return=edit_entry', 'TrackBack pings')" value="<MT_TRANS phrase="Delete">" />
+</div>
+</form>
+</div>
+
+<br style="clear: left;" />
+
+<TMPL_IF NAME=CAN_SEND_NOTIFICATIONS>
+
+<hr />
+
+<h4><MT_TRANS phrase="Send a Notification"></h4>
+
+<p><MT_TRANS phrase="You can send a notification message to your group of readers. Just enter the email message that you would like to insert below the weblog entry's link. You have the option of including the excerpt indicated above or the entry in its entirety."></p>
+
+<form method="post" action="<TMPL_VAR NAME=SCRIPT_URL>">
+<input type="hidden" name="__mode" value="send_notify" />
+<input type="hidden" name="entry_id" value="<TMPL_VAR NAME=ID>" />
+
+<div class="field">
+<textarea style="width: 500px;" name="message" id="message" rows="7"><TMPL_VAR NAME=NOTIFICATION ESCAPE=HTML></textarea>
+</div>
+
+<div class="field">
+<label><input type="checkbox" name="send_excerpt" value="1" /><MT_TRANS phrase="Include excerpt"></label>
+</div>
+
+<div class="field">
+<label><input type="checkbox" name="send_body" value="1" /><MT_TRANS phrase="Include entire entry body"></label><br />
+<span class="tip"><MT_TRANS phrase="Note: If you chose to send the weblog entry, all added HTML will be included in the email."></span>
+</div>
+
+<input type="submit" value="<MT_TRANS phrase="Send">" />
+
+</form>
+</TMPL_IF>
+
+</TMPL_UNLESS>
+
+<TMPL_IF NAME=PLUGIN_ACTION_LOOP>
+Plugin actions: <br />
+<TMPL_LOOP NAME=PLUGIN_ACTION_LOOP>
+<a href="<TMPL_VAR NAME=PAGE>;from=edit_entry;id=<TMPL_VAR NAME=ID>;blog_id=<TMPL_VAR NAME=BLOG_ID>"><TMPL_VAR NAME=LINK_TEXT></a> <br />
+</TMPL_LOOP>
+</TMPL_IF>
+
+</div>
+
+<TMPL_INCLUDE NAME="footer.tmpl">

@@ -1,0 +1,296 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>設定ガイド</title>
+<link rel="stylesheet" href="doc-styles.css" type="text/css"/>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+
+<body>
+<h3>Movable Typeユーザー・マニュアル: 設定ガイド</h3>
+<p><a href="mtmanual.html">≪ 目次</a></p>
+
+
+<p><a name="__index__"></a></p>
+<!-- INDEX BEGIN -->
+
+<ul>
+
+	<li><a href="#configuration_settings">設定ガイド</a></li>
+</ul>
+<!-- INDEX END -->
+
+<hr/>
+<p>
+</p>
+<h1><a name="configuration_settings">設定ガイド</a></h1>
+<p>Movable Typeの設定ファイルである<em>mt.cfg</em>は、Movable Typeディレクトリ(<em>.cgi</em>スクリプトを格納しているディレクトリ)にあります。 以下は、<em>mt.cfg</em>で使用できる有効な設定オプションのリストです。各オプションの説明とデフォルト値を参照できます。 これらの説明は<em>mt.cfg</em>の中にも記載されています。</p>
+<ul>
+<li><strong><a name="item_cgipath">CGIPath</a></strong><br/> </li>
+<li><strong><a name="item_admincgipath">AdminCGIPath</a></strong><br/> </li> Movable Typeは、<em>CGIPath</em>と<em>AdminCGIPath</em>の設定値を使ってMovable TypeのCGIスクリプトへのリンクを生成します。 たとえば、Movable Typeのタグ<code>&lt;$MTCGIPath$&gt;</code>は<em>CGIPath</em> の設定値に置き換えられます。 <em>AdminCGIPath</em>は<em>mt.cgi</em>へのリンクを生成するために使われ、<em>CGIPath</em>はその他すべてのCGIスクリプトへリンクを生成するために使われています。 <p><em>AdminCGIPath</em>は任意オプションです。 値を指定しないと、デフォルトで<em>CGIPath</em>の値になります。 <em>mt.cgi</em>を他のCGIスクリプトとは別のディレクトリに入れる場合や、SSLを有効にしたURLで<em>mt.cgi</em>を使いたい場合には、AdminCGIPathを利用してください。</p>
+<p>デフォルト値： なし</p>
+<p>例：</p>
+<pre>
+    CGIPath <a href="http://www.your-site.com/path/to/mt/">http://www.your-site.com/path/to/mt/</a>
+    AdminCGIPath https://www.your-site.com/path/to/mt/</pre>
+<p></p>
+<li><strong><a name="item_datasource">DataSource</a></strong><br/> </li> Movable Typeのデータベース・ファイルが保存されている<em>db</em>ディレクトリまでのファイルシステム上のパスを指します。Berkeley DBのデータ・ストレージ・オプションを使用している場合を対象にしています。 <p>デフォルト値： <em>./db</em></p>
+<p>例：</p>
+<pre>
+    DataSource ./db</pre>
+<p></p>
+<li><strong><a name="item_staticwebpath">StaticWebPath</a></strong><br/> </li> Movable Typeのすべてのファイルをcgi-binディレクトリに入れた場合は、スタティック・ファイル(<em>docs</em>、<em>images</em>、<em>styles.css</em>、<em>mt.js</em>)を別の場所に保存して、ウェブサーバーで実行されないようにする必要があります。 詳細は「<a href="./mtmanual_troubleshooting.html">トラブルシューティング</a>」のセクションを参照してください。 <p>デフォルト値： なし</p>
+<p>例：</p>
+<pre>
+    StaticWebPath /path/to/static-files/</pre>
+<p></p>
+<li><strong><a name="item_templatepath">TemplatePath</a></strong><br/> </li> <em>tmpl</em>ディレクトリまでのファイルシステム上のパスを指します。このディレクトリにはMovable Typeアプリケーションのフロントエンド・テンプレートが含まれています。 <p>デフォルト値： <em>./tmpl</em></p>
+<p>例：</p>
+<pre>
+    TemplatePath ./tmpl</pre>
+<p></p>
+<li><strong><a name="item_mailtransfer">MailTransfer</a></strong><br/> </li> sendmailではなくSMTPを使う場合は、MailTransferの設定値を”smtp”にしてください（下記参照）。 MailTransferで設定できる値: <code>smtp</code>、<code>sendmail</code>、および<code>debug</code> (デバッグ用にメール・メッセージを書き出す) <p>デフォルト値： <code>sendmail</code></p>
+<p>例：</p>
+<pre>
+    MailTransfer smtp</pre>
+<p></p>
+<li><strong><a name="item_sendmailpath">SendMailPath</a></strong><br/> </li> デフォルトでMovable Typeは、3つの場所（<em>/usr/lib/sendmail</em>、<em>/usr/sbin/sendmail</em>、<em>/usr/ucblib/sendmail</em>）でsendmailを探します。 sendmailが別の場所にある場合は、SendMailPathの設定を調整することができます。 <p>デフォルト値： 3つの場所のいずれか</p>
+<p>例：</p>
+<pre>
+    SendMailPath /usr/sbin/sendmail</pre>
+<p></p>
+<li><strong><a name="item_smtpserver">SMTPServer</a></strong><br/> </li> SMTPサーバーのアドレスを示します。<code>MailTransfer smtp</code>と一緒に使います。 <p>デフォルト値： <code>localhost</code></p>
+<p>例：</p>
+<pre>
+    SMTPServer smtp.your-site.com</pre>
+<p></p>
+<li><strong><a name="item_notempfiles">NoTempFiles</a></strong><br/> </li> デフォルトでMovable Typeは、出力ファイル(たとえば、索引やアーカイブの1ページ)へ書き込むときに、最初はtempファイルにデータを書き出し、次にtempファイルの名前を変更します。 データを書き込むプロセスが突然停止した場合、この設定によってサイトからページが抹消されるのを防ぎます。 この設定ではディレクトリの権限を甘く設定する必要などがあるため、もしこの設定を望まない場合は、<a href="#item_notempfiles"><code>NoTempFiles</code></a> を使ってこの設定をオフにすることもできます。 <p>デフォルト値： <code>0</code></p>
+<p>例：</p>
+<pre>
+    NoTempFiles 1</pre>
+<p></p>
+<li><strong><a name="item_weblogspingurl">WeblogsPingURL</a></strong><br/> </li> XML-RPC <em>weblogs.com</em> pingを送信するときに使うURLを示します。 <p>デフォルト値： <code>http://rpc.weblogs.com/RPC2</code></p>
+<p>例：</p>
+<pre>
+    WeblogsPingURL <a href="http://some.alternate.weblogs.com.server/path/">http://some.alternate.weblogs.com.server/path/</a></pre>
+<p></p>
+<li><strong><a name="item_blogspingurl">BlogsPingURL</a></strong><br/> </li> XML-RPC <em>blo.gs</em> pingを送信するときに使うURLを示します。 <p>デフォルト値： <code>http://ping.blo.gs/</code></p>
+<p>例：</p>
+<pre>
+    BlogsPingURL <a href="http://some.alternate.blo.gs.server/path/">http://some.alternate.blo.gs.server/path/</a></pre>
+<p></p>
+<li><strong><a name="item_mtpingurl">MTPingURL</a></strong><br/> </li> XML-RPC pingを<em>movabletype.org</em>に送信するときに使うURLを示します(Recently Updated Keyを持っている場合)。 <p>デフォルト値： <code>http://www.movabletype.jp/update/</code></p>
+<p>例：</p>
+<pre>
+    MTPingURL <a href="http://some.alternate.movabletype.org.server/path/">http://some.alternate.movabletype.org.server/path/</a></pre>
+<p></p>
+<li><strong><a name="item_cgimaxupload">CGIMaxUpload</a></strong><br/> </li> Movable Typeのアップロード機能を使ってファイルをアップロードする場合、サービス拒否攻撃を未然に防ぐために、アップロードできるファイル・サイズの上限を設定します。 <p>デフォルト値： <code>1000000</code> (1MB)</p>
+<p>例：</p>
+<pre>
+    CGIMaxUpload 500000</pre>
+<p></p>
+<li><strong><a name="item_dbumask">DBUmask</a></strong><br/> </li>
+<li><strong><a name="item_htmlumask">HTMLUmask</a></strong><br/> </li>
+<li><strong><a name="item_uploadumask">UploadUmask</a></strong><br/> </li>
+<li><strong><a name="item_dirumask">DirUmask</a></strong><br/> </li> Movable Typeは、ファイルとディレクトリの作成時に、umaskの設定値を使ってファイルのパーミッションを設定します。 cgiwrapとsuexec下で実行している場合、これらの設定はすべて<code>0022</code>の値にしてください。 <p>デフォルト値： <code>0111</code> (DBUmask、HTMLUmask、UploadUmask)、0000 (DirUmask)</p>
+<p>例：</p>
+<pre>
+    DBUmask 0022</pre>
+<p></p>
+<li><strong><a name="item_htmlperms">HTMLPerms</a></strong><br/> </li>
+<li><strong><a name="item_uploadperms">UploadPerms</a></strong><br/> </li> umaskの設定で権限を調整する方法のほかに、<em>HTMLPerms</em>と<em>UploadPerms</em>を使っても、システムで作成されたファイル(出力ファイルとアップロード・ファイルのいずれか)のデフォルトのパーミッションを設定できます。 実際にこの設定を使う場合は、システムが作成するファイルの実行ビットをオンにするときに限られます。たとえば、実行ビットをオンにする必要があるPHPファイルをMovable Typeが生成する場合は、<em>HTMLPerms</em>を<code>0777</code>に設定します。 <p>デフォルト値： <code>0666</code></p>
+<p>例：</p>
+<pre>
+    HTMLPerms 0777</pre>
+<p></p>
+<li><strong><a name="item_tempdir">TempDir</a></strong><br/> </li> ファイルをアップロードするとき、Movable Typeは同名のファイルを検出した場合、プロンプトを表示して確認してから、すでに存在するファイルを上書きするよう設定できます。 このために、Movable Typeはアップロードされたデータを一時ファイルとして書き込む必要があります。 その一時ファイルは、TempDirで指定したディレクトリに保存されます。 <p>デフォルト値： <code>/tmp</code></p>
+<p>例：</p>
+<pre>
+    TempDir /tmp/</pre>
+<p></p>
+<li><strong><a name="item_entriesperrebuild">EntriesPerRebuild</a></strong><br/> </li> 個々のアーカイブ（Individual Entry Archives）を再構築する際、Movable Typeは再構築のプロセスを一定数のエントリーずつに分けて、再構築します。 デフォルトでは、1回に付き40エントリーを再構築し、それが終わると次の40エントリーに取りかかります。 このエントリー数はEntriesPerRebuildで変更可能です。たとえば非常に安定したサーバーを使っている場合は、1回で全エントリーを処理した方が賢明でしょう。 <p>デフォルト値： <code>40</code></p>
+<p>例：</p>
+<pre>
+    EntriesPerRebuild 100</pre>
+<p></p>
+<li><strong><a name="item_importpath">ImportPath</a></strong><br/> </li> <em>import</em>ディレクトリまでのファイルシステムのパスを示します。このパスは、エントリーとコメントをシステムに読み込み（インポート）するときに使います。<em>import</em>は読み込まれたファイルを納めるディレクトリです。 <p>デフォルト値： <em>./import</em></p>
+<p>例：</p>
+<pre>
+    ImportPath ./import</pre>
+<p></p>
+<li><strong><a name="item_usenfssafelocking">UseNFSSafeLocking</a></strong><br/> </li> デフォルトでMovable Typeは、Perlの<em>flock()</em>機能を使って読み取り・書き込み時に、データベースをロックします。 NFSでマウントしたディレクトリを使っているシステムでは、Perlの<em>flock()</em> が機能しないことがあります。これは、<em>perl</em>のプログラムで<em>flock(2)</em>の代わりに<em>fnctl(2)</em>を使うと防止できる可能性がありますが、ロックが完全に機能することは保証されません。 <p>したがってNFSを使っているシステムにおいてMovable Typeの実行に問題がある場合は、<em>UseNFSSafeLocking</em>ディレクティブを使って、NFSでも効果のある、より簡素化されたファイル・ロックを使うことができます。</p>
+<p>デフォルト値： <code>0</code> (NFS有効ロックを使わない)</p>
+<p>例：</p>
+<pre>
+    UseNFSSafeLocking 1</pre>
+<p></p>
+<li><strong><a name="item_nolocking">NoLocking</a></strong><br/> </li> Windowsシステムによっては、<em>flock()</em>と<em>link()</em>のどちらも備わっておらず、デフォルトの<em>flock()</em>ロックも、NFS有効ロックも使えないことがあります。 そのような場合には<em>NoLocking</em>オプションをオンにすることができます。 ただし、このオプションの選択は、システムがほかのどの機能も<strong>サポートしない場合に限る</strong>必要があります。このオプションを使うと、データベースが破損する可能性が高まるので、最後の手段にしておくべきです。 たとえば個人用のサーバーを持っているなどで、一人でシステムを利用している場合には、これは大きな問題にならないはずです。 <p>デフォルト値： <code>0</code> (ロック使用)</p><p>例：</p>
+<pre>
+    NoLocking 1</pre>
+<p></p>
+<li><strong><a name="item_nohtmlentities">NoHTMLEntities</a></strong><br/> </li> デフォルトでMovable Typeは、Perlモジュールの<em>HTML::Entities</em>がインストールされていることを仮定し、このモジュールを使い、文字をHTMLエンティティにエンコードします。 しかし、たとえば、ポーランド語やロシア語のように異なる文字エンコードを使う言語の環境では、このモジュールをエンコードに使いたくない場合があります。 そのようなケースでは、<em>NoHTMLEntities</em>を<code>1</code>に設定します。 <p>デフォルト値： 
+<code>0</code> (<em>HTML::Entities</em>がある場合はそれを使用)
+</p>
+<p>例：</p>
+<pre>
+    NoHTMLEntities 1</pre>
+<p></p>
+<li><strong><a name="item_nocdata">NoCDATA</a></strong><br/> </li> デフォルトでMovable Typeは、データをXMLにエンコードしているとき、あなたのデータにHTMLタグや、XMLに対し安全でないデータが含まれていないかどうかをチェックし、検出した場合は、データをCDATAタグで囲みます。 ただし、ニュース・アグリゲータの中には、CDATAを他のデータと一緒にすると、問題が生じることがあります。こうした問題がある場合は、<em>NoCDATA</em>を使って特殊文字をエンティティにエンコードすることができます。 <p>デフォルト値： <code>0</code> (CDATAを使用)</p>
+<p>例：</p>
+<pre>
+    NoCDATA 1</pre>
+<p></p>
+<li><strong><a name="item_pingtimeout">PingTimeout</a></strong><br/> </li> Movable Typeはpingの送信時に、それがトラックバックpingでも更新用pingでも、pingにタイムアウトを設定します。これはpingの返事を長時間待ち続けてシステムがフリーズするのを防ぐためです。 
+デフォルトの15秒を、<em>PingTimeout</em>ディレクティブで異なる値に変更できます。
+ 値は秒単位です。 <p>デフォルト値： <code>15</code></p>
+<p>例：</p>
+<pre>
+    PingTimeout 5</pre>
+<p></p>
+<li><strong><a name="item_pinginterface">PingInterface</a></strong><br/> </li> デフォルトでは送り出されるトラックバックpingと更新pingは、Movable Typeを実行しているサーバーのデフォルトのネットワーク・インタフェース・カード(NIC)を使って、インターネットに送られます。 あまり起きないケースですが、外向きのPingの通信を、別のNICやネットワーク接続で実現することが必要であったり望ましかったりする場合もあります。 こうした状況では、外向きのping通知を送信するために使うNICのIPアドレスを入力します。 <p>このときIP address (xxx.xxx.xxx.xxx)だけを指定することも、IPアドレスとポート番号(xxx.xxx.xxx.xxx:#)を指定することもできます。 ポート番号が指定されなければ、外向きのpingは指定されたIPアドレスから、そのとき空いているポート番号を使って送信されます。 ポート番号が指定されれば、外向きのpingは、指定されたIPアドレスとそのポート番号を使って送信されます。 これは、外向きの接続をフィルタするファイアウォールに特定の発信元からのIP:portアドレスが必要な場合に役立ちます。</p>
+<p><strong>注：</strong> ポート番号は絶対に必要な場合を除き、指定しないでください。 指定されたポートが使用中であると、外向きのpingはエラー表示されないまま、送信に失敗します。</p>
+<p>デフォルト値： なし</p>
+<p>例：</p>
+<pre>
+    PingInterface 192.168.10.5
+    PingInterface 192.168.10.5:8080</pre>
+<p></p>
+<li><strong><a name="item_pingproxy">PingProxy</a></strong><br/> </li> Movable Typeを起動するコンピューターが、ファイアウォール内または内部の非公開ネットワークにある場合、プロキシ・サーバーがインターネット接続に必要になることがあります。 <em>PingProxy</em>をそのプロキシ･サーバーのURLアドレスに設定すると、Movable Typeは、指定したプロキシ・サーバーを経由して、すべてのトラックバックpingと更新pingを送信するようになります。 <p>デフォルト値： なし</p>
+<p>例：</p>
+<pre>
+    PingProxy <a href="http://192.168.10.5:3128">http://192.168.10.5:3128</a></pre>
+<p></p>
+<li><strong><a name="item_pingnoproxy">PingNoProxy</a></strong><br/> </li> 上記の<em>PingProxy</em>を設定すると、Movable Typeは、<em>PingNoProxy</em>で指定したドメインへ送るpingを除き、トラックバックpingと更新pingを指定したプロキシ・サーバー経由で送信するようになります。 <p>デフォルト値： localhost, 127.0.0.1</p>
+<p>例：</p>
+<pre>
+    PingNoProxy internal.lan, example.tld</pre>
+<p></p>
+<li><strong><a name="item_imagedriver">ImageDriver</a></strong><br/> </li> アップロードされた画像からサムネールを作るのに使う画像ツールキットを指定します。 デフォルトでは、ImageMagickライブラリとImage::MagickというPerlモジュールを使います。これらのツールがない場合は、NetPBMツールがシステムにインストールされていれば、代わりに使用できます。 設定値は、ImageMagick</em>か<em>NetPBM</em>のいずれかです。 <p>デフォルト値： <code>ImageMagick</code></p>
+<p>例：</p>
+<pre>
+    ImageDriver NetPBM</pre>
+<p></p>
+<li><strong><a name="item_netpbmpath">NetPBMPath</a></strong><br/> </li> デフォルトではMovable Typeは、3つの場所（<em>/usr/local/netpbm/bin</em>、<em>/usr/local/bin</em>、<em>/usr/bin</em>）でNetPBMツールを捜します。 NetPBMツールが別の場所にある場合は、NetPBMPathの設定を変更することができます。 パスは、NetPBMバイナリを含むディレクトリまでのパスにしてください。たとえば、<em>pnmscale</em>バイナリが<em>/home/foo/netpbm/bin/pnmscale</em>にある場合、NetPBMPathは<em>/home/foo/netpbm/bin</em>にします。 <p>デフォルト値： 3つの場所のいずれか</p>
+<p>例：</p>
+<pre>
+    NetPBMPath /home/foo/netpbm/bin</pre>
+<p></p>
+<li><strong><a name="item_commentscript">CommentScript</a></strong><br/> </li>
+<li><strong><a name="item_trackbackscript">TrackbackScript</a></strong><br/> </li>
+<li><strong><a name="item_searchscript">SearchScript</a></strong><br/> </li>
+<li><strong><a name="item_xmlrpcscript">XMLRPCScript</a></strong><br/> </li>
+<li><strong><a name="item_viewscript">ViewScript</a></strong><br/> </li> デフォルトでは、Movable Typeがコメントに使うスクリプトは<em>mt-comments.cgi</em>、TrackBackのスクリプトは<em>mt-tb.cgi</em>、検索エンジンのスクリプトは<em>mt-search.cgi</em>、XML-RPCサーバーのスクリプトは<em>mt-xmlrpc.cgi</em>、そしてダイナミック・ウェブログ表示のスクリプトは<em>mt-view.cgi</em>となっています。 たとえば、mod_perlを使ってMovable Typeを実行している場合、Perlスクリプトに<em>.pl</em>拡張子を要するサーバーを使っている場合など、状況によっては、デフォルトのスクリプト名がそのまま使えないこともあります。 このような状況ではこれらの設定値を変えると、デフォルト・テンプレートとMovable Typeのコードで広く使われるスクリプト名を変更できます。 <p>デフォルト値： CommentScriptは<em>mt-comments.cgi</em>、TrackbackScriptは<em>mt-tb.cgi</em>、SearchScriptは<em>mt-search.cgi</em>、XMLRPCScriptは<em>mt-xmlrpc.cgi</em>、ViewScriptは<em>mt-view.cgi</em></p>
+<p>例：</p>
+<pre>
+    CommentScript comments
+    TrackbackScript trackback
+    SearchScript search
+    XMLRPCScript xmlrpc
+    ViewScript weblog</pre>
+<p></p>
+<li><strong><a name="item_publishcharset">PublishCharset</a></strong><br/> </li> デフォルトでは、ユーザー・プロフィールで「表示する言語」に選んだ言語に対応する、HTTPヘッダーの文字エンコーディングを指します。 この設定を上書きしたいときは、PublishCharsetを、使用したい文字エンコーディングに設定します。 ただし変更すると、Movable Typeシステムを使うすべてのユーザーとすべてのウェブログの設定が変更されるので注意してください。 エンコーディングの一例は<code>Shift_JIS</code>です。 <p>デフォルト値： 「表示する言語」に対応する文字エンコーディング</p>
+<p>例：</p>
+<pre>
+    PublishCharset Shift_JIS</pre>
+<p></p>
+<li><strong><a name="item_safemode">SafeMode</a></strong><br/> </li> 「セーフ・モード」がオンになっていると、セキュリティなどの問題についての警告機能がオンになり、テンプレートを.cgiやその他の拡張子を持つファイルにリンクさせる機能などの小規模な機能がオフになります。 セーフ・モードはデフォルトではオンですが、SafeModeを0に設定すると、オフにできます。 <p>デフォルト値： <code>1</code></p>
+<p>例：</p>
+<pre>
+    SafeMode 0</pre>
+<p></p>
+<li><strong><a name="item_globalsanitizespec">GlobalSanitizeSpec</a></strong><br/> </li> デフォルトでMovable Typeは、閲覧者が投稿したすべてのデータを無害化（サニタイズ）します。 これは、サイトのセキュリティを脅かす可能性があるコード（HTMLその他）を削除することで実現します。 このサニタイズ機能は、一部のHTMLタグだけが機能するようにし、そのほかのタグや実行命令（たとえばPHPなど）はすべて取り除きます。 GlobalSanitizeSpecの設定では、有効にするHTMLタグおよび属性を指定します。 <p>デフォルト値： <code>a href,b,br/,p,strong,em,ul,li,blockquote</code></p>
+<p>例：</p>
+<pre>
+    GlobalSanitizeSpec blockquote,div</pre>
+<p></p>
+<li><strong><a name="item_generatetrackbackrss">GenerateTrackBackRSS</a></strong><br/> </li> デフォルトでMovable Typeは、各トラックバック・アイテム（エントリー、カテゴリーとも）に対してRSSフィードを自動的に作成･管理し、アイテムに関するトラックバックpingを一覧表示します。 これらのpingはローカル・アーカイブ・パスに保存されます。 この機能をオフにするには、<em>GenerateTrackBackRSS</em>を<code>0</code>にします。 デフォルト設定値は<code>1</code>で、各トラックバック・アイテムに対しRSSファイルを生成します。 <p>デフォルト値： <code>1</code></p>
+<p>例：</p>
+<pre>
+    GenerateTrackBackRSS 0</pre>
+<p></p>
+<li><strong><a name="item_throttleseconds">ThrottleSeconds</a></strong><br/> </li> Movable TypeはIPベースのコメント帯域制御の設定を使い、コメントを溢れさせる攻撃（1つのエントリーに多量のコメントを送りつけること）に対処しています。 <em>ThrottleSeconds</em>はサイトの閲覧者がコメントを投稿した後に、再投稿できない時間を秒数で指定します。 たとえば、アリスがある時刻にコメントを投稿したと仮定します。すると彼女は、その時刻からこの設定に指定されている秒数の間、同じIPアドレスから別のコメントを投稿することができなくなります。 あなたのウェブログに対しコメントを投稿する人が多くなければ、この設定を上げることができます。 <p>この設定は、あるIPアドレスからウェブログへのコメント投稿を自動禁止するように設定するとき、その措置が取られるまでの秒数の設定にも使います。</p>
+<p>デフォルト値： <code>20</code></p>
+<p>例：</p>
+<pre>
+    ThrottleSeconds 60</pre>
+<p></p>
+<li><strong><a name="item_searchtemplatepath">SearchTemplatePath</a></strong><br/> </li> これは、検索テンプレートがある<em>search_templates</em>ディレクトリまでのファイルシステム上のパスを指します。 デフォルトは<em>./search_templates</em>で、これは<em>search_templates</em>ディレクトリが<em>mt.cgi</em>ファイルと同じディレクトリにあることを意味します。この設定は、<em>search_templates</em>ディレクトリを移動した場合を除き、おそらく変更する必要がないでしょう。 <p>デフォルト値： ./search_templates/</p>
+<p>例：</p>
+<pre>
+    SearchTemplatePath /home/foo/my/search_templates/</pre>
+<p></p>
+<li><strong><a name="item_defaulttemplate">DefaultTemplate</a></strong><br/> </li> これは、<em>search_templates</em>ディレクトリ（SearchTemplatePathディレクティブを参照）にあるデフォルトの検索テンプレートのファイル名を示します。 代替テンプレート（下記参照）を指定して使う場合は、このデフォルト・テンプレートを使う必要はありません。 <p>デフォルト値： <em>default.tmpl</em>.</p>
+<p>例：</p>
+<pre>
+    DefaultTemplate my-template.tmpl</pre>
+<p></p>
+<li><strong><a name="item_alttemplate">AltTemplate</a></strong><br/> </li> 複数のウェブログを設置しているか、いくつかの異なるバージョンのサイトを提供している場合は、代替テンプレートを使って異なるバージョンの検索結果を提供することが望ましい場合もあります。 詳細は、マニュアルの「<a href="./mtmanual_public.html#alternate_templates">代替テンプレート</a>」を参照してください。 代替テンプレートは好きなだけ指定できます。 <p>デフォルトでは以下の代替テンプレートが設定されています。</p>
+<pre>
+    AltTemplate comments comments.tmpl</pre>
+<p>これで「新しいコメント検索」のための代替テンプレートが設定できます。</p>
+<p>例：</p>
+<pre>
+    AltTemplate work work.tmpl</pre>
+<p></p>
+<li><strong><a name="item_excludeblogs">ExcludeBlogs</a></strong><br/> </li>
+<li><strong><a name="item_includeblogs">IncludeBlogs</a></strong><br/> </li> この<em>IncludeBlogs</em>と<em>ExcludeBlogs</em>を使うと、あなたのサイトの検索に含まれるウェブログを制限できます。 IncludeBlogsは検索に含まれるウェブログを指定し、ExcludeBlogsは検索から外されるウェブログを指定します。 両方同時に使わないでください。ExcludeBlogsの内容は、IncludeBlogsの内容によって上書きされます。 デフォルトではすべてのウェブログを検索します。 ウェブログのIDをコンマで区切ります。 <p>デフォルト値： なし</p>
+<p>例：</p>
+<pre>
+    ExcludeBlogs 1,3,4
+    IncludeBlogs 2</pre>
+<p></p>
+<li><strong><a name="item_regexsearch">RegexSearch</a></strong><br/> </li>
+<li><strong><a name="item_casesearch">CaseSearch</a></strong><br/> </li> これらの設定は、サイトの検索についてのデフォルトを指定します。その値は、隠れたフォーム入力（hidden input）を通して、またはユーザーが指定したフォーム入力で、上書きできます。 これらの設定はデフォルトのままに残しておき、ユーザーが自在に変更できる状態にしておくのがよいでしょう。 <em>RegexSearch</em>は正規表現による検索で、<em>CaseSearch</em>は大文字と小文字を区別する検索です。 <p>デフォルト値： <code>0</code> (両方ともに)</p>
+<p>例：</p>
+<pre>
+    RegexSearch 1
+    CaseSearch 1</pre>
+<p></p>
+<li><strong><a name="item_searchcutoff">SearchCutoff</a></strong><br/> </li>
+<li><strong><a name="item_commentsearchcutoff">CommentSearchCutoff</a></strong><br/> </li> <em>SearchCutoff</em>は通常の検索において、<em>CommentSearchCutoff</em>は新しいコメントの検索において、デフォルトでさかのぼる検索日数を示します。 <p><em>SearchCutoff</em>のデフォルトはウェブログのはじめからの（全エントリーを対象とした）検索で、<em>CommentSearchCutoff</em>のデフォルトは、前月以降のコメントからの検索です。</p>
+<p>例：</p>
+<pre>
+    SearchCutoff 7
+    CommentSearchCutoff 7</pre>
+<p></p>
+<li><strong><a name="item_maxresults">MaxResults</a></strong><br/> </li> これは検索で返される結果の最大数を示します。 通常の検索の場合、結果数はウェブログひとつについての数を示します。たとえば、MaxResultsを<code>5</code>に設定すると、あなたのシステム上の各ウェブログは、最大<code>5</code>個までの検索結果が返されるようになります。 新しいコメント検索の場合、最大数は新しいコメントが付けられたエントリーの数になります。 <p>デフォルト値： 上限なし（つまり検索結果がすべて表示されます）</p>
+<p>例：</p>
+<pre>
+    MaxResults 5</pre>
+<p></p>
+<li><strong><a name="item_resultdisplay">ResultDisplay</a></strong><br/> </li> これは検索結果の並べ替えの順序を示します。 <code>ascend</code>を使うと、古い方から順にエントリーが表示され、<code>descend</code>を使うと、新しい方から順にエントリーが表示されます。 <p>デフォルト値： <code>descend</code></p>
+<p>例：</p>
+<pre>
+    ResultDisplay ascend</pre>
+<p></p>
+<li><strong><a name="item_searchsortby">SearchSortBy</a></strong><br/> </li> これは検索結果を並べ替えるとき、どの列を基準にするかを示します。 <code>created_on</code>は投稿日によってエントリーが並べ替えられ、<code>title</code>はタイトルによって並べ替えられます。 この設定は<em>ResultDisplay</em>を使うと、昇順または降順を指定できます。 <p>デフォルト値： <code>created_on</code></p>
+<p>例：</p>
+<pre>
+    SearchSortBy title</pre>
+<p></p>
+<li><strong><a name="item_excerptwords">ExcerptWords</a></strong><br/> </li> これは、検索結果の中で<code>&lt;$MTEntryExcerpt$&gt;</code>タグを使ったときに表示される概要の文字数を示します。 この設定は検索結果の概要に対して使われるもので、ウェブログ設定の「概要に載せる文字数」とは異なります。 <p>デフォルト値： <code>40</code></p>
+<p>例：</p>
+<pre>
+    ExcerptWords 100</pre>
+<p></p>
+<li><strong><a name="item_searchelement">SearchElement</a></strong><br/> </li> デフォルトでは検索はウェブログのエントリーに対して行われ、コメントに対しては行われません。 コメント検索は、検索対象のテキストが多いので、エントリー検索より時間がかかります。 この設定は<code>entries</code>のままに残しておき、サイトの閲覧者が自在に変更できる状態にしておくのがよいでしょう。 有効な値は、<code>entries</code>、<code>comments</code>、または<code>both</code>（両方）のいずれかです。 <p>デフォルト値： <code>entries</code></p>
+<p>例：</p>
+<pre>
+    SearchElement both</pre>
+<p></p>
+<li><strong><a name="item_nooverride">NoOverride</a></strong><br/> </li> デフォルトで検索エンジンは、上記の設定ディレクティブのほとんどを、検索テンプレートの設定で上書きできます。 また、ユーザーが検索文字列の値を変更することでも、これらの設定値を上書きできてしまいます。 特に個人的なウェブログを開設している場合は危険です。たとえ、IncludeBlogsとExcludeBlogsで検索対象のウェブログを制限しても、ユーザーによってその設定が上書きされ、あなたの私的なウェブログが検索されてしまう可能性があります。 NoOverrideを使うと、検索テンプレートやユーザーによる上書きを禁止する設定ディレクティブをコンマで区切って列挙できます。 このように指定しておくと、mt.cfgの設定だけが使われるようになります。 <p>デフォルト値： なし</p>
+<p>例：</p>
+<pre>
+    NoOverride IncludeBlogs,ExcludeBlogs</pre>
+<p></p>
+<li><strong><a name="item_emailaddressmain">EmailAddressMain</a></strong><br/> </li> たとえば、新しいコメントが投稿されたときに、Movable Typeがメールを送信する場合、「送信者（From:）」にメールアドレスを入力する必要があります。 <a href="#item_emailaddressmain"><code>EmailAddressMain</code></a>を設定すると、このメールアドレスを設定できます。 設定しない場合、Movable Typeはエントリーの投稿者を使いますが、これがスパム対策フィルターで問題になる可能性があります。 <p></p>
+<li><strong><a name="item_launchbackgroundtasks">LaunchBackgroundTasks</a></strong><br/> </li> タスクの中には、デフォルトで、バックグラウンドで実行されているものもあります。 この仕組みによって、Movable Typeがたとえば再構築など重要なタスクを実行している間、ユーザーや別のソフトウエアはアプリケーションを継続して使うことができます。 ただしこの機能はホスティング環境によっては機能しないこともあります。 効果のない機能がある場合は、LaunchBackgroundTasks 0 を設定してみてください。 <p></p>
+<li><strong><a name="item_regkeyurl">RegKeyURL</a></strong><br/> </li> これは、Movable Typeが公開鍵（承認リクエストの確認用）を取得する先のURLを示します。 公開鍵は<em>SignOnPublicKey</em>によってローカルで上書きできます。 <p></p>
+<li><strong><a name="item_signonpublickey">SignOnPublicKey</a></strong><br/> </li> コメント登録の承認情報を確認するために使うDSA公開鍵を示します。 <p></p>
+<li><strong><a name="item_commentsessiontimeout">CommentSessionTimeout</a></strong><br/> </li> 登録されたコメント投稿者のセッションの期限が切れるまでの秒数を指定します。 デフォルトは1時間です。 <p></p>
+<li><strong><a name="item_emailverificationsecret">EmailVerificationSecret</a></strong><br/> </li> <em>mt-add-notify.cgi</em>をユーザーに公開し、サイト更新通知のためユーザー登録を行っている場合は、これを外部者が推測できない値に設定してください。 この設定によって閲覧者はメールアドレスの認証を求められるので、Movable Typeの通知サインアップ・プロセスにおいてセキュリティが確保されます。 <p></p>
+<li><strong><a name="item_defaultlanguage">DefaultLanguage</a></strong><br/> </li> Movable Type がウェブログ管理画面に利用する言語を設定します。日本語版の場合、「ja」が設定されているときにだけ、文字コードの変換などの機能が有効になります。<p></p></ul>
+
+<hr size="1" color="#CCCCCC"> <span class="copyright">Copyright (c) 2001-2004 Six Apart. All Rights Reserved.</span> </body>
+
+</html>

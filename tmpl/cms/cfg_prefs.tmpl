@@ -1,0 +1,398 @@
+<TMPL_INCLUDE NAME="header.tmpl">
+
+<div id="cfg-prefs">
+
+<script type="text/javascript">
+<!--
+
+function doRemoveLicense () {
+    document.cfg_form.cc_license.value = '';
+    var e = getByID('has-license');
+    if (e) e.style.display = 'none';
+    e = getByID('no-license');
+    if (e) e.style.display = 'block';
+}
+
+function toggleUnregCommentPrefs (c) {
+    var e = getByID('unreg_comment_prefs');
+    if (c.checked) e.style.display = 'block';
+    if (!c.checked) e.style.display = 'none';
+}
+
+function toggleRegCommentPrefs (c) {
+    var e = getByID('reg_comment_prefs');
+    if (c.checked) e.style.display = 'block';
+    if (!c.checked) e.style.display = 'none';
+}
+
+//-->
+</script>
+
+<div align="right">
+<a href="<TMPL_VAR NAME=SCRIPT_URL>?__mode=view&amp;_type=blog&amp;id=<TMPL_VAR NAME=BLOG_ID>&amp;blog_id=<TMPL_VAR NAME=BLOG_ID>"><MT_TRANS phrase="Core Setup"></a>&nbsp;|&nbsp;<MT_TRANS phrase="Preferences">&nbsp;|&nbsp;<a href="<TMPL_VAR NAME=SCRIPT_URL>?__mode=cfg_archives&amp;blog_id=<TMPL_VAR NAME=BLOG_ID>"><MT_TRANS phrase="Archive Files"></a>&nbsp;|&nbsp;<a href="<TMPL_VAR NAME=SCRIPT_URL>?__mode=list&amp;_type=banlist&amp;blog_id=<TMPL_VAR NAME=BLOG_ID>"><MT_TRANS phrase="IP Banning"></a>
+</div>
+
+<h2><MT_TRANS phrase="Preferences"></h2>
+
+<TMPL_IF NAME=SAVED>
+<div class="message"><MT_TRANS phrase="Your blog preferences have been saved."> <TMPL_INCLUDE NAME="rebuild-stub.tmpl"></div>
+</TMPL_IF>
+
+<p><MT_TRANS phrase="_USAGE_PREFS"></p>
+
+<ul>
+<li><a href="#general"><MT_TRANS phrase="General Settings"></a></li>
+<li><a href="#archiving"><MT_TRANS phrase="Archiving Preferences"></a></li>
+<li><a href="#publicity"><MT_TRANS phrase="Publicity / Remote Interfaces / TrackBack"></a></li>
+<li><a href="#comments"><MT_TRANS phrase="Comment Configuration"></a></li>
+</ul>
+
+<form name="cfg_form" method="post" action="<TMPL_VAR NAME=SCRIPT_URL>">
+<input type="hidden" name="id" value="<TMPL_VAR NAME=ID>" />
+<input type="hidden" name="__mode" value="save" />
+<input type="hidden" name="_type" value="blog" />
+<input type="hidden" name="cfg_screen" value="cfg_prefs" />
+<input type="hidden" name="blog_id" value="<TMPL_VAR NAME=BLOG_ID>" />
+
+<TMPL_LOOP NAME=BLOG_LOOP>
+
+</TMPL_LOOP>
+
+<a name="general"></a><h3><MT_TRANS phrase="General Settings"></h3>
+
+<div class="field">
+<h4><label for="description"><MT_TRANS phrase="Description:"></label> <a href="#" onclick="return openManual('weblog_config', 'item_blog_description')" class="help">?</a></h4>
+<p><MT_TRANS phrase="Enter a description for your blog."></p>
+<textarea name="description" id="description" cols="50" rows="4"><TMPL_VAR NAME=DESCRIPTION ESCAPE=HTML></textarea>
+</div>
+
+<hr />
+
+<div class="field">
+<h4><label for="days_on_index"><MT_TRANS phrase="Number of Days Displayed:"></label> <input name="days_on_index" id="days_on_index" size="2" value="<TMPL_VAR NAME=DAYS_ON_INDEX ESCAPE=HTML>" /> <a href="#" onclick="return openManual('weblog_config', 'item_number_of_days_displayed')" class="help">?</a></h4>
+<p><MT_TRANS phrase="Enter the number of days' entries you would like displayed on your index."></p>
+</div>
+
+<hr />
+
+<div class="field">
+<h4><label for="language"><MT_TRANS phrase="Language for Date Display:"></label>
+<select name="language" id="language">
+<option value="cz"<TMPL_IF NAME=LANGUAGE_CZ> selected="selected"</TMPL_IF>><MT_TRANS phrase="Czech"></option>
+<option value="dk"<TMPL_IF NAME=LANGUAGE_DK> selected="selected"</TMPL_IF>><MT_TRANS phrase="Danish"></option>
+<option value="nl"<TMPL_IF NAME=LANGUAGE_NL> selected="selected"</TMPL_IF>><MT_TRANS phrase="Dutch"></option>
+<option value="en"<TMPL_IF NAME=LANGUAGE_EN> selected="selected"</TMPL_IF>><MT_TRANS phrase="English"></option>
+<option value="et"<TMPL_IF NAME=LANGUAGE_ET> selected="selected"</TMPL_IF>><MT_TRANS phrase="Estonian"></option>
+<option value="fr"<TMPL_IF NAME=LANGUAGE_FR> selected="selected"</TMPL_IF>><MT_TRANS phrase="French"></option>
+<option value="de"<TMPL_IF NAME=LANGUAGE_DE> selected="selected"</TMPL_IF>><MT_TRANS phrase="German"></option>
+<option value="is"<TMPL_IF NAME=LANGUAGE_IS> selected="selected"</TMPL_IF>><MT_TRANS phrase="Icelandic"></option>
+<option value="it"<TMPL_IF NAME=LANGUAGE_IT> selected="selected"</TMPL_IF>><MT_TRANS phrase="Italian"></option>
+<option value="jp"<TMPL_IF NAME=LANGUAGE_JP> selected="selected"</TMPL_IF>><MT_TRANS phrase="Japanese"></option>
+<option value="no"<TMPL_IF NAME=LANGUAGE_NO> selected="selected"</TMPL_IF>><MT_TRANS phrase="Norwegian"></option>
+<option value="pl"<TMPL_IF NAME=LANGUAGE_PL> selected="selected"</TMPL_IF>><MT_TRANS phrase="Polish"></option>
+<option value="pt"<TMPL_IF NAME=LANGUAGE_PT> selected="selected"</TMPL_IF>><MT_TRANS phrase="Portuguese"></option>
+<option value="sk"<TMPL_IF NAME=LANGUAGE_SK> selected="selected"</TMPL_IF>><MT_TRANS phrase="Slovak"></option>
+<option value="si"<TMPL_IF NAME=LANGUAGE_SI> selected="selected"</TMPL_IF>><MT_TRANS phrase="Slovenian"></option>
+<option value="es"<TMPL_IF NAME=LANGUAGE_ES> selected="selected"</TMPL_IF>><MT_TRANS phrase="Spanish"></option>
+<option value="fi"<TMPL_IF NAME=LANGUAGE_FI> selected="selected"</TMPL_IF>><MT_TRANS phrase="Suomi"></option>
+<option value="se"<TMPL_IF NAME=LANGUAGE_SE> selected="selected"</TMPL_IF>><MT_TRANS phrase="Swedish"></option>
+</select>
+<a href="#" onclick="return openManual('weblog_config', 'item_language_for_date_display')" class="help">?</a></h4>
+<p><MT_TRANS phrase="Select the language in which you would like dates on your blog displayed."></p>
+</div>
+
+<hr />
+
+<div class="field">
+<h4><label for="sort_order_posts"><MT_TRANS phrase="Order of Entries Displayed:"></label>
+<select name="sort_order_posts" id="sort_order_posts">
+<option value="ascend"<TMPL_IF NAME=SORT_ORDER_POSTS_ASCEND> selected="selected"</TMPL_IF>><MT_TRANS phrase="Ascending"></option>
+<option value="descend"<TMPL_IF NAME=SORT_ORDER_POSTS_DESCEND> selected="selected"</TMPL_IF>><MT_TRANS phrase="Descending"></option>
+</select></h4>
+<p><MT_TRANS phrase="Select whether you want your posts displayed in ascending (oldest at top) or descending (newest at top) order."></p>
+</div>
+
+<hr />
+
+<div class="field">
+<h4><label for="convert_paras"><MT_TRANS phrase="Default Text Formatting for New Entries:"></label>
+<select name="convert_paras" id="convert_paras">
+<TMPL_LOOP NAME=TEXT_FILTERS>
+<option value="<TMPL_VAR NAME=FILTER_KEY>"<TMPL_IF NAME=FILTER_SELECTED> selected="selected"</TMPL_IF>><TMPL_VAR NAME=FILTER_LABEL></option>
+</TMPL_LOOP>
+</select>
+<a href="#" onclick="return openManual('weblog_config', 'item_Default_Text_Formatting_for_new_entries')" class="help">?</a></h4>
+<p><MT_TRANS phrase="Specifies the default Text Formatting option when creating a new entry."></p>
+</div>
+
+<hr />
+
+<div class="field">
+<h4><label for="status_default"><MT_TRANS phrase="Default Post Status:"></label>
+<select name="status_default" id="status_default">
+<option value="1"<TMPL_IF NAME=STATUS_DEFAULT_1> selected="selected"</TMPL_IF>><MT_TRANS phrase="Draft"></option>
+<option value="2"<TMPL_IF NAME=STATUS_DEFAULT_2> selected="selected"</TMPL_IF>><MT_TRANS phrase="Publish"></option>
+</select></h4>
+<p><MT_TRANS phrase="Specifies the default Post Status when creating a new entry."></p>
+</div>
+
+<hr />
+
+<div class="field">
+<h4><label for="words_in_excerpt"><MT_TRANS phrase="Number of Words in Excerpt:"></label> <input name="words_in_excerpt" id="words_in_excerpt" size="3" value="<TMPL_VAR NAME=WORDS_IN_EXCERPT ESCAPE=HTML>" /> <a href="#" onclick="return openManual('weblog_config', 'item_number_of_words_in_excerpt')" class="help">?</a></h4>
+<p><MT_TRANS phrase="Enter the number of words that should appear in an auto-generated excerpt:"></p>
+</div>
+
+<hr />
+
+<div class="field">
+<h4><MT_TRANS phrase="Sanitize Spec:"> <a href="#" onclick="return openManual('sanitize', 'item_welcome_message')" class="help">?</a></h4>
+<p><MT_TRANS phrase="Specifies the list of HTML tags allowed by default when cleaning an HTML string (a comment, for example)."></p>
+<div style="margin-top: 5px;"><input type="radio" name="sanitize_spec" id="sanitize_spec_0" value="0"<TMPL_IF NAME=SANITIZE_SPEC_0> checked="checked"</TMPL_IF> /> <label for="sanitize_spec_0"><MT_TRANS phrase="Use defaults"></label><br /><input type="radio" name="sanitize_spec" id="sanitize_spec_1" value="1"<TMPL_IF NAME=SANITIZE_SPEC_1> checked="checked"</TMPL_IF> /> <label for="sanitize_spec_1"><MT_TRANS phrase="Use my settings:"></label> <input name="sanitize_spec_manual" value="<TMPL_IF NAME=SANITIZE_SPEC_1><TMPL_VAR NAME=SANITIZE_SPEC ESCAPE=HTML></TMPL_IF>" /></div>
+</div>
+
+<hr />
+
+<div class="field">
+<a name="welcome_msg"></a>
+<h4><label for="welcome_msg"><MT_TRANS phrase="Welcome Message:"></label> <a href="#" onclick="return openManual('weblog_config', 'item_welcome_message')" class="help">?</a></h4>
+<p><MT_TRANS phrase="Enter a welcome message to be displayed on the Editing Menu to authors of your blog."></p>
+<textarea cols="50" name="welcome_msg" id="welcome_msg" rows="6"><TMPL_VAR NAME=WELCOME_MSG ESCAPE=HTML></textarea>
+</div>
+
+<hr />
+
+<div class="field">
+<h4><MT_TRANS phrase="Creative Commons License:"> <a href="#" onclick="return openManual('weblog_config', 'item_Creative_Commons_License')" class="help">?</a></h4>
+<p><MT_TRANS phrase="Select a Creative Commons license for the posts on your blog (optional)."></p>
+<p><strong><MT_TRANS phrase="Be sure that you understand these licenses before applying them to your own work."></strong> <a href="#" onclick="return openManual('weblog_config', 'item_Creative_Commons_License')"><MT_TRANS phrase="Read more."></a></p>
+<input type="hidden" name="cc_license" value="<TMPL_VAR NAME=CC_LICENSE ESCAPE=HTML>" />
+<div style="margin-top: 10px; display: none;" id="has-license">
+<MT_TRANS phrase="Your weblog is currently licensed under:"> <strong><span id="cc-license-name"><TMPL_VAR NAME=CC_LICENSE_NAME></span></strong><br /><br />
+<a onclick="window.open('http://creativecommons.org/license/?partner=SixApart&amp;exit_url=<TMPL_VAR NAME=SCRIPT_FULL_URL>?__mode=cc_return%26license_code=[license_code]', 'cc', 'width=600,height=600,scrollbars=yes,resizable=no'); return false" href="#"><MT_TRANS phrase="Change your license"></a><br /><br />
+<a onclick="doRemoveLicense(); return false" href="#"><MT_TRANS phrase="Remove this license"></a>
+</div>
+<div style="margin-top: 10px; display: none;" id="no-license">
+<MT_TRANS phrase="Your weblog does not have an explicit Creative Commons license."><br /><br />
+<a onclick="window.open('http://creativecommons.org/license/?partner=SixApart&amp;exit_url=<TMPL_VAR NAME=SCRIPT_FULL_URL>?__mode=cc_return%26license_code=[license_code]', 'cc', 'width=600,height=600,scrollbars=yes,resizable=no'); return false" href="#"><MT_TRANS phrase="Create a license now"></a>
+</div>
+<TMPL_IF NAME=CC_LICENSE>
+<script type="text/javascript">
+var e = getByID('has-license');
+if (e) e.style.display = 'block';
+</script>
+<TMPL_ELSE>
+<script type="text/javascript">
+var e = getByID('no-license');
+if (e) e.style.display = 'block';
+</script>
+</TMPL_IF>
+</div>
+
+<hr />
+
+<h3><a name="archiving"></a><MT_TRANS phrase="Archiving Preferences"></h3>
+
+<div class="field">
+<h4><label for="archive_type_preferred"><MT_TRANS phrase="Preferred Archive Type:"></label>
+<select name="archive_type_preferred" id="archive_type_preferred">
+<option value=""><MT_TRANS phrase="No Archives"></option>
+<TMPL_IF NAME=ARCHIVE_TYPE_INDIVIDUAL>
+<option value="Individual"<TMPL_IF NAME="ARCHIVE_TYPE_PREFERRED_INDIVIDUAL"> selected="selected"</TMPL_IF>><MT_TRANS phrase="Individual"></option>
+</TMPL_IF>
+<TMPL_IF NAME=ARCHIVE_TYPE_DAILY>
+<option value="Daily"<TMPL_IF NAME="ARCHIVE_TYPE_PREFERRED_DAILY"> selected="selected"</TMPL_IF>><MT_TRANS phrase="Daily"></option>
+</TMPL_IF>
+<TMPL_IF NAME=ARCHIVE_TYPE_WEEKLY>
+<option value="Weekly"<TMPL_IF NAME="ARCHIVE_TYPE_PREFERRED_WEEKLY"> selected="selected"</TMPL_IF>><MT_TRANS phrase="Weekly"></option>
+</TMPL_IF>
+<TMPL_IF NAME=ARCHIVE_TYPE_MONTHLY>
+<option value="Monthly"<TMPL_IF NAME="ARCHIVE_TYPE_PREFERRED_MONTHLY"> selected="selected"</TMPL_IF>><MT_TRANS phrase="Monthly"></option>
+</TMPL_IF>
+<TMPL_IF NAME=ARCHIVE_TYPE_CATEGORY>
+<option value="Category"<TMPL_IF NAME="ARCHIVE_TYPE_PREFERRED_CATEGORY"> selected="selected"</TMPL_IF>><MT_TRANS phrase="Category"></option>
+</TMPL_IF>
+</select>
+<a href="#" onclick="return openManual('weblog_config', 'item_preferred_archive_type')" class="help">?</a></h4>
+<p><MT_TRANS phrase="When linking to an archived entry&#8212;for a permalink, for example&#8212;you must link to a particular archive type, even if you have chosen multiple archive types."></p>
+</div>
+
+<hr />
+
+<div class="field">
+<h4><label for="file_extension"><MT_TRANS phrase="File Extension for Archive Files:"></label> <input name="file_extension" id="file_extension" size="5" value="<TMPL_VAR NAME=FILE_EXTENSION ESCAPE=HTML>" /></h4>
+<p><MT_TRANS phrase="Enter the archive file extension. This can take the form of 'html', 'shtml', 'php', etc. Note: Do not enter the leading period ('.')."></p>
+</div>
+
+<hr />
+
+<div class="field">
+<h4><input id="old_style_archive_links" name="old_style_archive_links" type="checkbox" value="1" <TMPL_IF NAME=OLD_STYLE_ARCHIVE_LINKS>checked="checked"</TMPL_IF> /> <label for="old_style_archive_links"><MT_TRANS phrase="Use Old-Style Archive Links"></label></h4>
+<p><MT_TRANS phrase="Use backward-compatible links for individual archive pages?"></p>
+</div>
+
+<hr />
+
+<h3><a name="publicity"></a><MT_TRANS phrase="Publicity / Remote Interfaces / TrackBack"></h3>
+
+<div class="field">
+<h4><MT_TRANS phrase="Notify the following sites when I update my blog:"> <a href="#" onclick="return openManual('weblog_config', 'item_Notify_the_following_sites_when_I_update_my_blog')" class="help">?</a></h4>
+<p><MT_TRANS phrase="When you update your blog, Movable Type will automatically notify the selected sites."></p>
+<div style="margin-top: 5px;"><input type="checkbox" name="ping_blogs" id="ping_blogs" value="1"<TMPL_IF NAME=PING_BLOGS> checked="checked"</TMPL_IF> /> <label for="ping_blogs">blo.gs</label><br />
+<input type="checkbox" name="ping_weblogs" id="ping_weblogs" value="1"<TMPL_IF NAME=PING_WEBLOGS> checked="checked"</TMPL_IF> /> <label for="ping_weblogs">weblogs.com</label><br />
+<input type="checkbox" name="ping_technorati" id="ping_technorati" value="1"<TMPL_IF NAME=PING_TECHNORATI> checked="checked"</TMPL_IF> /> <label for="ping_technorati">technorati.com</label></div>
+<h4 style="margin-top: 5px;"><label for="ping_others"><MT_TRANS phrase="Others: (Separate URLs with a carriage return.)"></label></h4>
+<textarea name="ping_others" id="ping_others" rows="4" cols="50"><TMPL_VAR NAME=PING_OTHERS ESCAPE=HTML></textarea>
+</div>
+
+<hr />
+
+<div class="field">
+<h4><label for="mt_update_key"><MT_TRANS phrase="Recently Updated Key:"></label> <input name="mt_update_key" id="mt_update_key" value="<TMPL_VAR NAME=MT_UPDATE_KEY ESCAPE=HTML>" /> <a href="#" onclick="return openManual('weblog_config', 'item_Recently_updated_key')" class="help">?</a></h4>
+<p><MT_TRANS phrase="If you have received a recently updated key (by virtue of your purchase or donation), enter it here."></p>
+</div>
+
+<hr />
+
+<div class="field">
+<h4><label for="google_api_key"><MT_TRANS phrase="Google API Key:"></label> <input name="google_api_key" id="google_api_key" value="<TMPL_VAR NAME=GOOGLE_API_KEY ESCAPE=HTML>" /> <a href="#" onclick="return openManual('weblog_config', 'item_Google_API_key')" class="help">?</a></h4>
+<p><MT_TRANS phrase="If you wish to use any of the Google API functionality, you will need a Google API key. Paste it in here."></p>
+</div>
+
+<hr />
+
+<div class="field">
+<h4><input type="checkbox" value="1" name="allow_pings_default" id="allow_pings_default"<TMPL_IF NAME=ALLOW_PINGS_DEFAULT> checked="checked"</TMPL_IF> /> <label for="allow_pings_default"><MT_TRANS phrase="&quot;Allow TrackBack Pings&quot; On by Default"></label></h4>
+<p><MT_TRANS phrase="Specifies whether Allow Pings is checked or unchecked by default when creating a new entry."></p>
+</div>
+
+<hr />
+
+<div class="field">
+<h4><input type="checkbox" value="1" name="email_new_pings" id="email_new_pings"<TMPL_IF NAME=EMAIL_NEW_PINGS> checked="checked"</TMPL_IF> /> <label for="email_new_pings"><MT_TRANS phrase="Email New TrackBack Pings"></label></h4>
+<p><MT_TRANS phrase="Would you like to be notified via email when someone sends a TrackBack ping to your site?"></p>
+</div>
+
+<hr />
+
+<div class="field">
+<h4><input type="checkbox" value="1" name="autodiscover_links" id="autodiscover_links"<TMPL_IF NAME=AUTODISCOVER_LINKS> checked="checked"</TMPL_IF> /> <label for="autodiscover_links"><MT_TRANS phrase="Enable TrackBack Auto-Discovery"></label> <a href="#" onclick="return openManual('weblog_config', 'item_Turn_on_TrackBack_auto_discovery')" class="help">?</a></h4>
+<p><MT_TRANS phrase="If you turn on auto-discovery, when you write a new post, any external links will be extracted and the appropriate sites automatically sent TrackBack pings."></p>
+</div>
+
+<hr />
+
+<h3><a name="comments"></a><MT_TRANS phrase="Comment Configuration"></h3>
+
+<div class="field" style="margin-bottom: 5px;">
+<h4><input type="checkbox" value="1" id="allow_unreg_comments" name="allow_unreg_comments"<TMPL_IF NAME=ALLOW_UNREG_COMMENTS> checked="checked"</TMPL_IF> onclick="toggleUnregCommentPrefs(this); return true" /> <label for="allow_unreg_comments"><MT_TRANS phrase="Accept Comments from Unregistered Visitors"></label> <a href="#" onclick="return openManual('weblog_config', 'item_Accept_comments_from_unregistered_visitors')" class="help">?</a></h4>
+<p><MT_TRANS phrase="Should visitors to your site be able to post comments without registering first&#8212;that is, without choosing a password?"></p>
+</div>
+
+<div id="unreg_comment_prefs" class="sub-field"<TMPL_IF NAME=ALLOW_UNREG_COMMENTS> style="display: block;"</TMPL_IF>>
+
+<div class="field" style="margin-bottom: 5px;">
+<h4><input type="checkbox" value="1" name="non_anonymous_comments" id="non_anonymous_comments"<TMPL_IF NAME=NON_ANONYMOUS_COMMENTS> checked="checked"</TMPL_IF> /> <label for="non_anonymous_comments"><MT_TRANS phrase="Require Name and Email Address Information"></label> <a href="#" onClick="return openManual('weblog_config', 'item_Require_Name_and_Email_Address_Information')" class="help">?</a></h4>
+<p><MT_TRANS phrase="Should visitors to your site be required to submit a name and email address in order to post comments?"></p>
+</div>
+
+<div class="field">
+<h4><input type="checkbox" value="1" id="moderate_unreg_comments" name="moderate_unreg_comments"<TMPL_IF NAME=MODERATE_UNREG_COMMENTS> checked="checked"</TMPL_IF> /> <label for="moderate_unreg_comments"><MT_TRANS phrase="Enable Unregistered Comment Moderation"></label> <a href="#" onclick="return openManual('weblog_config', 'item_Enable_unregistered_comment_moderation')" class="help">?</a></h4>
+<p><MT_TRANS phrase="If you enable moderation, unregistered comments will not be displayed on the site until you have the chance to approve them."></p>
+</div>
+
+</div>
+
+<hr />
+
+<div class="field" style="margin-bottom: 5px;">
+<h4><input type="checkbox" value="1" id="allow_reg_comments" name="allow_reg_comments"<TMPL_IF NAME=ALLOW_REG_COMMENTS> checked="checked"</TMPL_IF> onclick="toggleRegCommentPrefs(this); return true" /> <label for="allow_reg_comments"><MT_TRANS phrase="Accept Comments from Registered Visitors"></label> <a href="#" onclick="return openManual('weblog_config', 'item_Accept_comments_from_registered_visitors')" class="help">?</a></h4>
+<p><MT_TRANS phrase="Should visitors to your site be able to post comments with a registered identity?"><br />
+<MT_TRANS phrase="To enable this option, enter your TypeKey Token in the box below."></p>
+</div>
+
+<div id="reg_comment_prefs" class="sub-field"<TMPL_IF NAME=ALLOW_REG_COMMENTS> style="display: block;"</TMPL_IF>>
+
+<div class="field" style="margin-bottom: 5px;">
+<h4><label for="allow_unreg_comments"><MT_TRANS phrase="TypeKey Token:"></label> <input type="text" id="remote_auth_token" name="remote_auth_token" value="<TMPL_VAR NAME=REMOTE_AUTH_TOKEN>" /></h4>
+<p><MT_TRANS phrase="To enable comment registration, enter your TypeKey site token."> <MT_TRANS phrase="To sign up for a TypeKey token, visit the "><a href="http://www.typekey.com/t/typekey/">TypeKey</a> <MT_TRANS phrase="website">.</p>
+</div>
+
+<div class="field" style="margin-bottom: 5px;">
+<h4><input type="checkbox" value="1" id="auto_approve_commenters" name="auto_approve_commenters"<TMPL_IF NAME=AUTO_APPROVE_COMMENTERS> checked="checked"</TMPL_IF> /> <label for="auto_approve_commenters"><MT_TRANS phrase="Automatically Approve Registered Commenters"></label> <a href="#" onclick="return openManual('weblog_config', 'item_Enable_auto%2Dapproval')" class="help">?</a></h4>
+<p><MT_TRANS phrase="Do you want to automatically approve registered commenters the first time they comment? You can always change their status later."></p>
+</div>
+
+<div class="field">
+<h4><input type="checkbox" value="1" id="require_comment_emails" name="require_comment_emails"<TMPL_IF NAME=REQUIRE_COMMENT_EMAILS> checked="checked"</TMPL_IF> /> <label for="require_comment_emails"><MT_TRANS phrase="Require Email Addresses From TypeKey"></label> <a href="#" onclick="return openManual('weblog_config', 'item_Require_email_addresses_from_TypeKey')" class="help">?</a></h4>
+<p><MT_TRANS phrase="Commenters who have verified their identity can choose whether to reveal their email address to you, the weblog author. Do you want to require that commenters pass their email address, in order to be allowed to comment?"></p>
+</div>
+
+</div>
+
+<hr />
+
+<div class="field">
+<h4><label for="allow_comments_default"><MT_TRANS phrase="&quot;Allow Comments&quot; Default:"></label>
+<select name="allow_comments_default" id="allow_comments_default">
+<option value="0"<TMPL_IF NAME=ALLOW_COMMENTS_DEFAULT_0> selected="selected"</TMPL_IF>><MT_TRANS phrase="None"></option>
+<option value="1"<TMPL_IF NAME=ALLOW_COMMENTS_DEFAULT_1> selected="selected"</TMPL_IF>><MT_TRANS phrase="Open"></option>
+<option value="2"<TMPL_IF NAME=ALLOW_COMMENTS_DEFAULT_2> selected="selected"</TMPL_IF>><MT_TRANS phrase="Closed"></option>
+</select></h4>
+<p><MT_TRANS phrase="Specifies the default Allow Comments setting when creating a new entry. Note: This option is ignored if you are not accepting comments."></p>
+</div>
+
+<hr />
+
+<div class="field">
+<h4><label for="sort_order_comments"><MT_TRANS phrase="Comment Listing Order:"></label>
+<select name="sort_order_comments" id="sort_order_comments">
+<option value="ascend"<TMPL_IF NAME=SORT_ORDER_COMMENTS_ASCEND> selected="selected"</TMPL_IF>><MT_TRANS phrase="Ascending"></option>
+<option value="descend"<TMPL_IF NAME=SORT_ORDER_COMMENTS_DESCEND> selected="selected"</TMPL_IF>><MT_TRANS phrase="Descending"></option>
+</select></h4>
+<p><MT_TRANS phrase="Select whether you want visitor comments displayed in ascending (oldest at top) or descending (newest at top) order."></p>
+</div>
+
+<hr />
+
+<div class="field">
+<h4><label for="convert_paras_comments"><MT_TRANS phrase="Text Formatting for Comments:"></label>
+<select name="convert_paras_comments" id="convert_paras_comments">
+<TMPL_LOOP NAME=TEXT_FILTERS_COMMENTS>
+<option value="<TMPL_VAR NAME=FILTER_KEY>"<TMPL_IF NAME=FILTER_SELECTED> selected="selected"</TMPL_IF>><TMPL_VAR NAME=FILTER_LABEL></option>
+</TMPL_LOOP>
+</select>
+<a href="#" onclick="return openManual('weblog_config', 'item_Text_Formatting_for_comments')" class="help">?</a></h4>
+<p><MT_TRANS phrase="Specifies the Text Formatting option to use for formatting visitor comments."></p>
+</div>
+
+<hr />
+
+<div class="field">
+<h4><input type="checkbox" value="1" name="allow_comment_html" id="allow_comment_html"<TMPL_IF NAME=ALLOW_COMMENT_HTML> checked="checked"</TMPL_IF> /> <label for="allow_comment_html"><MT_TRANS phrase="Allow HTML in Comments"></label></h4>
+<p><MT_TRANS phrase="Should visitors be able to include HTML in their comments? If not, all HTML entered will be stripped out."></p>
+</div>
+
+<hr />
+
+<div class="field">
+<h4><input type="checkbox" value="1" name="autolink_urls" id="autolink_urls"<TMPL_IF NAME=AUTOLINK_URLS> checked="checked"</TMPL_IF> /> <label for="autolink_urls"><MT_TRANS phrase="Auto-Link URLs"></label></h4>
+<p><MT_TRANS phrase="If enabled, all web URLs will be transformed into links to that web URL. Note: If you have enabled Allow HTML in comments, this option is ignored."></p>
+</div>
+
+<hr />
+
+<div class="field">
+<h4><input type="checkbox" value="1" name="email_new_comments" id="email_new_comments"<TMPL_IF NAME=EMAIL_NEW_COMMENTS> checked="checked"</TMPL_IF> /> <label for="email_new_comments"><MT_TRANS phrase="Email New Comments"></label></h4>
+<p><MT_TRANS phrase="Would you liked to be notified via email when someone posts comments to your site?"></p>
+</div>
+
+<hr />
+
+<input type="submit" value="<MT_TRANS phrase="Save Changes">" />
+
+</form>
+
+</div>
+
+<TMPL_INCLUDE NAME="footer.tmpl">

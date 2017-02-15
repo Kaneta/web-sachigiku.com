@@ -1,0 +1,80 @@
+<TMPL_INCLUDE NAME="header.tmpl">
+
+<div align="right">
+<a href="<TMPL_VAR NAME=SCRIPT_URL>?__mode=view&amp;_type=blog&amp;id=<TMPL_VAR NAME=BLOG_ID>&amp;blog_id=<TMPL_VAR NAME=BLOG_ID>"><MT_TRANS phrase="Core Setup"></a>&nbsp;|&nbsp;<a href="<TMPL_VAR NAME=SCRIPT_URL>?__mode=cfg_prefs&amp;blog_id=<TMPL_VAR NAME=BLOG_ID>"><MT_TRANS phrase="Preferences"></a>&nbsp;|&nbsp;<a href="<TMPL_VAR NAME=SCRIPT_URL>?__mode=cfg_archives&amp;blog_id=<TMPL_VAR NAME=BLOG_ID>"><MT_TRANS phrase="Archive Files"></a>&nbsp;|&nbsp;<MT_TRANS phrase="IP Banning">
+</div>
+
+<h2><MT_TRANS phrase="IP Banning"></h2>
+
+<TMPL_IF NAME=SAVED>
+<h4 class="message"><MT_TRANS phrase="You have added [_1] to your list of banned IP addresses." params="<TMPL_VAR NAME=SAVED ESCAPE=HTML>"></h4>
+</TMPL_IF>
+
+<TMPL_IF NAME=SAVED_DELETED>
+<h4 class="message"><MT_TRANS phrase="You have successfully deleted the selected IP addresses from the list."></h4>
+</TMPL_IF>
+
+<p><MT_TRANS phrase="This screen allows you to ban IP addresses from commenting or sending TrackBack pings to your weblog."></p>
+
+<hr />
+
+<h4><MT_TRANS phrase="Add an IP Address to the Ban List"></h4>
+
+<p><MT_TRANS phrase="Enter the IP address in the field below and click Add."> (<MT_TRANS phrase="Example:"> 192.168.1.104)</p>
+
+<form method="post" action="<TMPL_VAR NAME=SCRIPT_URL>">
+<input type="hidden" name="blog_id" value="<TMPL_VAR NAME=BLOG_ID>" />
+<input type="hidden" name="__mode" value="save" />
+<input type="hidden" name="_type" value="banlist" />
+
+<p>
+<label for="ip"><MT_TRANS phrase="IP Address:"></label>
+<input name="ip" id="ip" value="<TMPL_VAR NAME=IP>" />
+&nbsp;
+<input type="submit" value="<MT_TRANS phrase="Add">" />
+</p>
+
+</form>
+
+<hr />
+
+<h4><MT_TRANS phrase="IP Ban List"></h4>
+
+<p>
+<MT_TRANS phrase="To delete a banned IP address, check the Delete box in the table below and click the Delete button.">
+<br />
+<MT_TRANS phrase="You have [quant,_1,IP] in your list of banned addresses." params="<TMPL_VAR NAME=OBJECT_COUNT>">
+</p>
+
+<form action="<TMPL_VAR NAME=SCRIPT_URL>" onsubmit="return false;"  id="myform">
+<div class="list">
+<table cellspacing="0">
+
+<tr>
+<th width="60%"><MT_TRANS phrase="IP Address"></th>
+<th width="30%"><MT_TRANS phrase="Date Added"></th>
+<th width="10%"><MT_TRANS phrase="Delete"></th>
+</tr>
+
+<TMPL_LOOP NAME=OBJECT_LOOP>
+<tr class="<TMPL_IF NAME=IS_ODD>odd<TMPL_ELSE>even</TMPL_IF>">
+<td><TMPL_VAR NAME=IP></td>
+<td><TMPL_VAR NAME=CREATED_ON_FORMATTED></td>
+<td><input type="checkbox" name="id" value="<TMPL_VAR NAME=ID>" /></td>
+</tr>
+
+</TMPL_LOOP>
+
+</table>
+</div>
+
+<div>
+<div style="float: right;">
+<input onclick="doRemoveItems(this.form, 'banlist&amp;blog_id=<TMPL_VAR NAME=BLOG_ID>', 'IP addresses')" type="button" value="<MT_TRANS phrase="Delete">" />
+</div>
+<br style="clear: both;" />
+</div>
+
+</form>
+
+<TMPL_INCLUDE NAME="footer.tmpl">

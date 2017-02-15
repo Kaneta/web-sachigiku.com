@@ -1,0 +1,19 @@
+<TMPL_INCLUDE NAME="header-popup.tmpl">
+
+<form method="post" action="<TMPL_VAR NAME=SCRIPT_URL>">
+<input type="hidden" name="blog_id" value="<TMPL_VAR NAME=BLOG_ID>" />
+<input type="hidden" name="id" value="<TMPL_VAR NAME=ID>" />
+<input type="hidden" name="__mode" value="dispatch_junk" />
+
+<p>
+<MT_TRANS phrase="Are you sure you want to ban the IP address [_1] and delete delete the [quant,_2,comment] received from that address?" params="<TMPL_VAR NAME=IP>%%<TMPL_VAR NAME=COMMENT_COUNT>">
+</p>
+
+<p align="right">
+<input type="button" onclick="window.close()" value="<MT_TRANS phrase="Cancel">" />
+<input type="submit" value="<MT_TRANS phrase="Delete">" />
+</p>
+
+</form>
+
+<TMPL_INCLUDE NAME="footer-popup.tmpl">

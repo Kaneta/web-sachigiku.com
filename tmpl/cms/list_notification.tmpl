@@ -1,0 +1,73 @@
+<TMPL_INCLUDE NAME="header.tmpl">
+
+<h2><MT_TRANS phrase="Notification List"></h2>
+
+<TMPL_IF NAME=SAVED>
+<h4 class="message"><MT_TRANS phrase="You have added [_1] to your notification list." params="<TMPL_VAR NAME=SAVED ESCAPE=HTML>"></h4>
+</TMPL_IF>
+
+<TMPL_IF NAME=SAVED_DELETED>
+<h4 class="message"><MT_TRANS phrase="You have successfully deleted the selected notifications from your notification list."></h4>
+</TMPL_IF>
+
+<h4><MT_TRANS phrase="Add an Email Address"></h4>
+
+<p><MT_TRANS phrase="To add a new address to your notification list, enter the email address in the form below. The URL field is optional. Then press the Add button."></p>
+
+<form method="post" action="<TMPL_VAR NAME=SCRIPT_URL>">
+<input type="hidden" name="blog_id" value="<TMPL_VAR NAME=BLOG_ID>" />
+<input type="hidden" name="__mode" value="save" />
+<input type="hidden" name="_type" value="notification" />
+
+<p>
+<label for="email"><MT_TRANS phrase="Email Address:"></label>
+<input name="email" id="email" value="<TMPL_VAR NAME=EMAIL>">
+&nbsp;
+<label for="url"><MT_TRANS phrase="URL (Optional):"></label>
+<input name="url" id="url" value="<TMPL_VAR NAME=URL>">
+&nbsp;
+<input type="submit" value="<MT_TRANS phrase="Add">" />
+</p>
+
+</form>
+
+<hr />
+
+<h4><MT_TRANS phrase="Notification List"></h4>
+
+<p><MT_TRANS phrase="Below is the list of people who wish to be notified when you post to your site. To delete an address, check the Delete box and press the Delete button."></p>
+
+<p><MT_TRANS phrase="You have [quant,_1,user,users,no users] in your notification list." params="<TMPL_VAR NAME=OBJECT_COUNT>"></p>
+
+<form action="<TMPL_VAR NAME=SCRIPT_URL>" onsubmit="return false;">
+
+<div class="list">
+<table cellspacing="0">
+
+<tr>
+<th width="35%"><MT_TRANS phrase="Email Address"></th>
+<th width="35%"><MT_TRANS phrase="URL"></th>
+<th width="15%"><MT_TRANS phrase="Date Added"></th>
+<th width="15%"><MT_TRANS phrase="Delete"></th>
+</tr>
+
+<TMPL_LOOP NAME=OBJECT_LOOP>
+<tr class="<TMPL_IF NAME=IS_ODD>odd<TMPL_ELSE>even</TMPL_IF>">
+<td><TMPL_VAR NAME=EMAIL ESCAPE=HTML></td>
+<td><TMPL_VAR NAME=URL ESCAPE=HTML></td>
+<td><TMPL_VAR NAME=CREATED_ON_FORMATTED></td>
+<td><input type="checkbox" name="id" value="<TMPL_VAR NAME=ID>" /></td>
+</tr>
+
+</TMPL_LOOP>
+
+</table>
+</div>
+
+<div align="right">
+<input onclick="doRemoveItems(this.form, 'notification&blog_id=<TMPL_VAR NAME=BLOG_ID>', 'notification addresses')" type="button" value="<MT_TRANS phrase="Delete">" />
+</div>
+
+</form>
+
+<TMPL_INCLUDE NAME="footer.tmpl">

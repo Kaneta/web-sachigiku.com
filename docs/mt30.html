@@ -1,0 +1,96 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>mt30 - Movable Type 3.0 の新機能ガイド</title>
+<link rel="stylesheet" href="doc-styles.css" type="text/css"/>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+
+<body>
+<h3>Movable Type 3.0 ガイド</h3>
+
+
+<p><a name="__index__"></a></p>
+<!-- INDEX BEGIN -->
+
+<ul>
+
+	<li><a href="#name">名称</a></li>
+	<li><a href="#synopsis">要約</a></li>
+	<li><a href="#features">機能</a></li>
+	<ul>
+
+		<li><a href="#comment_management">コメント管理</a></li>
+		<li><a href="#comment_registration">コメント登録</a></li>
+		<ul>
+
+			<li><a href="#upgrading_templates_to_enable_comment_registration">コメント登録を有効にするテンプレートのアップグレード</a></li>
+		</ul>
+
+		<li><a href="#object_callbacks_for_plugin_developers">プラグイン開発者のためのオブジェクト・コールバック</a></li>
+		<li><a href="#internationalization">国際化</a></li>
+		<li><a href="#background_tasks">バックグラウンド・タスク</a></li>
+	</ul>
+
+	<li><a href="#upgrading">アップグレード</a></li>
+</ul>
+<!-- INDEX END -->
+
+<hr/>
+<p>
+</p>
+<hr/>
+<h1><a name="name">名称</a></h1>
+<p>mt30 - Movable Type 3.0 の新機能ガイド</p>
+<p>
+</p>
+<hr/>
+<h1><a name="synopsis">要約</a></h1>
+<p>このドキュメントは、Movable Type 3.0の新機能およびこれらの新機能を利用するためのステップを説明しています。</p>
+<p>
+</p>
+<hr/>
+<h1><a name="features">機能</a></h1>
+<p>
+</p>
+<h2><a name="comment_management">コメント管理</a></h2>
+<p>Movable Type 3.0 は、コメント管理機能を強化しました。</p>
+<p>コメントはすべて、「コメント」ページで集中して検索と編集ができます。 また、以前のバージョンと同様に、「エントリーの編集」のページは、対応するエントリーに関連するコメントの一覧を表示します。</p>
+<p>コメント、エントリー、トラックバックの一覧にはどれも、フィールドの横に虫めがねアイコンが付き、各フィールドの値を検索できるようになりました。 たとえば、「この著者によるすべてのコメント」、「このエントリーに関するすべてのトラックバック」などと指定して検索できます。</p>
+<p>
+</p>
+<h2><a name="comment_registration">コメント登録</a></h2>
+<p>コメント管理に加え、Movable Type 3.0は、各コメントの投稿者にIDを発行し、そのIDに基づいてコメントを制限する機能を導入しました。</p>
+<p>Movable Type 3.0の承認機能は、TypeKeyシステムによって実施されます。 TypeKeyは集中管理型のユーザー登録システムで、Movable Type 3.0を含む様々なアプリケーションに対し、同じ方法でユーザーを管理する単一のサインオン・サービスを提供します。</p>
+<p>コメント投稿者のIDはTypeKeyサイトに保管・管理されますが、ウェブログ所有者は自分のサイトへの投稿許可を持つコメント投稿者を制御できます。</p>
+<p>コメント登録システムには様々なオプションがあり、それらはMovable Typeの「ウェブログの設定」エリアで選択できます。</p>
+<p>
+</p>
+<h3><a name="upgrading_templates_to_enable_comment_registration">コメント登録を有効にするテンプレートのアップグレード</a></h3>
+<p>新しくMovable Type 3.0をインストールする場合は、コメント登録のサインイン手続きへのリンクが設定されたデフォルト・テンプレートが付属しています。また、そのテンプレートによって、あなたのサイトに再びアクセスしたユーザーに対しては、挨拶メッセージが表示されます。</p>
+<p>バージョンアップでコメント登録を有効にする場合は、既存のテンプレートを変更する必要があります。 最も簡単な方法は、&lt;$MTCommentFields$&gt; タグを使うことです。 このタグは、コメント登録が有効であるかどうかを検出し、有効な場合は、現在の構成に対応するフィールドを含むHTMLの &lt;form&gt; 要素まで拡張されます。</p>
+<p>
+</p>
+<h2><a name="object_callbacks_for_plugin_developers">プラグイン開発者のためのオブジェクト・コールバック</a></h2>
+<p>Movable Type 3.0の最もエキサイティングな新機能は、プラグイン開発者がMovable Typeのプラットフォームをさらに強力にできる機能です。 この機能に関する詳細は、<code>MT::Object</code>、<code>MT::Plugin</code>、および<code>MT::Callback</code>のperldocドキュメントをご覧ください。</p>
+<p>
+</p>
+<h2><a name="internationalization">国際化</a></h2>
+<p>Movable Type 3.0 を新たにインストールすると、すべてのページはデフォルトでUTF-8でエンコードされます(再構成しない限り、バージョンアップのインストール時には変更されません)。 エンコード方式の変更は、PublishCharset構成設定を使います。</p>
+<p>Apache 2.0では、ApacheディレクティブのAddDefaultCharsetによって、Movable Typeの設定が上書きされます。 Apacheで使用される文字と異なる文字をMovable Typeで使用する場合には、Apacheの構成ファイルでAddDefaultCharsetオプションをオフにしてください。</p>
+<p>
+</p>
+<h2><a name="background_tasks">バックグランド・タスク</a></h2>
+<p>Movable Type 3.0は今までよりスムーズなインタフェースを備えています。その一部は、「バックグランド・タスク」と呼ばれる機能によるものです。この機能は、再構築など時間がかかる処理をバックグラウンドで実行できるもので、処理が終わるまで待たされる必要がなくなります。トラックバックpingを送信するときの通知機能など実行も、より良い形で実行されるようになります。</p>
+<p>しかし、この機能は一部のシステムでは、うまく作動しません。もし再構築時に障害が発生したり、データベース関連で不規則なエラーが発生した場合は、この機能をオフにしてみてください。この機能をオフにするには、次の行をmt.cfgに加えてください。</p>
+<pre>   BackgroundTasks 0</pre>
+<p>
+<hr/>
+<h1><a name="upgrading">アップグレード</a></h1>
+<p>このセクションでは、以前のバージョンのMovable Typeからアップグレードするための手順を説明しています。</p>
+<p>Movable Type 3.0 には、ユーザー・インタフェースの改良をサポートする2つの新しいファイルが含まれています。 <a href="./mtinstall.html#item_configure_path_to_static_files">「スタティックファイルの設置場所の設定」</a>に説明された「スタティック・ファイル」ディレクトリをお使いの場合は、<code>mt.js</code> および <code>styles.css</code> をそのディレクトリに移動する必要があります。</p>
+<p>バージョン2.6以降からアップグレードする場合は、ただ<code>mt-upgrade30.cgi</code>スクリプトを実行してください。 2.6より前のバージョンからアップグレードする場合は、そのバージョンに続くバージョンにアップグレードする必要があります。 これはアップグレード・スクリプトを順に実行して行います。</p>
+
+<hr size="1" color="#CCCCCC"> <span class="copyright">Copyright (c) 2001-2004 Six Apart. All Rights Reserved.</span> </body>
+
+</html>

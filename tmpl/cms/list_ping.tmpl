@@ -1,0 +1,117 @@
+<TMPL_INCLUDE NAME="header.tmpl">
+
+<script type="text/javascript">
+<!--
+function doBanIP (ip) {
+  window.location = ("<TMPL_VAR NAME=SCRIPT_URL>"
+    + "?__mode=save&amp;_type=banlist"
+    + "&amp;blog_id=<TMPL_VAR NAME=BLOG_ID>&amp;ip=" + ip);
+}
+//-->
+</script>
+
+<h2><MT_TRANS phrase="TrackBack Pings"></h2>
+
+<p><MT_TRANS phrase="_USAGE_PING_LIST" params="<TMPL_VAR NAME=BLOG_NAME ESCAPE=HTML>"></p>
+
+<TMPL_IF NAME=SAVED>
+<div class="message"><MT_TRANS phrase="Your changes have been saved."> <TMPL_INCLUDE NAME="rebuild-stub.tmpl"></div>
+</TMPL_IF>
+
+<TMPL_IF NAME=SAVED_DELETED>
+<div class="message"><MT_TRANS phrase="Your entry has been deleted from the database."> <TMPL_INCLUDE NAME="rebuild-stub.tmpl"></div>
+</TMPL_IF>
+
+<h5><MT_TRANS phrase="Filter Options"></h5>
+
+<div id="filters">
+<form action="<TMPL_VAR NAME=SCRIPT_URL>">
+<input type=hidden name="__mode" value="list_pings" />
+<input type=hidden name="blog_id" value="<TMPL_VAR NAME=BLOG_ID>" />
+<input type=hidden name="limit" value="<TMPL_VAR NAME=LIMIT>" />
+
+<MT_TRANS phrase="Show pings where">&nbsp;
+<select name="filter">
+<option value="title"><MT_TRANS phrase="Title"></option>
+<option value="blog_name"><MT_TRANS phrase="Source"></option>
+<option value="excerpt"><MT_TRANS phrase="Excerpt"></option>
+</select>&nbsp;
+<MT_TRANS phrase="is">&nbsp;
+<input name="filter_val" size="20" />&nbsp;
+<input type="submit" value="<MT_TRANS phrase="Filter">" />
+
+<TMPL_IF NAME=IS_FILTERED>
+<hr />
+<MT_TRANS phrase="Currently showing pings where">
+'<TMPL_VAR NAME=FILTER>'
+<MT_TRANS phrase="is">
+'<TMPL_VAR NAME=FILTER_VAL ESCAPE=HTML>'.&nbsp;
+<input type="button" value="<MT_TRANS phrase="Reset Filter">" onclick="window.location='<TMPL_VAR NAME=SCRIPT_URL>?__mode=list_pings&amp;blog_id=<TMPL_VAR NAME=BLOG_ID>&amp;limit=<TMPL_VAR NAME=LIMIT>'" />
+</TMPL_IF>
+
+</form>
+</div>
+
+<form>
+
+<div class="list">
+<table cellspacing="0">
+
+<tr>
+<th width="20%"><MT_TRANS phrase="Title"></th>
+<th width="35%"><MT_TRANS phrase="Excerpt"></th>
+<th width="15%"><MT_TRANS phrase="Date"></th>
+<th width="20%"><MT_TRANS phrase="Source"></th>
+<th width="5%"><MT_TRANS phrase="Delete"></th>
+</tr>
+
+<TMPL_LOOP NAME=OBJECT_LOOP>
+<tr class="<TMPL_IF NAME=IS_ODD>odd<TMPL_ELSE>even</TMPL_IF>">
+<td><a href="<TMPL_VAR NAME=SOURCE_URL ESCAPE=HTML>" target="_blank"><TMPL_VAR NAME=TITLE ESCAPE=HTML></a></td>
+<td><TMPL_IF NAME=EXCERPT><TMPL_VAR NAME=EXCERPT ESCAPE=HTML><TMPL_ELSE>&nbsp;</TMPL_IF></td>
+<td><TMPL_VAR NAME=CREATED_ON_TIME_FORMATTED ESCAPE=HTML></td>
+<td><a href="<TMPL_VAR NAME=SCRIPT_URL>?__mode=list_pings&amp;blog_id=<TMPL_VAR NAME=BLOG_ID>&amp;filter=blog_name&amp;filter_val=<TMPL_VAR NAME=BLOG_NAME ESCAPE=URL>"><img border=0 src="<TMPL_VAR NAME="STATIC_URI">images/filter.gif"><TMPL_VAR NAME=BLOG_NAME ESCAPE=HTML></a> (<a href="<TMPL_VAR NAME="SCRIPT_URL">?__mode=list_pings&amp;blog_id=<TMPL_VAR NAME="BLOG_ID">&amp;filter=ip&amp;filter_val=<TMPL_VAR NAME=IP ESCAPE=URL>"><TMPL_VAR NAME=IP ESCAPE=HTML></a>)</td>
+<td><TMPL_IF NAME=HAS_EDIT_ACCESS><input type="checkbox" name="id" value="<TMPL_VAR NAME=ID>" /></TMPL_IF></td>
+</tr>
+</TMPL_LOOP>
+
+</table>
+</div>
+
+<div align="right">
+<TMPL_IF NAME=IS_IP_FILTER>
+<input type="button" onClick="doBanIP('<TMPL_VAR NAME=FILTER_VAL>')" value="<MT_TRANS phrase="Ban This IP">" />
+</TMPL_IF>
+<input type="button" onClick="doCheckAll(this.form,true)" value="<MT_TRANS phrase="Check All">" />
+<input type="button" onClick="doCheckAll(this.form,false)" value="<MT_TRANS phrase="Uncheck All">" />
+<input type="button" onClick="doRemoveItems(this.form, 'ping&amp;blog_id=<TMPL_VAR NAME=BLOG_ID>', 'TrackBack pings')" value="<MT_TRANS phrase="Delete">" />
+</div>
+
+<hr />
+
+<div align="right">
+<TMPL_IF NAME=PREV_OFFSET>
+<input type="button" onclick="window.location='<TMPL_VAR NAME=SCRIPT_URL>?__mode=list_pings&amp;blog_id=<TMPL_VAR NAME=BLOG_ID>&amp;<TMPL_IF NAME=IS_POWER_EDIT>is_power_edit=1&amp;</TMPL_IF>limit=' + this.form.limit.options[this.form.limit.selectedIndex].value + '&amp;offset=<TMPL_VAR NAME=PREV_OFFSET_VAL><TMPL_VAR NAME=FILTER_ARGS>'" value="<MT_TRANS phrase="Previous [_1]" params="<TMPL_VAR NAME=LIMIT>">" />
+</TMPL_IF>
+<select name="limit" onChange="window.location='<TMPL_VAR NAME=SCRIPT_URL>?__mode=list_pings&amp;blog_id=<TMPL_VAR NAME=BLOG_ID>&amp;limit=' + this.options[this.selectedIndex].value + '<TMPL_VAR NAME=FILTER_ARGS>'">
+<option value="5"<TMPL_IF NAME=LIMIT_5> selected="selected"</TMPL_IF>><MT_TRANS phrase="[quant,_1,ping]" params="5"></option>
+<option value="20"<TMPL_IF NAME=LIMIT_20> selected="selected"</TMPL_IF>><MT_TRANS phrase="[quant,_1,ping]" params="20"></option>
+<option value="75"<TMPL_IF NAME=LIMIT_75> selected="selected"</TMPL_IF>><MT_TRANS phrase="[quant,_1,ping]" params="75"></option>
+<option value="125"<TMPL_IF NAME=LIMIT_125> selected="selected"</TMPL_IF>><MT_TRANS phrase="[quant,_1,ping]" params="125"></option>
+<option value="none"<TMPL_IF NAME=LIMIT_NONE> selected="selected"</TMPL_IF>><MT_TRANS phrase="all pings"></option>
+</select>
+<TMPL_IF NAME=NEXT_OFFSET>
+<input type="button" onclick="window.location='<TMPL_VAR NAME=SCRIPT_URL>?__mode=list_pings&amp;blog_id=<TMPL_VAR NAME=BLOG_ID>&amp;<TMPL_IF NAME=IS_POWER_EDIT>is_power_edit=1&amp;</TMPL_IF>limit=' + this.form.limit.options[this.form.limit.selectedIndex].value + '&amp;offset=<TMPL_VAR NAME=NEXT_OFFSET_VAL><TMPL_VAR NAME=FILTER_ARGS>'" value="<MT_TRANS phrase="Next [_1]" params="<TMPL_VAR NAME=LIMIT>">" />
+</TMPL_IF>
+</div>
+
+</form>
+
+<TMPL_IF NAME=PLUGIN_ACTION_LOOP>
+Plugin actions: <br />
+<TMPL_LOOP NAME=PLUGIN_ACTION_LOOP>
+<a href="<TMPL_VAR NAME=PAGE>;from=list_pings;blog_id=<TMPL_VAR NAME=BLOG_ID>"><TMPL_VAR NAME=LINK_TEXT></a> <br />
+</TMPL_LOOP>
+</TMPL_IF>
+
+<TMPL_INCLUDE NAME="footer.tmpl">

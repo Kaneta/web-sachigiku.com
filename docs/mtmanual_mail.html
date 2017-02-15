@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>エントリーをメールする</title>
+<link rel="stylesheet" href="doc-styles.css" type="text/css"/>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+
+<body>
+<h3>Movable Typeユーザー・マニュアル: エントリーをメールする</h3>
+<p><a href="mtmanual.html">≪ 目次</a></p>
+
+
+<p><a name="__index__"></a></p>
+<!-- INDEX BEGIN -->
+
+<ul>
+
+	<li><a href="#mail_this_entry">エントリーをメールする</a></li>
+</ul>
+<!-- INDEX END -->
+
+<hr/>
+<p>
+</p>
+<h1><a name="mail_this_entry">エントリーをメールする</a></h1>
+<p>Movable Typeに搭載されているメーラー・プログラムを利用して、あなたのサイトに簡単な「このエントリーをメールする」機能を加えることができます。 あなたのサイトの個別のエントリーページに小さなフォームを加えると、訪問者が友人等にそのページへのリンクをメールできます。</p>
+<p>この機能をサイトに加えるには、以下を、「個別」のアーカイブに関連付けたアーカイブ・テンプレートに追加します。</p>
+<pre>
+    &lt;form method="post" action="&lt;$MTCGIPath$&gt;mt-send-entry.cgi"&gt;
+    &lt;input type="hidden" name="entry_id" value="&lt;$MTEntryID$>" /&gt;
+    &lt;input type="hidden" name="_redirect" value="&lt;$MTEntryLink archive_type="Individual"$&gt;" /&gt;
+    このエントリーをメールするアドレス:&lt;br /&gt;
+    &lt;input name="to" size="20" /&gt;&lt;br /&gt;&lt;br /&gt;
+    あなたのメールアドレス:&lt;br /&gt;
+    &lt;input name="from" size="20" /&gt;&lt;br /&gt;&lt;br /&gt;
+    メッセージ(オプション):&lt;br /&gt;
+    &lt;textarea name="message" rows="5" cols="20" wrap="virtual"&gt;&lt;/textarea&gt;&lt;br /&gt;&lt;br /&gt;
+    &lt;input type="submit" value="Send" /&gt;
+    &lt;/form&gt;</pre>
+<p>その後、テンプレートを保存してサイトを再構築します。</p>
+
+<hr size="1" color="#CCCCCC"> <span class="copyright">Copyright (c) 2001-2004 Six Apart. All Rights Reserved.</span> </body>
+
+</html>

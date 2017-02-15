@@ -1,0 +1,230 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<$MTPublishCharset$>" />
+<meta name="generator" content="http://www.movabletype.org/" />
+
+<title><$MTBlogName encode_html="1"$>: <$MTEntryTitle$></title>
+
+<link rel="stylesheet" href="<$MTBlogURL$>styles-site.css" type="text/css" />
+<link rel="alternate" type="application/rss+xml" title="RSS" href="<$MTBlogURL$>index.rdf" />
+<link rel="alternate" type="application/atom+xml" title="Atom" href="<$MTBlogURL$>atom.xml" />
+
+<link rel="start" href="<$MTBlogURL$>" title="Home" />
+<MTEntryPrevious>
+<link rel="prev" href="<$MTEntryPermalink$>" title="<$MTEntryTitle encode_html="1"$>" />
+</MTEntryPrevious>
+<MTEntryNext>
+<link rel="next" href="<$MTEntryPermalink$>" title="<$MTEntryTitle encode_html="1"$>" />
+</MTEntryNext>
+<MTInclude module="Remember Me">
+
+<$MTEntryTrackbackData$>
+
+<MTBlogIfCCLicense>
+<$MTCCLicenseRDF$>
+</MTBlogIfCCLicense>
+
+</head>
+
+<body>
+
+<div id="container">
+
+<div id="banner">
+<h1><a href="<$MTBlogURL$>" accesskey="1"><$MTBlogName encode_html="1"$></a></h1>
+<h2><$MTBlogDescription$></h2>
+</div>
+
+<div class="content">
+
+<p align="right">
+<MTEntryPrevious>
+<a href="<$MTEntryPermalink$>">&laquo; <$MTEntryTitle$></a> |
+</MTEntryPrevious>
+<a href="<$MTBlogURL$>">メイン</a>
+<MTEntryNext>
+| <a href="<$MTEntryPermalink$>"><$MTEntryTitle$> &raquo;</a>
+</MTEntryNext>
+</p>
+
+<h2><$MTEntryDate format="%x"$></h2>
+
+<h3><$MTEntryTitle$></h3>
+
+<$MTEntryBody$>
+
+<div id="a<$MTEntryID pad="1"$>more"><div id="more">
+<$MTEntryMore$>
+</div></div>
+
+<p class="posted">投稿者 <$MTEntryAuthor$> : <$MTEntryDate$></p>
+
+<MTEntryIfAllowPings>
+<h2 id="trackbacks">トラックバック</h2>
+<p class="techstuff">このエントリーのトラックバックURL:<br />
+<$MTEntryTrackbackLink$></p>
+
+<MTIfNonZero tag="MTEntryTrackbackCount">
+<p>このリストは、次のエントリーを参照しています:  <a href="<$MTEntryPermalink$>"><$MTEntryTitle$></a>:</p>
+
+<MTPings>
+<p id="p<$MTPingID$>">
+&raquo; <a href="<$MTPingURL$>"><$MTPingTitle$></a> from <$MTPingBlogName$><br />
+<$MTPingExcerpt$> <a href="<$MTPingURL$>">[続きを読む]</a>
+</p>
+<p class="posted">トラックバック時刻:  <$MTPingDate$></p>
+</MTPings>
+</MTIfNonZero>
+</MTEntryIfAllowPings>
+
+<MTEntryIfAllowComments>
+
+<h2 id="comments">コメント</h2>
+
+<MTComments>
+<div id="c<$MTCommentID$>">
+<$MTCommentBody$>
+</div>
+<p class="posted">投稿者 <$MTCommentAuthorLink default_name="Anonymous" spam_protect="1"$> <MTCommentAuthorIdentity> : <$MTCommentDate$></p>
+</MTComments>
+
+<MTEntryIfCommentsOpen>
+
+<MTIfCommentsAllowed>
+
+<h2>コメントしてください</h2>
+
+<MTIfRegistrationRequired>
+
+<MTIfNonEmpty tag="MTTypeKeyToken">
+<div id="thanks">
+<p>サイン・インを確認しました、
+<script type="text/javascript" src="<MTCGIPath><MTCommentScript>?__mode=cmtr_name_js"></script><script>document.write(commenter_name);</script>.
+さん。コメントしてください。 (<a href="<$MTRemoteSignOutLink static="1"$>">サイン・アウト</a>)</p>
+
+(いままで、ここでコメントしたとがないときは、コメントを表示する前にこのウェブログのオーナーの承認が必要になることがあります。承認されるまではコメントは表示されません。そのときはしばらく待ってください。)
+
+<form method="post" action="<$MTCGIPath$><$MTCommentScript$>" name="comments_form" onsubmit="if (this.bakecookie[0].checked) rememberMe(this)">
+<input type="hidden" name="static" value="1" />
+<input type="hidden" name="entry_id" value="<$MTEntryID$>" />
+
+<p><label for="url">URL:</label><br />
+<input tabindex="1" type="text" name="url" id="url" />
+情報を登録する?
+<input type="radio" id="remember" name="bakecookie" onclick="rememberMe(this.form)" /><label for="remember">はい</label><input type="radio" id="forget" name="bakecookie" onclick="forgetMe(this.form)" value="Forget Info" style="margin-left: 15px;" /><label for="forget">いいえ</label><br style="clear: both;" />
+
+</p>
+
+<p><label for="text">コメント:</label><br />
+<textarea tabindex="2" id="text" name="text" rows="10" cols="50"></textarea></p>
+
+<div align="center">
+<input type="submit" tabindex="3" name="preview" value="&nbsp;確認&nbsp;" />
+<input style="font-weight: bold;" tabindex="4" type="submit" name="post" value="&nbsp;投稿&nbsp;" />
+</div>
+</form>
+
+</div>
+
+<script language="javascript" type="text/javascript">
+<!--
+if (commenter_name) {
+    document.getElementById('thanks').style.display = 'block';
+} else {
+    document.write('サイン・インしていません。このサイトにコメントをする前に登録してください。 <a href="<$MTRemoteSignInLink static="1"$>"> サイン・イン</a>');
+    document.getElementById('thanks').style.display = 'none';
+}
+// -->
+</script>
+
+<MTElse>
+コメント登録機能を利用するには、TypeKey トークンを設定してください。
+</MTElse>
+</MTIfNonEmpty>
+
+<MTElse> <MTTemplateNote value="Case of comments not required">
+
+<MTIfNonEmpty tag="MTTypeKeyToken">
+<script type="text/javascript" src="<MTCGIPath><MTCommentScript>?__mode=cmtr_name_js"></script>
+<script language="javascript" type="text/javascript">
+<!--
+if (commenter_name) {
+    document.write('サイン・インを確認しました、', commenter_name, 'さん。コメントしてください。 (<a href="<$MTRemoteSignOutLink static="1"$>">サイン・アウト</a>)');
+} else {
+    document.write('TypeKey ID を使って <a href="<$MTRemoteSignInLink static="1"$>"> サイン・イン</a> してください。');
+}
+// -->
+</script>
+</MTIfNonEmpty>
+
+<form method="post" action="<$MTCGIPath$><$MTCommentScript$>" name="comments_form" onsubmit="if (this.bakecookie[0].checked) rememberMe(this)">
+<input type="hidden" name="static" value="1" />
+<input type="hidden" name="entry_id" value="<$MTEntryID$>" />
+
+<div id="name_email">
+<p><label for="author">名前:</label><br />
+<input tabindex="1" id="author" name="author" /></p>
+
+<p><label for="email">メールアドレス:</label><br />
+<input tabindex="2" id="email" name="email" /></p>
+</div>
+
+<MTIfNonEmpty tag="MTTypeKeyToken">
+<script language="javascript" type="text/javascript">
+<!--
+if (commenter_name) {
+    document.getElementById('name_email').style.display = 'none';
+}
+// -->
+</script>
+</MTIfNonEmpty>
+
+<p><label for="url">URL:</label><br />
+<input tabindex="3" type="text" name="url" id="url" />
+保存しますか?
+<input type="radio" id="remember" onclick="rememberMe(this.form)" name="bakecookie" /><label for="remember">はい</label><input type="radio" id="forget" name="bakecookie" onclick="forgetMe(this.form)" value="Forget Info" style="margin-left: 15px;" /><label for="forget">いいえ</label><br style="clear: both;" />
+</p>
+
+<p><label for="text">コメント:</label> <MTIfAllowCommentHTML>
+(書式を変更するような一部のHTMLタグを使うことができます)</MTIfAllowCommentHTML><br/>
+<textarea tabindex="4" id="text" name="text" rows="10" cols="50"></textarea></p>
+
+<div align="center">
+<input type="submit" name="preview" tabindex="5" 
+    value="&nbsp;確認&nbsp;" />
+<input style="font-weight: bold;" type="submit" name="post" 
+    tabindex="6" value="&nbsp;投稿&nbsp;" />
+</div>
+</form>
+
+</MTElse>
+
+</MTIfRegistrationRequired>
+</MTIfCommentsAllowed>
+
+<script type="text/javascript" language="javascript">
+<!--
+if (document.comments_form.email != undefined)
+    document.comments_form.email.value = getCookie("mtcmtmail");
+if (document.comments_form.author != undefined)
+    document.comments_form.author.value = getCookie("mtcmtauth");
+if (document.comments_form.url != undefined)
+    document.comments_form.url.value = getCookie("mtcmthome");
+if (getCookie("mtcmtauth") || getCookie("mtcmthome")) {
+    document.comments_form.bakecookie[0].checked = true;
+} else {
+    document.comments_form.bakecookie[1].checked = true;
+}
+//-->
+</script>
+</MTEntryIfCommentsOpen>
+
+</MTEntryIfAllowComments>
+
+</div>
+</div>
+
+</body>
+</html>
